@@ -4,11 +4,28 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
     <title>Stencil Component Starter</title>
-
+    <link rel="stylesheet" href="https://north-star-ui-cdn.run.aws-usw02-pr.ice.predix.io/css/px-dark-theme.css"/>
+    
     <script type="module" src="/build/ns-theme.esm.js"></script>
     <script nomodule src="/build/ns-theme.js"></script>
   </head>
   <body>
-    <my-component first="Stencil" last="'Don't call me a framework' JS"></my-component>
+    <ns-theme-drawer headerText="Drawer">
+      This is drawer custom content
+    </ns-theme-drawer>
+    <ns-theme-header headerText="" is-fixed></ns-theme-header>
+
+    <div class="content">
+        <h2>This is where apps go</h2>
+    </div>
+    <style>
+      .content {
+        height: 99vh;
+        background: white;
+        color: black;
+        padding: 1rem;
+        padding-top: 3rem;
+      }
+    </style>
   </body>
 </html>

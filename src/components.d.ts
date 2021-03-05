@@ -20,6 +20,22 @@ export namespace Components {
          */
         "middle": string;
     }
+    interface NsThemeDrawer {
+        "headerText": string;
+        "isFixed": boolean;
+        "isOpened": boolean;
+        "items": [];
+    }
+    interface NsThemeHeader {
+        "color": string;
+        "favoriteNumber": number;
+        "headerText": string;
+        "isFixed": boolean;
+        "items": [];
+        "profile": [];
+        "settings": [];
+        "user": object;
+    }
 }
 declare global {
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
@@ -28,8 +44,22 @@ declare global {
         prototype: HTMLMyComponentElement;
         new (): HTMLMyComponentElement;
     };
+    interface HTMLNsThemeDrawerElement extends Components.NsThemeDrawer, HTMLStencilElement {
+    }
+    var HTMLNsThemeDrawerElement: {
+        prototype: HTMLNsThemeDrawerElement;
+        new (): HTMLNsThemeDrawerElement;
+    };
+    interface HTMLNsThemeHeaderElement extends Components.NsThemeHeader, HTMLStencilElement {
+    }
+    var HTMLNsThemeHeaderElement: {
+        prototype: HTMLNsThemeHeaderElement;
+        new (): HTMLNsThemeHeaderElement;
+    };
     interface HTMLElementTagNameMap {
         "my-component": HTMLMyComponentElement;
+        "ns-theme-drawer": HTMLNsThemeDrawerElement;
+        "ns-theme-header": HTMLNsThemeHeaderElement;
     }
 }
 declare namespace LocalJSX {
@@ -47,8 +77,26 @@ declare namespace LocalJSX {
          */
         "middle"?: string;
     }
+    interface NsThemeDrawer {
+        "headerText"?: string;
+        "isFixed"?: boolean;
+        "isOpened"?: boolean;
+        "items"?: [];
+    }
+    interface NsThemeHeader {
+        "color"?: string;
+        "favoriteNumber"?: number;
+        "headerText"?: string;
+        "isFixed"?: boolean;
+        "items"?: [];
+        "profile"?: [];
+        "settings"?: [];
+        "user"?: object;
+    }
     interface IntrinsicElements {
         "my-component": MyComponent;
+        "ns-theme-drawer": NsThemeDrawer;
+        "ns-theme-header": NsThemeHeader;
     }
 }
 export { LocalJSX as JSX };
@@ -56,6 +104,8 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+            "ns-theme-drawer": LocalJSX.NsThemeDrawer & JSXBase.HTMLAttributes<HTMLNsThemeDrawerElement>;
+            "ns-theme-header": LocalJSX.NsThemeHeader & JSXBase.HTMLAttributes<HTMLNsThemeHeaderElement>;
         }
     }
 }
