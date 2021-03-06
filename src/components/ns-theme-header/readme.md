@@ -19,6 +19,17 @@
 | `user`           | --                |             | `object`  | `{ name: null, picture: null, email: null }` |
 
 
+## CSS Custom Properties
+
+| Name                                        | Description                                   |
+| ------------------------------------------- | --------------------------------------------- |
+| `--px-app-nav-background-color`             | Color of the nav item background              |
+| `--px-app-nav-box-shadow`                   | Color of the nav box shadow                   |
+| `--px-app-nav-item-background-color--hover` | Color of the nav item background when hovered |
+| `--px-app-nav-item-text-color`              | Color of the nav item text                    |
+| `--px-app-nav-item-text-color--hover`       | Color of the nav item text when hovered       |
+
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

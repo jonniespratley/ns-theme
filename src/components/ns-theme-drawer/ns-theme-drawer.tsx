@@ -1,5 +1,6 @@
 import { Component, Host, Prop, h, Listen } from '@stencil/core';
 
+
 const iconStyles = {
   display: 'block',
   width: '22px',
@@ -8,9 +9,9 @@ const iconStyles = {
 
 @Component({
   tag: 'ns-theme-drawer',
-  styleUrl: 'ns-theme-drawer.css',
+  styleUrl: 'ns-theme-drawer.scss',
   shadow: true,
-})
+}) 
 export class NsThemeDrawer {
   @Prop() headerText: string;
   @Prop() items:[] = [];
@@ -31,7 +32,7 @@ export class NsThemeDrawer {
   }
   @Listen('openDrawer', {target: 'document'})
   openDrawer() {
-    this.isOpened = true;
+    this.isOpened = true; 
   }
   
   render() {
@@ -40,7 +41,7 @@ export class NsThemeDrawer {
         <aside class={`theme__drawer ${this.isOpened ? 'theme__drawer--animate-in' : 'theme__drawer--animate-out'}`}>
           <header class="theme__drawer-header">
               <div>
-                &nbsp;
+                <ns-theme-branding-bar></ns-theme-branding-bar>
               </div>
               <button type="button" class="close" aria-label="Close" onClick={() => {
                 document.dispatchEvent(new CustomEvent('closeDrawer'))

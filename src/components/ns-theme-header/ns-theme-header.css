@@ -1,4 +1,13 @@
+/**
+ * @prop --px-app-nav-item-text-color: Color of the nav item text
+ * @prop --px-app-nav-item-text-color--hover: Color of the nav item text when hovered
 
+ * @prop --px-app-nav-background-color: Color of the nav item background
+ * @prop --px-app-nav-item-background-color--hover: Color of the nav item background when hovered
+ 
+ * @prop --px-app-nav-box-shadow: Color of the nav box shadow
+
+ */
 :host {
   display: block;
   
@@ -12,37 +21,27 @@
 .mr-1 {
   margin-right: 0.5rem !important; 
 }
-
 .m-auto {
   margin: auto !important;
 }  
 
-.mt-auto,
-.my-auto {
+.mt-auto,.my-auto {
   margin-top: auto !important;
 }
 
-.mr-auto,
-.mx-auto {
+.mr-auto,.mx-auto {
   margin-right: auto !important;
 }
 
-.mb-auto,
-.my-auto {
+.mb-auto,.my-auto {
   margin-bottom: auto !important;
 }
 
-.ml-auto,
-.mx-auto {
+.ml-auto,.mx-auto {
   margin-left: auto !important;
 }
 
-.theme__header {
-  max-height: 52px;
-  color: var(--px-app-nav-item-text-color, black);
-  background-color: var(--px-app-nav-background-color, whitesmoke);
-  box-shadow: var(--px-app-nav-box-shadow, 0 2px 4px var(--px-shadow-navigation, rgba(0, 0, 0, 0.2)));
-}
+
 .theme__header--fixed {
   position: fixed;
   top: 0;

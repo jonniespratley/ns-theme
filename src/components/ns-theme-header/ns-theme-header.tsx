@@ -1,4 +1,5 @@
-import { Component, Host, Prop, h } from '@stencil/core';
+import { Component, Host, Prop, FunctionalComponent, h } from '@stencil/core';
+import { NavItem } from '../props';
 
 
 const iconStyles = {
@@ -73,44 +74,63 @@ const AddNavItem = () => (
     </a>
   </li>
 )
-const UserNavItem = () => (
-                    
+
+interface UserNavItemProps {
+  items?: NavItem[];
+}
+
+
+const UserNavItem: FunctionalComponent<UserNavItemProps> = ({ items }) => (
   <li class="theme__nav-item theme__dropdown theme__dropdown--right theme__user">
-  <button class="theme__nav-link theme__dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <img class="theme__avatar" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49212/profile/profile-80.jpg" alt="jonnie.spratley"/>
-    
-    {/**
-     <i class="px-icon">
-      <svg viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet" style={{...iconStyles, width: '16px'}}>
-        <g id="px-utl-chevron"><path d="M2.4 6.2l5.5 5.5 5.5-5.5"></path></g>
-      </svg>
-    </i>
-     */}
-  </button>
-  <div class="theme__dropdown-menu ml-auto" aria-labelledby="userDropdown">
-    {/*{/*-- Theme user settings -->*/}
-    <a class="theme__dropdown-item" href="#/settings" title="Settings">Settings</a>
-    <a class="theme__dropdown-item" href="#/help" title="Help">Help</a>
-    <a class="theme__dropdown-item" href="#/profile" title="Profile">Profile</a>
-    <a class="theme__dropdown-item" href="/logout" title="Logout">Log Out</a>
-  </div>
-</li>
+    <button class="theme__nav-link theme__dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <img class="theme__avatar" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/49212/profile/profile-80.jpg" alt="jonnie.spratley"/>
+      
+      {/**
+       <i class="px-icon">
+        <svg viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet" style={{...iconStyles, width: '16px'}}>
+          <g id="px-utl-chevron"><path d="M2.4 6.2l5.5 5.5 5.5-5.5"></path></g>
+        </svg>
+      </i>
+      */}
+    </button>
+    <div class="theme__dropdown-menu ml-auto" aria-labelledby="userDropdown">
+      {items && items.map((item: NavItem) => (
+          <a class="theme__dropdown-item" href={item.path} title={item.label}>{item.label}</a>
+      ))}
+      <a class="theme__dropdown-item" href="/logout" title="Logout">Log Out</a>
+    </div>
+  </li>
 )
 
 @Component({
   tag: 'ns-theme-header',
-  styleUrl: 'ns-theme-header.css',
+  styleUrl: 'ns-theme-header.scss',
   shadow: true,
 })
 export class NsThemeHeader {
-
+  /**
+   * The title for the header
+   */
   @Prop() headerText: string;
-  @Prop() items:[] = [];
+  /**
+   * Main navigation items
+   */
+  @Prop() items:NavItem[] = [];
+  /**
+   * Profile navigation items
+   */
   @Prop() profile:[] = [];
+  /**
+   * Settings navigation items
+   */
   @Prop() settings:[] = [];
+  /**
+   * User properties for user menu
+   */
   @Prop() user:object = { name: null, picture: null, email: null };
-  @Prop() color: string;
-  @Prop() favoriteNumber: number;
+  /**
+   * Drawer in fixed position or not
+   */
   @Prop() isFixed: boolean;
   
   render() {
