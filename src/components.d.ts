@@ -7,20 +7,6 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { NavItem } from "./components/props";
 export namespace Components {
-    interface MyComponent {
-        /**
-          * The first name
-         */
-        "first": string;
-        /**
-          * The last name
-         */
-        "last": string;
-        /**
-          * The middle name
-         */
-        "middle": string;
-    }
     interface NsThemeBrandingBar {
         /**
           * The text for the branding bar
@@ -61,12 +47,6 @@ export namespace Components {
     }
 }
 declare global {
-    interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
-    }
-    var HTMLMyComponentElement: {
-        prototype: HTMLMyComponentElement;
-        new (): HTMLMyComponentElement;
-    };
     interface HTMLNsThemeBrandingBarElement extends Components.NsThemeBrandingBar, HTMLStencilElement {
     }
     var HTMLNsThemeBrandingBarElement: {
@@ -86,27 +66,12 @@ declare global {
         new (): HTMLNsThemeHeaderElement;
     };
     interface HTMLElementTagNameMap {
-        "my-component": HTMLMyComponentElement;
         "ns-theme-branding-bar": HTMLNsThemeBrandingBarElement;
         "ns-theme-drawer": HTMLNsThemeDrawerElement;
         "ns-theme-header": HTMLNsThemeHeaderElement;
     }
 }
 declare namespace LocalJSX {
-    interface MyComponent {
-        /**
-          * The first name
-         */
-        "first"?: string;
-        /**
-          * The last name
-         */
-        "last"?: string;
-        /**
-          * The middle name
-         */
-        "middle"?: string;
-    }
     interface NsThemeBrandingBar {
         /**
           * The text for the branding bar
@@ -146,7 +111,6 @@ declare namespace LocalJSX {
         "user"?: object;
     }
     interface IntrinsicElements {
-        "my-component": MyComponent;
         "ns-theme-branding-bar": NsThemeBrandingBar;
         "ns-theme-drawer": NsThemeDrawer;
         "ns-theme-header": NsThemeHeader;
@@ -156,7 +120,6 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
             "ns-theme-branding-bar": LocalJSX.NsThemeBrandingBar & JSXBase.HTMLAttributes<HTMLNsThemeBrandingBarElement>;
             "ns-theme-drawer": LocalJSX.NsThemeDrawer & JSXBase.HTMLAttributes<HTMLNsThemeDrawerElement>;
             "ns-theme-header": LocalJSX.NsThemeHeader & JSXBase.HTMLAttributes<HTMLNsThemeHeaderElement>;

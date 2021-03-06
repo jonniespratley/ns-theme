@@ -17,8 +17,9 @@
   "scripts": {
     "build": "stencil build --docs",
     "start": "stencil build --dev --watch --serve",
-    "test": "stencil test --spec --e2e",
+    "test": "stencil test --spec",
     "test.watch": "stencil test --spec --e2e --watchAll",
+    "test.e2e": "stencil test --e2e",
     "generate": "stencil generate"
   },
   "dependencies": {
@@ -28,6 +29,9 @@
   "devDependencies": {
     "@stencil/sass": "^1.4.1",
     "@types/jest": "^26.0.20",
+    "@types/puppeteer": "^5.4.2",
+    "jest": "^26.6.3",
+    "jest-cli": "^26.6.3",
     "prettier": "^2.2.1",
     "puppeteer": "^8.0.0"
   }
