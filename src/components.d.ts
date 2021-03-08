@@ -18,6 +18,7 @@ export namespace Components {
         "isFixed": boolean;
         "isOpened": boolean;
         "items": [];
+        "position": string;
     }
     interface NsThemeHeader {
         /**
@@ -83,6 +84,7 @@ declare namespace LocalJSX {
         "isFixed"?: boolean;
         "isOpened"?: boolean;
         "items"?: [];
+        "position"?: string;
     }
     interface NsThemeHeader {
         /**

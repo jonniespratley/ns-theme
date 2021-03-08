@@ -149,6 +149,7 @@ export class NsThemeHeader {
                 <a class="theme__nav-link" tabindex="0" href="#/dashboard" id="micro-app-1" data-path="/dashboard" data-order="0" title="Dashboard">
                   <i class="icon px-icon px-fea:dashboard"></i>
                   <span aria-labelledby="Dashboard">Dashboard</span>
+                  <button class="close">x</button>
                 </a>
               </li>
               <li class="ml-auto"></li>

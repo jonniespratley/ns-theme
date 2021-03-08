@@ -7,16 +7,14 @@
 
 ## Properties
 
-| Property         | Attribute         | Description | Type      | Default                                      |
-| ---------------- | ----------------- | ----------- | --------- | -------------------------------------------- |
-| `color`          | `color`           |             | `string`  | `undefined`                                  |
-| `favoriteNumber` | `favorite-number` |             | `number`  | `undefined`                                  |
-| `headerText`     | `header-text`     |             | `string`  | `undefined`                                  |
-| `isFixed`        | `is-fixed`        |             | `boolean` | `undefined`                                  |
-| `items`          | --                |             | `[]`      | `[]`                                         |
-| `profile`        | --                |             | `[]`      | `[]`                                         |
-| `settings`       | --                |             | `[]`      | `[]`                                         |
-| `user`           | --                |             | `object`  | `{ name: null, picture: null, email: null }` |
+| Property     | Attribute     | Description                     | Type        | Default                                      |
+| ------------ | ------------- | ------------------------------- | ----------- | -------------------------------------------- |
+| `headerText` | `header-text` | The title for the header        | `string`    | `undefined`                                  |
+| `isFixed`    | `is-fixed`    | Drawer in fixed position or not | `boolean`   | `undefined`                                  |
+| `items`      | --            | Main navigation items           | `NavItem[]` | `[]`                                         |
+| `profile`    | --            | Profile navigation items        | `[]`        | `[]`                                         |
+| `settings`   | --            | Settings navigation items       | `[]`        | `[]`                                         |
+| `user`       | --            | User properties for user menu   | `object`    | `{ name: null, picture: null, email: null }` |
 
 
 ## CSS Custom Properties

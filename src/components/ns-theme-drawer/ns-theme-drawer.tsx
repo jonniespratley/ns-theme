@@ -14,6 +14,7 @@ const iconStyles = {
 }) 
 export class NsThemeDrawer {
   @Prop() headerText: string;
+  @Prop() position: string = 'left';
   @Prop() items:[] = [];
   @Prop() isFixed: boolean;
   @Prop({mutable: true}) isOpened: boolean;
@@ -38,7 +39,7 @@ export class NsThemeDrawer {
   render() {
     return (
       <Host>
-        <aside class={`theme__drawer ${this.isOpened ? 'theme__drawer--animate-in' : 'theme__drawer--animate-out'}`}>
+        <aside class={`theme__drawer theme__drawer--${this.position} ${this.isOpened ? 'theme__drawer--animate-in' : 'theme__drawer--animate-out'}`}>
           <header class="theme__drawer-header">
               <div>
                 <ns-theme-branding-bar></ns-theme-branding-bar>

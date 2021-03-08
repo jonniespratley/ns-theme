@@ -10,7 +10,7 @@
 :host {
   --theme-navbar-color: #b6c3cb;
   --theme-navbar-brand-color: #b6c3cb;
-  --theme-navbar-background-color: #0c1418;
+  --theme-navbar-background-color: #111;
 
   --theme-navbar-link-color: #b6c3cb;
   --theme-navbar-link-color--hover: green;
@@ -96,7 +96,7 @@ $prefix: 'theme';
     background-color: transparent;
     border: 1px solid transparent;
     border-radius: 0.25rem;
-    color: var(--px-app-nav-item-text-color, rgba(0, 0, 0, 0.5));
+    color: var(--px-app-nav-item-text-color, white);
     &:hover,
     &:focus {
       text-decoration: none;

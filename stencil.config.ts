@@ -4,6 +4,8 @@ import { sass } from '@stencil/sass';
 export const config: Config = {
   namespace: 'ns-theme',
   buildEs5: 'prod',
+  srcDir: 'src',
+  enableCache: false,
   outputTargets: [
     {
       type: 'dist',
