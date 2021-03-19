@@ -10,11 +10,20 @@
 | Property     | Attribute     | Description                     | Type        | Default                                      |
 | ------------ | ------------- | ------------------------------- | ----------- | -------------------------------------------- |
 | `headerText` | `header-text` | The title for the header        | `string`    | `undefined`                                  |
-| `isFixed`    | `is-fixed`    | Drawer in fixed position or not | `boolean`   | `undefined`                                  |
+| `isFixed`    | `is-fixed`    | Header in fixed position or not | `boolean`   | `undefined`                                  |
 | `items`      | --            | Main navigation items           | `NavItem[]` | `[]`                                         |
 | `profile`    | --            | Profile navigation items        | `[]`        | `[]`                                         |
 | `settings`   | --            | Settings navigation items       | `[]`        | `[]`                                         |
+| `showHome`   | `show-home`   | Show Home button                | `boolean`   | `undefined`                                  |
+| `showMenu`   | `show-menu`   | Show Menu button                | `boolean`   | `undefined`                                  |
 | `user`       | --            | User properties for user menu   | `object`    | `{ name: null, picture: null, email: null }` |
+
+
+## Events
+
+| Event          | Description | Type                   |
+| -------------- | ----------- | ---------------------- |
+| `navItemClick` |             | `CustomEvent<NavItem>` |
 
 
 ## CSS Custom Properties
@@ -28,6 +37,19 @@
 | `--px-app-nav-item-text-color--hover`       | Color of the nav item text when hovered       |
 
 
+## Dependencies
+
+### Used by
+
+ - [ns-theme](../ns-theme)
+
+### Graph
+```mermaid
+graph TD;
+  ns-theme --> ns-theme-header
+  style ns-theme-header fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
-*Built with [StencilJS](https://stenciljs.com/)*
+*Build with Love by JS!*

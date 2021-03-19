@@ -7,13 +7,13 @@
 
 ## Properties
 
-| Property     | Attribute     | Description | Type      | Default     |
-| ------------ | ------------- | ----------- | --------- | ----------- |
-| `headerText` | `header-text` |             | `string`  | `undefined` |
-| `isFixed`    | `is-fixed`    |             | `boolean` | `undefined` |
-| `isOpened`   | `is-opened`   |             | `boolean` | `undefined` |
-| `items`      | --            |             | `[]`      | `[]`        |
-| `position`   | `position`    |             | `string`  | `'left'`    |
+| Property     | Attribute     | Description                           | Type      | Default     |
+| ------------ | ------------- | ------------------------------------- | --------- | ----------- |
+| `headerText` | `header-text` | The header text for the drawer.       | `string`  | `undefined` |
+| `isFixed`    | `is-fixed`    | Make the drawer be in fixed position. | `boolean` | `undefined` |
+| `isOpened`   | `is-opened`   | The open state of the drawer.         | `boolean` | `undefined` |
+| `items`      | --            | The navigation list items.            | `[]`      | `[]`        |
+| `position`   | `position`    | The position of the drawer.           | `string`  | `'left'`    |
 
 
 ## CSS Custom Properties
@@ -40,4 +40,4 @@ graph TD;
 
 ----------------------------------------------
 
-*Built with [StencilJS](https://stenciljs.com/)*
+*Build with Love by JS!*

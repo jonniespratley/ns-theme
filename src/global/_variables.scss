@@ -1,0 +1,41 @@
+
+$prefix: 'ns';
+
+$menu-width: 80px;
+$menu-item-background-color--active: #4f86e0;
+$menu-item-background-color--selected: #3e87e8;
+$menu-background-color: #19262d;
+
+
+$layout-tabs-close-color: #000;
+
+$layout-menu-item-border: 1px solid rgba(255, 255, 255, 0.15);
+$layout-menu-item-font-color: whitesmoke;
+
+//Layout
+$layout-transition: all 0.2s ease-out;
+
+//Layout Tabs
+$layout-header-tabs-background-color: var(
+  --px-app-nav-item-background-color,
+  #eee
+);
+$layout-header-tabs-font-color: #777;
+$layout-header-tabs-font-color--active: #777;
+$layout-header-tabs-background-color--active: #09809c;
+
+$layout-header-tabs-border--active: 2px solid #09809c;
+$layout-header-tabs-border: 1px solid #b9b9b9;
+
+$global-background-color: #f1f4f7;
+
+$global-font-family: 'GE Inspira Sans', sans-serif;
+$global-font-color: #000;
+
+$drawer-width: 320px;
+$drawer-header-height: 51px;
+$drawer-header-border-color: #333;
+$drawer-background-color: #fff;
+$drawer-border-color: #333;
+$drawer-box-shadow: 2px 1px 5px 1px hsl(0deg 0% 0% / 50%);
+$drawer-transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);

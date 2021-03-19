@@ -4,27 +4,72 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
     <title>Stencil Component Starter</title>
-    <link rel="stylesheet" href="https://north-star-ui-cdn.run.aws-usw02-pr.ice.predix.io/css/px-dark-theme.css"/>
+    <!--
+
     
+    <link rel="stylesheet" href="https://north-star-ui-cdn.run.aws-usw02-pr.ice.predix.io/css/px-light-theme.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.0/css/font-awesome.css"/>
+  
+    <link rel="stylesheet" href="http://localhost:9001/src.77de5100.css">
+    -->
+    <script>  
+    window.nav = {"main":{"items":[{"label":"Polling App","icon":"fa-html5","path":"/pollapp","items":[],"id":"pollapp.0"},{"label":"Mocha App","icon":"fa-code","path":"/testapp","items":[],"id":"testapp.0"},{"label":"AngularApp","icon":"fa-handicap","path":"/angularapp","items":[],"id":"angularapp.0"},{"label":"PolymerApp","icon":"fa-cube","path":"/polymerapp","items":[],"id":"polymerapp.0"},{"label":"TraceID App","icon":"fa-heartbeat","path":"/sample-traceid-app","items":[],"id":"app2.0"},{"label":"StoppedMicroapp","icon":"fa-circle","path":"/stoppedmicroapp","items":[],"id":"stoppedmicroapp.0"}]},"profile":{"items":[{"label":"My Profile","icon":"fa-user","path":"/profile","items":[],"id":"profileapp.0"}]},"settings":{"items":[{"label":"Settings App","icon":"fa-gear","path":"/settings","items":[],"id":"settings.0"}]},"paths":{"pollapp":"/pollapp","testapp":"/testapp","angularapp":"/angularapp","polymerapp":"/polymerapp","app2":"/sample-traceid-app","stoppedmicroapp":"/stoppedmicroapp","settings":"/settings","profileapp":"/profile"},"contextPath":"","user":{"name":"@jonniespratley","firstName":"Jonnie","lastName":"Spratley","picture":"https://s3-us-west-2.amazonaws.com/s.cdpn.io/49212/profile/profile-80.jpg?4","user_id":"cef303ee-0830-4589-adae-b37088555946","user_name":"test","email":"jonniespratley@gmail.com"},"preferences":{"preferredLocale":"en"},"appName":"AppHub Dev","localeData":{"logOut":"Log Out","toastTextDefault":"You received a new notification.","toastActionLabelDefault":"Action"}}
+    </script>
     <script type="module" src="/build/ns-theme.esm.js"></script>
     <script nomodule src="/build/ns-theme.js"></script>
-    <script nomodule src="/build/demo.js"></script>
+    
   </head>
   <body>
 
+      <h2>ns-theme demo</h2>
+      <ns-theme id="theme">
+         This can be rendered content
+          <ns-theme-drawer id="themeDrawer" headerText="Tab Manager" slot="drawer">
+            This is drawer custom content
+          </ns-theme-drawer>
+      </ns-theme>
     
-    <ns-theme-drawer id="d1" headerText="Drawer 1">
-      This is drawer custom content
-    </ns-theme-drawer>
+      <br>
+      <hr>
+      <h2>ns-theme-header demo</h2>
 
-    <ns-theme-header headerText="" is-fixed></ns-theme-header>
+      <ns-theme-header id="headerExample">
+        <div slot="left">Left</div>
+        <div slot="tabs"">Tab area</div>
+        <div slot="right">Right side</div>
+      </ns-theme-header>
+      <br/>
+      <ns-theme-header id="headerExample2">
+        <div slot="menu">Menu Icon</div>
+        <div slot="home">home</div>
+        <div slot="left">Left</div>
+        <div slot="tabs"">Tab area</div>
+        <div slot="right">Right side</div>
+      </ns-theme-header>
+      <br>
+      <h3>With Menu</h3>
+      <ns-theme-header id="headerExample3" show-menu="true"></ns-theme-header>
+      
+      <h3>With Menu + Home</h3>
+      <ns-theme-header id="headerExample4" show-menu="true" show-home="true"></ns-theme-header>
 
 
 
+      <br>
+      <hr>
+      <h2>ns-theme-tabs demo</h2>
+      <ns-theme-tabs id="exampleTabs"></ns-theme-tabs>
+      <ns-theme-panels id="examplePanels">
+        <div>This can be the first panel always</div>
+      </ns-theme-panels>
+      <br>
+      <button id="addTab">Add Tab</button>
 
-    <div class="content">
-        <h2>This is where apps go</h2>
-    </div>
+      <br>
+      <br>
+  
+
+    
     <style>
       .content {
         height: 99vh;
@@ -36,10 +81,53 @@
     </style>
 
     <script>
-      //Example using components via api.
+     
+(async () => {
+    let count = 0;
+    
 
+    await customElements.whenDefined('ns-theme');
+    const nsTheme = document.querySelector('ns-theme');
 
+    
+    
+    /**
+     * Example using tabs
+     */
+    await customElements.whenDefined('ns-theme-tabs');
+    const nsThemeTabs = document.querySelector('ns-theme-tabs');
+    
+    const nsThemePanels = document.querySelector('ns-theme-panels');
+    console.log(nsTheme);
+    console.log(nsThemePanels);
+    
+    
+    nsThemeTabs.addEventListener('tabClick', (e) => {
+      //nsThemePanels.selected = e.detail.id;
+      console.log('tabClick', e);
+    });
 
+    nsThemeTabs.addEventListener('tabClose', (e) => {
+      //nsThemePanels.closePanel(e.detail.id);
+      console.log('tabClose', e);
+    });
+
+    async function addTab(){
+        count++
+        let t = {
+            id: `tab-${count}`,
+            label: `Tab ${count}`,
+            href: `/tab${count}`
+        }
+        await nsThemeTabs.addTab(t);
+    }
+
+    document.querySelector('#addTab').addEventListener('click', () => {
+     addTab()
+    });
+
+  })();
     </script>
+    
   </body>
 </html>

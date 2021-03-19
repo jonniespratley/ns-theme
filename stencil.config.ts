@@ -6,6 +6,9 @@ export const config: Config = {
   buildEs5: 'prod',
   srcDir: 'src',
   enableCache: false,
+  globalStyle: 'src/global/app.scss',
+  globalScript: 'src/global/app.ts',
+  hashFileNames: false,
   outputTargets: [
     {
       type: 'dist',
@@ -16,15 +19,23 @@ export const config: Config = {
     },
     {
       type: 'docs-readme',
+      footer: '*Build with Love by JS!*'
     },
     {
       type: 'www',
-      serviceWorker: null, // disable service workers
+       // comment the following line to disable service workers in production
+       serviceWorker: null,
+       baseUrl: '/',
+       //baseUrl: 'http://myapp.local/',
     },
   ],
   plugins: [
     sass()
   ],
+  devServer: {
+    logRequests: true,
+    reloadStrategy: 'pageReload'
+  },
   extras: {
     cssVarsShim: true,
     dynamicImportShim: true,

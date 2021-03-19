@@ -34,8 +34,7 @@ $prefix: 'theme';
     -webkit-transform: translate3d(var(--ns-theme-drawer-width, -320px), 0px, 0px);
     transform: translate3d(var(--ns-theme-drawer-width, -320px), 0px, 0px);
   }
-  
-  
+
   &-content {
     padding-left: 1rem;
   }
@@ -95,7 +94,6 @@ $prefix: 'theme';
     color: var(--iron-icon-stroke-color, #5d707d);
   }
 
-
   .close {
     cursor: pointer;
     padding: 0;
@@ -136,4 +134,97 @@ $prefix: 'theme';
     background-color: var(--px-app-nav-item-background-color--selected, #fff);
   }
 
+  &-nav {
+    display: grid;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin: 0;
+      padding: 0;
+
+      &.divider {
+        padding: 0.5rem;
+        background: var(--px-app-nav-item-background-color, whitesmoke);
+      }
+
+      a {
+        height: 44px;
+        display: flex;
+        padding: 0 1rem;
+        text-decoration: none;
+        align-items: center;
+
+        color: var(--px-app-nav-item-text-color, green);
+        //
+
+        &:hover {
+          color: var(--px-app-nav-item-text-color--hover, green);
+          background: var(--px-app-nav-item-background-color--hover, blue);
+        }
+        &:active {
+          color: var(--px-app-nav-item-text-color--pressed, green);
+          background: var(--px-app-nav-item-background-color--pressed, green);
+        }
+      }
+    }
+  }
 }
+
+
+
+/**
+Drawer list group items
+*/
+$list-group-item-color: #000;
+$list-group-item-background-color: #fff;
+
+$list-group-item-color--active: #fff;
+$list-group-item-background-color--active: #09809c;
+
+.list-group {
+  display: grid;
+  grid-auto-flow: row;
+  grid-row-gap: .2rem;
+
+  button {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+
+  &-item {
+    display: grid;
+    text-decoration: none;
+    background-color: $list-group-item-background-color;
+    color: $list-group-item-color;
+    grid-auto-flow: column;
+    grid-template-columns: 3fr 1fr;
+    &.active {
+      background-color: $list-group-item-background-color--active;
+      color: $list-group-item-color--active;
+      button {
+        color: $list-group-item-color--active;
+      }
+    }
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    padding: .6rem;
+    padding-left: 1rem;
+  }
+  &-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  
+}
+
+

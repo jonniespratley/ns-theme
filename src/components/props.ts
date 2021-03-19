@@ -1,3 +1,23 @@
+
+export interface NavItemProps extends NavItem {
+  onClick:() => void;
+  onRemove:() => void;
+  //selected?: boolean;
+}
+
+export interface TabItem {
+  id: string;
+  selected?: boolean;
+  href: string;
+  label: string;
+  title?: string;
+}
+
+export interface TabProps extends TabItem {
+  onClick?: () => void;
+  onRemove?: () => void;
+}
+
 /**
  * Interfaces for config for template
  */
@@ -13,10 +33,12 @@
     default?: boolean;
     host?: string;
     order?: number;
+    items?: NavItem[];
+    index?: number;
   }
   
   export interface NavItems {
-    items: NavItem[];
+    items?: NavItem[];
   }
   
   export interface User {

@@ -5,8 +5,14 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { NavItem } from "./components/props";
+import { NavItem, TabItem } from "./components/props";
 export namespace Components {
+    interface NsTheme {
+        "addTab": (tab: any) => Promise<void>;
+        "closeTab": (index: any) => Promise<void>;
+        "open": () => Promise<boolean>;
+        "tabs": NavItem[];
+    }
     interface NsThemeBrandingBar {
         /**
           * The text for the branding bar
@@ -14,10 +20,25 @@ export namespace Components {
         "headerText": string;
     }
     interface NsThemeDrawer {
+        /**
+          * The header text for the drawer.
+         */
         "headerText": string;
+        /**
+          * Make the drawer be in fixed position.
+         */
         "isFixed": boolean;
+        /**
+          * The open state of the drawer.
+         */
         "isOpened": boolean;
+        /**
+          * The navigation list items.
+         */
         "items": [];
+        /**
+          * The position of the drawer.
+         */
         "position": string;
     }
     interface NsThemeHeader {
@@ -26,7 +47,7 @@ export namespace Components {
          */
         "headerText": string;
         /**
-          * Drawer in fixed position or not
+          * Header in fixed position or not
          */
         "isFixed": boolean;
         /**
@@ -42,12 +63,61 @@ export namespace Components {
          */
         "settings": [];
         /**
+          * Show Home button
+         */
+        "showHome": boolean;
+        /**
+          * Show Menu button
+         */
+        "showMenu": boolean;
+        /**
           * User properties for user menu
          */
         "user": object;
     }
+    interface NsThemePanel {
+        "selected": boolean;
+    }
+    interface NsThemePanels {
+        "closePanel": (item: any) => Promise<void>;
+        "selectedIndex": number;
+        "togglePanel": (item: any) => Promise<void>;
+    }
+    interface NsThemeTabs {
+        /**
+          * Add a tab to the tabs
+          * @param item TabItem to add
+          * @returns Promise
+         */
+        "addTab": (item: TabItem) => Promise<this>;
+        /**
+          * Close a tab from the tab set.
+          * @param index number
+          * @returns Promise
+         */
+        "closeTab": (index: any) => Promise<this>;
+        /**
+          * Get the current tabs rendered
+          * @returns Array of tabs
+         */
+        "getTabs": () => Promise<TabItem[]>;
+        /**
+          * The default tabs to render
+         */
+        "items": TabItem[];
+        /**
+          * The default selected index
+         */
+        "selected": number;
+    }
 }
 declare global {
+    interface HTMLNsThemeElement extends Components.NsTheme, HTMLStencilElement {
+    }
+    var HTMLNsThemeElement: {
+        prototype: HTMLNsThemeElement;
+        new (): HTMLNsThemeElement;
+    };
     interface HTMLNsThemeBrandingBarElement extends Components.NsThemeBrandingBar, HTMLStencilElement {
     }
     var HTMLNsThemeBrandingBarElement: {
@@ -66,13 +136,38 @@ declare global {
         prototype: HTMLNsThemeHeaderElement;
         new (): HTMLNsThemeHeaderElement;
     };
+    interface HTMLNsThemePanelElement extends Components.NsThemePanel, HTMLStencilElement {
+    }
+    var HTMLNsThemePanelElement: {
+        prototype: HTMLNsThemePanelElement;
+        new (): HTMLNsThemePanelElement;
+    };
+    interface HTMLNsThemePanelsElement extends Components.NsThemePanels, HTMLStencilElement {
+    }
+    var HTMLNsThemePanelsElement: {
+        prototype: HTMLNsThemePanelsElement;
+        new (): HTMLNsThemePanelsElement;
+    };
+    interface HTMLNsThemeTabsElement extends Components.NsThemeTabs, HTMLStencilElement {
+    }
+    var HTMLNsThemeTabsElement: {
+        prototype: HTMLNsThemeTabsElement;
+        new (): HTMLNsThemeTabsElement;
+    };
     interface HTMLElementTagNameMap {
+        "ns-theme": HTMLNsThemeElement;
         "ns-theme-branding-bar": HTMLNsThemeBrandingBarElement;
         "ns-theme-drawer": HTMLNsThemeDrawerElement;
         "ns-theme-header": HTMLNsThemeHeaderElement;
+        "ns-theme-panel": HTMLNsThemePanelElement;
+        "ns-theme-panels": HTMLNsThemePanelsElement;
+        "ns-theme-tabs": HTMLNsThemeTabsElement;
     }
 }
 declare namespace LocalJSX {
+    interface NsTheme {
+        "tabs"?: NavItem[];
+    }
     interface NsThemeBrandingBar {
         /**
           * The text for the branding bar
@@ -80,10 +175,25 @@ declare namespace LocalJSX {
         "headerText"?: string;
     }
     interface NsThemeDrawer {
+        /**
+          * The header text for the drawer.
+         */
         "headerText"?: string;
+        /**
+          * Make the drawer be in fixed position.
+         */
         "isFixed"?: boolean;
+        /**
+          * The open state of the drawer.
+         */
         "isOpened"?: boolean;
+        /**
+          * The navigation list items.
+         */
         "items"?: [];
+        /**
+          * The position of the drawer.
+         */
         "position"?: string;
     }
     interface NsThemeHeader {
@@ -92,13 +202,14 @@ declare namespace LocalJSX {
          */
         "headerText"?: string;
         /**
-          * Drawer in fixed position or not
+          * Header in fixed position or not
          */
         "isFixed"?: boolean;
         /**
           * Main navigation items
          */
         "items"?: NavItem[];
+        "onNavItemClick"?: (event: CustomEvent<NavItem>) => void;
         /**
           * Profile navigation items
          */
@@ -108,23 +219,59 @@ declare namespace LocalJSX {
          */
         "settings"?: [];
         /**
+          * Show Home button
+         */
+        "showHome"?: boolean;
+        /**
+          * Show Menu button
+         */
+        "showMenu"?: boolean;
+        /**
           * User properties for user menu
          */
         "user"?: object;
     }
+    interface NsThemePanel {
+        "selected"?: boolean;
+    }
+    interface NsThemePanels {
+        "selectedIndex"?: number;
+    }
+    interface NsThemeTabs {
+        /**
+          * The default tabs to render
+         */
+        "items"?: TabItem[];
+        "onTabAdded"?: (event: CustomEvent<TabItem>) => void;
+        "onTabChange"?: (event: CustomEvent<TabItem[]>) => void;
+        "onTabClick"?: (event: CustomEvent<TabItem>) => void;
+        "onTabClose"?: (event: CustomEvent<any>) => void;
+        /**
+          * The default selected index
+         */
+        "selected"?: number;
+    }
     interface IntrinsicElements {
+        "ns-theme": NsTheme;
         "ns-theme-branding-bar": NsThemeBrandingBar;
         "ns-theme-drawer": NsThemeDrawer;
         "ns-theme-header": NsThemeHeader;
+        "ns-theme-panel": NsThemePanel;
+        "ns-theme-panels": NsThemePanels;
+        "ns-theme-tabs": NsThemeTabs;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "ns-theme": LocalJSX.NsTheme & JSXBase.HTMLAttributes<HTMLNsThemeElement>;
             "ns-theme-branding-bar": LocalJSX.NsThemeBrandingBar & JSXBase.HTMLAttributes<HTMLNsThemeBrandingBarElement>;
             "ns-theme-drawer": LocalJSX.NsThemeDrawer & JSXBase.HTMLAttributes<HTMLNsThemeDrawerElement>;
             "ns-theme-header": LocalJSX.NsThemeHeader & JSXBase.HTMLAttributes<HTMLNsThemeHeaderElement>;
+            "ns-theme-panel": LocalJSX.NsThemePanel & JSXBase.HTMLAttributes<HTMLNsThemePanelElement>;
+            "ns-theme-panels": LocalJSX.NsThemePanels & JSXBase.HTMLAttributes<HTMLNsThemePanelsElement>;
+            "ns-theme-tabs": LocalJSX.NsThemeTabs & JSXBase.HTMLAttributes<HTMLNsThemeTabsElement>;
         }
     }
 }
