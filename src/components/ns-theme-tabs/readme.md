@@ -25,13 +25,13 @@
 
 ## Methods
 
-### `addTab(item: TabItem) => Promise<this>`
+### `addTab(item: TabItem) => Promise<TabItem[]>`
 
 Add a tab to the tabs
 
 #### Returns
 
-Type: `Promise<this>`
+Type: `Promise<TabItem[]>`
 
 
 

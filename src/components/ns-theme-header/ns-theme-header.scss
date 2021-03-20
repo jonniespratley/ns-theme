@@ -20,9 +20,12 @@
 
   --theme-navbar-link-background-color--hover: #888;
   box-sizing: border-box;
+  min-block-size: fit-content;
 }
+
 :host > * {
   box-sizing: border-box;
+  
 }
 
 /** Utils */

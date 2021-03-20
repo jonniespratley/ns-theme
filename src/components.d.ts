@@ -79,6 +79,7 @@ export namespace Components {
         "selected": boolean;
     }
     interface NsThemePanels {
+        "addPanel": (tab: TabItem, element: any) => Promise<void>;
         "closePanel": (item: any) => Promise<void>;
         "selectedIndex": number;
         "togglePanel": (item: any) => Promise<void>;
@@ -87,9 +88,9 @@ export namespace Components {
         /**
           * Add a tab to the tabs
           * @param item TabItem to add
-          * @returns Promise
+          * @returns Updated array of tabs
          */
-        "addTab": (item: TabItem) => Promise<this>;
+        "addTab": (item: TabItem) => Promise<TabItem[]>;
         /**
           * Close a tab from the tab set.
           * @param index number

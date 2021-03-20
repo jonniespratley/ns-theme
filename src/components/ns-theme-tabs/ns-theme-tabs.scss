@@ -10,7 +10,8 @@ $tabs-border: 1px solid #b9b9b9;
 :host {
   display: block;
   box-sizing: border-box;
-
+  overflow: hidden;
+  
   ul {
     margin: 0;
     padding: 0;
@@ -27,10 +28,10 @@ $tabs-border: 1px solid #b9b9b9;
 
   // .ns-theme-tabs__list
   > ul {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: min-content;
-    max-width: calc(100vw - 20px);
+    display: inline-flex;
+    //grid-auto-flow: column;
+    //grid-auto-columns: min-content;
+    max-width: calc(90vw - 50px);
     overflow-x: auto;
   }
 

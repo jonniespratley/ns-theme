@@ -1,6 +1,46 @@
 :host {
-  display: block;
+ 
+  background: white;
+ 
+    display: flex;
+   flex-direction: column;
+
+   /* establish primary containing box */
+   overflow: hidden;
+   position: relative;
+
+  
+   & > section {
+    /* be pushy about consuming all space */
+    block-size: 100%;
+  }
+
 }
+
+ns-theme-panels {
+  background: white;
+ 
+  display: flex;
+  flex-direction: column;
+
+  /* establish primary containing box */
+  overflow: hidden;
+  position: relative;
+  article {
+    scroll-snap-align: start;
+     overflow-y: auto;
+     overscroll-behavior-y: contain;
+  }
+
+  section {
+    block-size: 100%;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 100%;
+  }
+}
+
+
 
 .tab-panel {
   display: none;

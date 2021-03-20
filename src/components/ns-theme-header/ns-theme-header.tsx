@@ -203,11 +203,12 @@ export class NsThemeHeader {
             <slot name="home"></slot>
             {this.showHome && <HomeNavItem/>}
             <slot name="left"></slot>
-
-
-            <slot name="tabs"></slot>
-
-            <slot name="right"></slot>
+            <div>
+              <slot name="tabs"></slot>
+            </div>
+            <div>
+              <slot name="right"></slot>
+            </div>
           {/**
             <ul class="theme__nav">
               <SearchNavItem/>

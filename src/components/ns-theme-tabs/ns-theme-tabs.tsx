@@ -76,7 +76,7 @@ export class NsThemeTabs {
   /**
    * Add a tab to the tabs
    * @param item TabItem to add
-   * @returns Promise
+   * @returns Updated array of tabs
    */
    @Method()
    async addTab(item: TabItem) {
@@ -85,7 +85,7 @@ export class NsThemeTabs {
        item
      ]
      this.tabAdded.emit(item);
-     return this;
+     return this.tabs;
    }
 
    /**

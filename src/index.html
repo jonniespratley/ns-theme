@@ -47,6 +47,7 @@
         <div slot="right">Right side</div>
       </ns-theme-header>
       <br>
+      
       <h3>With Menu</h3>
       <ns-theme-header id="headerExample3" show-menu="true"></ns-theme-header>
       
@@ -58,10 +59,17 @@
       <br>
       <hr>
       <h2>ns-theme-tabs demo</h2>
-      <ns-theme-tabs id="exampleTabs"></ns-theme-tabs>
+      <ns-theme-header id="headerExample">
+        <div slot="menu">Left</div>
+        <div slot="home"></div>
+        <div slot="tabs">
+          <ns-theme-tabs id="exampleTabs"></ns-theme-tabs>
+        </div>
+        <div slot="right">Right side</div>
+      </ns-theme-header>
+      
       <ns-theme-panels id="examplePanels">
-        <div>This can be the first panel always</div>
-      </ns-theme-panels>
+         </ns-theme-panels>
       <br>
       <button id="addTab">Add Tab</button>
 
@@ -115,11 +123,18 @@
     async function addTab(){
         count++
         let t = {
-            id: `tab-${count}`,
+            id: `tab${count}`,
             label: `Tab ${count}`,
-            href: `/tab${count}`
+            href: `tab${count}`
         }
         await nsThemeTabs.addTab(t);
+        let pane = document.createElement('article');
+        pane.id = t.id;
+        pane.innerHTML = `
+        <h4>${t.id}</h4>
+        <p>This is the tab content</p>
+        `;
+        await nsThemePanels.addPanel(t, pane);
     }
 
     document.querySelector('#addTab').addEventListener('click', () => {
