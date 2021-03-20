@@ -80,7 +80,7 @@ export namespace Components {
     }
     interface NsThemePanels {
         "addPanel": (tab: TabItem, element: any) => Promise<void>;
-        "closePanel": (item: any) => Promise<void>;
+        "closePanel": (tab: any) => Promise<void>;
         "selectedIndex": number;
         "togglePanel": (item: any) => Promise<void>;
     }

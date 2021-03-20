@@ -56,7 +56,7 @@ $header-color: black;
 $header-max-height: 50px;
 
 .#{$prefix}__header {
-  min-height: $header-max-height;
+  height: $header-max-height;
   //color: var(--theme-navbar-color, $header-color);
 
   //box-shadow: var(--px-app-nav-box-shadow, 0 2px 4px var(--px-shadow-navigation, rgba(0, 0, 0, 0.2)));
@@ -64,10 +64,12 @@ $header-max-height: 50px;
   background-color: var(--apm-theme-navbar-background-color, $header-background-color);
   border-bottom: var(--apm-theme-navbar-border, $header-border-bottom);
   box-sizing: border-box;
-
-  display: grid;
+  width: 100%;
+  display: inline-grid;
   grid-auto-flow: column;
-  grid-template-columns: 3rem 3rem 1fr;
+  //grid-template-columns: 3rem 3rem 1fr 3rem;
+  grid-template-columns: 50px 0fr minmax(0px, 1fr);
+  
   justify-content: center;
   align-items: center;
   user-select: none;
@@ -100,7 +102,7 @@ $header-max-height: 50px;
   border: 1px solid transparent;
   border: none;
   color: var(--px-app-nav-item-text-color, white);
-
+  align-self: stretch;
   &:hover,
   &:focus {
     text-decoration: none;

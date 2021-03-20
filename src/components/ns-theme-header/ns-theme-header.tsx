@@ -126,7 +126,20 @@ const NavListItem: FunctionalComponent<NavItemProps> = ({
   </li>
 )
 */
-
+function SearchNavItem() {
+  return (<li class="theme__nav-item theme__nav-item-icon mr-1">
+    <a href="#" title="Search" class="theme__nav-link">
+      <i class="px-icon m-0">
+        <svg viewBox="0 0 22 22" preserveAspectRatio="xMidYMid meet" focusable="false" style={iconStyles}>
+          <g>
+            <circle cx="8.5" cy="8.5" r="8" stroke-miterlimit="10"></circle>
+            <path stroke-miterlimit="10" d="M21 21l-6.84-6.84"></path>
+          </g>
+        </svg>
+      </i>
+    </a>
+  </li>);
+}
 const NavbarToggler = () => (
   <button class="btn theme__toggler collapsed" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation"
   onClick={() => {
@@ -197,17 +210,19 @@ export class NsThemeHeader {
                 {this.headerText && <a class="theme__navbar-brand" href="#">{this.headerText}</a>}
           
         <header class={`theme__header ${this.isFixed ? 'theme__header--fixed' : ''}`}>
-          
-            <slot name="menu"></slot>
             {this.showMenu && <NavbarToggler/>}
-            <slot name="home"></slot>
-            {this.showHome && <HomeNavItem/>}
-            <slot name="left"></slot>
+              <slot name="menu"></slot>
+              
+            <div>
+              <slot name="home"></slot>
+              {this.showHome && <HomeNavItem/>}
+            </div>
             <div>
               <slot name="tabs"></slot>
             </div>
             <div>
               <slot name="right"></slot>
+                
             </div>
           {/**
             <ul class="theme__nav">

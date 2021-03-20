@@ -59,8 +59,8 @@
       <br>
       <hr>
       <h2>ns-theme-tabs demo</h2>
-      <ns-theme-header id="headerExample">
-        <div slot="menu">Left</div>
+      <ns-theme-header id="headerExample" show-menu>
+        
         <div slot="home"></div>
         <div slot="tabs">
           <ns-theme-tabs id="exampleTabs"></ns-theme-tabs>
@@ -128,7 +128,7 @@
             href: `tab${count}`
         }
         await nsThemeTabs.addTab(t);
-        let pane = document.createElement('article');
+        let pane = document.createElement('div');
         pane.id = t.id;
         pane.innerHTML = `
         <h4>${t.id}</h4>

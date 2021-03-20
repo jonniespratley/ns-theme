@@ -33,6 +33,7 @@ $tabs-border: 1px solid #b9b9b9;
     //grid-auto-columns: min-content;
     max-width: calc(90vw - 50px);
     overflow-x: auto;
+    overflow-y: hidden;
   }
 
   // .ns-theme-tabs__list-item
