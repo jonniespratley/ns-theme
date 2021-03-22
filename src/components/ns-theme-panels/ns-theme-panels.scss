@@ -26,10 +26,12 @@ ns-theme-panels {
   /* establish primary containing box */
   overflow: hidden;
   position: relative;
+
   article {
     scroll-snap-align: start;
-     overflow-y: auto;
-     overscroll-behavior-y: contain;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    display: none;
   }
 
   section {
@@ -41,10 +43,6 @@ ns-theme-panels {
 }
 
 
-
-.tab-panel {
-  display: none;
-}
 
 .active {
   display: block;

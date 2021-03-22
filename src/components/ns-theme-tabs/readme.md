@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property   | Attribute  | Description                | Type        | Default |
-| ---------- | ---------- | -------------------------- | ----------- | ------- |
-| `items`    | --         | The default tabs to render | `TabItem[]` | `[]`    |
-| `selected` | `selected` | The default selected index | `number`    | `0`     |
+| Property        | Attribute        | Description                | Type        | Default |
+| --------------- | ---------------- | -------------------------- | ----------- | ------- |
+| `items`         | --               | The default tabs to render | `TabItem[]` | `[]`    |
+| `selectedIndex` | `selected-index` | The default selected index | `number`    | `0`     |
 
 
 ## Events
@@ -25,23 +25,23 @@
 
 ## Methods
 
-### `addTab(item: TabItem) => Promise<TabItem[]>`
+### `addTab(tab: TabItem) => Promise<{ index: number; id: string; selected?: boolean; href: string; label: string; title?: string; panelId?: string; }>`
 
 Add a tab to the tabs
 
 #### Returns
 
-Type: `Promise<TabItem[]>`
+Type: `Promise<{ index: number; id: string; selected?: boolean; href: string; label: string; title?: string; panelId?: string; }>`
 
 
 
-### `closeTab(index: any) => Promise<this>`
+### `closeTab(index: any) => Promise<TabItem>`
 
 Close a tab from the tab set.
 
 #### Returns
 
-Type: `Promise<this>`
+Type: `Promise<TabItem>`
 
 
 
@@ -55,19 +55,6 @@ Type: `Promise<TabItem[]>`
 
 
 
-
-## Dependencies
-
-### Used by
-
- - [ns-theme](../ns-theme)
-
-### Graph
-```mermaid
-graph TD;
-  ns-theme --> ns-theme-tabs
-  style ns-theme-tabs fill:#f9f,stroke:#333,stroke-width:4px
-```
 
 ----------------------------------------------
 

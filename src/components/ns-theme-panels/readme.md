@@ -14,7 +14,17 @@
 
 ## Methods
 
-### `closePanel(item: any) => Promise<void>`
+### `addPanel(tab: TabItem, element: any) => Promise<HTMLElement>`
+
+
+
+#### Returns
+
+Type: `Promise<HTMLElement>`
+
+
+
+### `closePanel(index: any) => Promise<void>`
 
 
 
@@ -24,7 +34,27 @@ Type: `Promise<void>`
 
 
 
-### `togglePanel(item: any) => Promise<void>`
+### `getPanelNodes() => Promise<NodeListOf<HTMLElement>>`
+
+
+
+#### Returns
+
+Type: `Promise<NodeListOf<HTMLElement>>`
+
+
+
+### `getPanels() => Promise<any[]>`
+
+
+
+#### Returns
+
+Type: `Promise<any[]>`
+
+
+
+### `togglePanel(index: any) => Promise<void>`
 
 
 
@@ -34,19 +64,6 @@ Type: `Promise<void>`
 
 
 
-
-## Dependencies
-
-### Used by
-
- - [ns-theme](../ns-theme)
-
-### Graph
-```mermaid
-graph TD;
-  ns-theme --> ns-theme-panels
-  style ns-theme-panels fill:#f9f,stroke:#333,stroke-width:4px
-```
 
 ----------------------------------------------
 

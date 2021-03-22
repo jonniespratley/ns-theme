@@ -21,6 +21,10 @@ export namespace Components {
     }
     interface NsThemeDrawer {
         /**
+          * The anchor position of the drawer.
+         */
+        "anchor": string;
+        /**
           * The header text for the drawer.
          */
         "headerText": string;
@@ -36,10 +40,7 @@ export namespace Components {
           * The navigation list items.
          */
         "items": [];
-        /**
-          * The position of the drawer.
-         */
-        "position": string;
+        "toggle": () => Promise<void>;
     }
     interface NsThemeHeader {
         /**
@@ -57,17 +58,17 @@ export namespace Components {
         /**
           * Profile navigation items
          */
-        "profile": [];
+        "profile": NavItem[];
         /**
           * Settings navigation items
          */
-        "settings": [];
+        "settings": NavItem[];
         /**
-          * Show Home button
+          * Show Home menu button
          */
         "showHome": boolean;
         /**
-          * Show Menu button
+          * Show Toggle menu button
          */
         "showMenu": boolean;
         /**
@@ -79,24 +80,26 @@ export namespace Components {
         "selected": boolean;
     }
     interface NsThemePanels {
-        "addPanel": (tab: TabItem, element: any) => Promise<void>;
-        "closePanel": (tab: any) => Promise<void>;
+        "addPanel": (tab: TabItem, element: any) => Promise<HTMLElement>;
+        "closePanel": (index: any) => Promise<void>;
+        "getPanelNodes": () => Promise<NodeListOf<HTMLElement>>;
+        "getPanels": () => Promise<any[]>;
         "selectedIndex": number;
-        "togglePanel": (item: any) => Promise<void>;
+        "togglePanel": (index: any) => Promise<void>;
     }
     interface NsThemeTabs {
         /**
           * Add a tab to the tabs
-          * @param item TabItem to add
+          * @param tab TabItem to add
           * @returns Updated array of tabs
          */
-        "addTab": (item: TabItem) => Promise<TabItem[]>;
+        "addTab": (tab: TabItem) => Promise<{ index: number; id: string; selected?: boolean; href: string; label: string; title?: string; panelId?: string; }>;
         /**
           * Close a tab from the tab set.
-          * @param index number
-          * @returns Promise
+          * @param index number The index of the tab to close.
+          * @returns
          */
-        "closeTab": (index: any) => Promise<this>;
+        "closeTab": (index: any) => Promise<TabItem>;
         /**
           * Get the current tabs rendered
           * @returns Array of tabs
@@ -109,7 +112,7 @@ export namespace Components {
         /**
           * The default selected index
          */
-        "selected": number;
+        "selectedIndex": number;
     }
 }
 declare global {
@@ -177,6 +180,10 @@ declare namespace LocalJSX {
     }
     interface NsThemeDrawer {
         /**
+          * The anchor position of the drawer.
+         */
+        "anchor"?: string;
+        /**
           * The header text for the drawer.
          */
         "headerText"?: string;
@@ -192,10 +199,6 @@ declare namespace LocalJSX {
           * The navigation list items.
          */
         "items"?: [];
-        /**
-          * The position of the drawer.
-         */
-        "position"?: string;
     }
     interface NsThemeHeader {
         /**
@@ -214,17 +217,17 @@ declare namespace LocalJSX {
         /**
           * Profile navigation items
          */
-        "profile"?: [];
+        "profile"?: NavItem[];
         /**
           * Settings navigation items
          */
-        "settings"?: [];
+        "settings"?: NavItem[];
         /**
-          * Show Home button
+          * Show Home menu button
          */
         "showHome"?: boolean;
         /**
-          * Show Menu button
+          * Show Toggle menu button
          */
         "showMenu"?: boolean;
         /**
@@ -250,7 +253,7 @@ declare namespace LocalJSX {
         /**
           * The default selected index
          */
-        "selected"?: number;
+        "selectedIndex"?: number;
     }
     interface IntrinsicElements {
         "ns-theme": NsTheme;

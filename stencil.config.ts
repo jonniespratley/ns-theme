@@ -5,7 +5,7 @@ export const config: Config = {
   namespace: 'ns-theme',
   buildEs5: 'prod',
   srcDir: 'src',
-  enableCache: false,
+  enableCache: true,
   globalStyle: 'src/global/app.scss',
   globalScript: 'src/global/app.ts',
   hashFileNames: false,
@@ -21,10 +21,12 @@ export const config: Config = {
       type: 'docs-readme',
       footer: '*Build with Love by JS!*'
     },
+    { type: 'dist-hydrate-script' },
     {
       type: 'www',
        // comment the following line to disable service workers in production
        serviceWorker: null,
+       prerenderConfig: './prerender.config.ts',
        baseUrl: '/',
        //baseUrl: 'http://myapp.local/',
     },
@@ -34,7 +36,7 @@ export const config: Config = {
   ],
   devServer: {
     logRequests: true,
-    reloadStrategy: 'pageReload'
+    //reloadStrategy: 'pageReload'
   },
   extras: {
     cssVarsShim: true,

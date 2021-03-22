@@ -2,8 +2,10 @@ $prefix: 'ns-theme';
 
 $tabs-font-color: #777;
 $tabs-font-color--active: #777;
-$tabs-background-color--active: #09809c;
+$tabs-border-color--active: #09809c;
+$tabs-background-color--active: transparent;
 $tabs-link-color: #222;
+
 $tabs-border--active: 2px solid #09809c;
 $tabs-border: 1px solid #b9b9b9;
 
@@ -11,7 +13,7 @@ $tabs-border: 1px solid #b9b9b9;
   display: block;
   box-sizing: border-box;
   overflow: hidden;
-  
+
   ul {
     margin: 0;
     padding: 0;
@@ -27,17 +29,43 @@ $tabs-border: 1px solid #b9b9b9;
   }
 
   // .ns-theme-tabs__list
-  > ul {
-    display: inline-flex;
+  .ns-theme__tabs {
+    display: flex;
     //grid-auto-flow: column;
     //grid-auto-columns: min-content;
     max-width: calc(90vw - 50px);
     overflow-x: auto;
     overflow-y: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    background:
+      /* Shadow covers */ linear-gradient(90deg, white 30%, rgba(255, 255, 255, 0)), linear-gradient(90deg, rgba(255, 255, 255, 0), white 70%) 100% 0,
+      /* Shadows */ radial-gradient(0 50%, farthest-side, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)),
+      radial-gradient(100% 50%, farthest-side, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 100% 0;
+    background:
+      /* Shadow covers */ linear-gradient(90deg, white 30%, rgba(255, 255, 255, 0)), linear-gradient(90deg, rgba(255, 255, 255, 0), white 70%) 100% 0,
+      /* Shadows */ radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)),
+      radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 100% 0;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+
+    /* Opera doesn't support this in the shorthand */
+    background-attachment: local, local, scroll, scroll;
+  }
+
+
+
+  .ns-theme__tab-item__label {
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   // .ns-theme-tabs__list-item
-  > ul > li {
+  .ns-theme__tabs li {
     &:first-child {
       //width: 55px;
       border-left: $tabs-border;
@@ -52,11 +80,10 @@ $tabs-border: 1px solid #b9b9b9;
     align-items: center;
 
     &.active {
-      background: white;
-
+      background: $tabs-background-color--active;
       &:after {
         content: '';
-        background: white;
+        background: $tabs-background-color--active;
         height: 1px;
         display: block;
         position: absolute;
@@ -75,7 +102,7 @@ $tabs-border: 1px solid #b9b9b9;
           top: 0;
           left: -1px;
           right: -1px;
-          background-color: $tabs-background-color--active;
+          background-color: $tabs-border-color--active;
           color: $tabs-font-color--active;
         }
       }
@@ -96,7 +123,7 @@ $tabs-border: 1px solid #b9b9b9;
     display: flex;
     justify-content: center;
     flex-direction: column;
-    background-color: transparent !important;
+
     text-decoration: none;
     &:hover {
       cursor: pointer;

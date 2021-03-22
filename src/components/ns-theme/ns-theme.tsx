@@ -71,31 +71,9 @@ export class NsTheme {
   render() {
     return (
       <Host>
-        <ns-theme-header id="themeHeader" headerText="" is-fixed>
-          <ns-theme-tabs id="themeTabs"></ns-theme-tabs>
-        </ns-theme-header>  
-        
-        <main>
-        
-          <ns-theme-panels id="themePanels">
-            {this.tabs && this.tabs.map(tab => (
-            <ns-theme-panel id={`${tab}`}>
-              <h3>tab1</h3>
-            </ns-theme-panel>  
-            ))}
-            
-          </ns-theme-panels>
-          <slot name="content"></slot>
-        </main>
+        <div></div>
 
-        
-        <slot name="drawer"></slot>
-        
-
-
-        <footer>
-        <slot name="footer"></slot>
-        </footer>
+ 
       </Host>
     );
   }

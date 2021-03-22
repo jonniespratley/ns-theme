@@ -1,0 +1,6 @@
+{
+  "name": "ns-theme/hydrate",
+  "description": "NsTheme component hydration app.",
+  "main": "index.js",
+  "types": "index.d.ts"
+}

@@ -6,28 +6,36 @@ const Tab: FunctionalComponent<TabProps> = ({
   label, 
   title = 'App',
   href, 
+  panelId,
   selected, 
   onClick,
   onRemove
 }) => (
-  <li class={`${selected ? 'active' : ''}`}>
+  <li 
+  aria-selected={selected ? 'true' : 'false'}
+  class={{
+    'ns-theme__tab-item': true,
+    active: selected
+  }}>
      <a 
-      href={`#${href}`} 
+      href={`#${panelId}`} 
       aria-controls={`pane-${id}`} 
       role="tab"
       data-ns-toggle="tab" 
-      data-ns-target={`#pane-${id}`}
+      data-ns-target={`${panelId}`}
       data-ns-href={`${href}`}
       id={id}
       title={label}
-      aria-selected={selected ? 'true' : 'false'}
+      class={{
+        'ns-theme__tab-link': true
+      }}
       onClick={onClick}>
         <span class="subtitle">{title}</span>
         <span class="title">{label}</span>
     </a>
     <button class="close" data-action="close" onClick={onRemove}>
-      <i class="px-icon px-utl-close Icon__PxIcon-sc-1phstid-0 bFyITK" color="inherit" 
-      style={{height: '20px', width: '20px'}}>
+      <i class="px-icon px-utl-close" color="inherit" 
+        style={{height: '20px', width: '20px'}}>
         <svg viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet" ><g id="px-utl-close"><path stroke-miterlimit="10" d="M2.3 2.3l11.4 11.4m0-11.4L2.3 13.7"></path></g></svg></i>
     </button>
     
@@ -53,7 +61,7 @@ export class NsThemeTabs {
   /**
    * The default selected index
    */
-  @Prop() selected: number = 0;
+  @Prop() selectedIndex: number = 0;
 
   /**
    * The default tabs to render
@@ -75,23 +83,24 @@ export class NsThemeTabs {
   }
   /**
    * Add a tab to the tabs
-   * @param item TabItem to add
+   * @param tab TabItem to add
    * @returns Updated array of tabs
    */
    @Method()
-   async addTab(item: TabItem) {
+   async addTab(tab: TabItem) {
+    let t = {...tab, index: this.tabs.length};
      this.tabs = [
        ...this.tabs,
-       item
+       t
      ]
-     this.tabAdded.emit(item);
-     return this.tabs;
+     this.tabAdded.emit(t);
+     return t;
    }
 
    /**
   *  Close a tab from the tab set.
-    * @param index number
-    * @returns Promise
+    * @param index number The index of the tab to close.
+    * @returns 
     */
    @Method()
    async closeTab(index) {
@@ -99,15 +108,15 @@ export class NsThemeTabs {
     let [tab] = tabs.splice(index, 1);
     this.tabs = [...tabs]
     this.tabClose.emit(tab);
-    return this;
+    return tab;
    }
 
    componentWillLoad(){
-     this.selectedTab = this.selected;
+     this.selectedTab = this.selectedIndex;
      this.tabs = [...this.items];
    }
 
-   @Watch('selected')
+   @Watch('selectedIndex')
    watchHandler(newValue: number) {
      this.selectedTab = newValue
    }
@@ -132,7 +141,7 @@ export class NsThemeTabs {
               {this.tabs && this.tabs.map((item, index) => (
                 <Tab 
                   {...item} 
-                  selected={this.selectedTab === index}
+                  selected={this.selectedIndex === index}
                   onRemove={() => {
                     this.closeTab(index);
                   }}

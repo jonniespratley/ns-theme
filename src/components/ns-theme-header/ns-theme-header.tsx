@@ -125,7 +125,7 @@ const NavListItem: FunctionalComponent<NavItemProps> = ({
     </a>
   </li>
 )
-*/
+
 function SearchNavItem() {
   return (<li class="theme__nav-item theme__nav-item-icon mr-1">
     <a href="#" title="Search" class="theme__nav-link">
@@ -140,6 +140,7 @@ function SearchNavItem() {
     </a>
   </li>);
 }
+*/
 const NavbarToggler = () => (
   <button class="btn theme__toggler collapsed" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation"
   onClick={() => {
@@ -153,6 +154,13 @@ const NavbarToggler = () => (
   </button>
 )
 
+/**
+ * @example
+ * Example usage for HTML
+ * ```
+ *  <ns-theme-header id="headerExample4" show-menu="true" show-home="true"></ns-theme-header>
+ * ```
+ */
 @Component({
   tag: 'ns-theme-header',
   styleUrl: 'ns-theme-header.scss',
@@ -170,59 +178,48 @@ export class NsThemeHeader {
   /**
    * Profile navigation items
    */
-  @Prop() profile:[] = [];
+  @Prop() profile:NavItem[] = [];
   /**
    * Settings navigation items
    */
-  @Prop() settings:[] = [];
+  @Prop() settings:NavItem[] = [];
   /**
    * User properties for user menu
    */
   @Prop() user:object = { name: null, picture: null, email: null };
+  
   /**
    * Header in fixed position or not
    */
   @Prop() isFixed: boolean;
   /**
-   * Show Menu button
+   * Show Toggle menu button
    */
   @Prop() showMenu: boolean;
   /**
-   * Show Home button
+   * Show Home menu button
    */
   @Prop() showHome: boolean;
 
   @Event() navItemClick: EventEmitter<NavItem>;
 
   navItemClickHandler(item: NavItem) {
-    console.log('click', item);
     this.navItemClick.emit(item);
   }
-
-
-  componentWillLoad(){
-   console.log('componentWillLoad');
-  }
-  
   render() {
     return (
       <Host>
-                {this.headerText && <a class="theme__navbar-brand" href="#">{this.headerText}</a>}
-          
+        {this.headerText && <a class="theme__navbar-brand" href="#">{this.headerText}</a>}        
         <header class={`theme__header ${this.isFixed ? 'theme__header--fixed' : ''}`}>
             {this.showMenu && <NavbarToggler/>}
-              <slot name="menu"></slot>
-              
+            <slot name="menu"></slot>
             <div>
               <slot name="home"></slot>
               {this.showHome && <HomeNavItem/>}
             </div>
-            <div>
-              <slot name="tabs"></slot>
-            </div>
+            <slot name="tabs"></slot>
             <div>
               <slot name="right"></slot>
-                
             </div>
           {/**
             <ul class="theme__nav">
@@ -236,5 +233,4 @@ export class NsThemeHeader {
       </Host>
     );
   }
-
 }

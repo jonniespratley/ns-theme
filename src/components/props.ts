@@ -11,6 +11,8 @@ export interface TabItem {
   href: string;
   label: string;
   title?: string;
+  panelId?: string;
+  index?: number;
 }
 
 export interface TabProps extends TabItem {

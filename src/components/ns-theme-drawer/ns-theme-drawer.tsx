@@ -1,4 +1,4 @@
-import { Component, Host, Prop, h, Listen, State, Watch } from '@stencil/core';
+import { Component, Host, Prop, h, Listen, State, Watch, Method } from '@stencil/core';
 import { NavItem } from '../props';
 
 
@@ -22,9 +22,9 @@ export class NsThemeDrawer {
   @Prop() headerText: string;
 
   /**
-   * The position of the drawer.
+   * The anchor position of the drawer.
    */
-  @Prop() position: string = 'left';
+  @Prop() anchor: string = 'left';
 
   /**
    * The navigation list items.
@@ -69,11 +69,23 @@ export class NsThemeDrawer {
   handleClick() {
     this.open = !this.open;
   }
+
+  @Method()
+  async toggle(){
+    this.isOpened = !this.isOpened;
+  }
   
   render() {
     return (
       <Host>
-        <div class={`theme__drawer theme__drawer--${this.position} ${this.isOpened ? 'theme__drawer--animate-in' : 'theme__drawer--animate-out'}`}>
+        <div 
+        class={{
+          'theme__drawer': true,
+          'open': this.isOpened,
+          'close': !this.isOpened,
+          [`${this.anchor}`]: true
+        }}
+        >
         <header class="theme__drawer-header">
             <div>
               <ns-theme-branding-bar></ns-theme-branding-bar>

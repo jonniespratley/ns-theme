@@ -12,25 +12,65 @@
   
     <link rel="stylesheet" href="http://localhost:9001/src.77de5100.css">
     -->
-    <script>  
-    window.nav = {"main":{"items":[{"label":"Polling App","icon":"fa-html5","path":"/pollapp","items":[],"id":"pollapp.0"},{"label":"Mocha App","icon":"fa-code","path":"/testapp","items":[],"id":"testapp.0"},{"label":"AngularApp","icon":"fa-handicap","path":"/angularapp","items":[],"id":"angularapp.0"},{"label":"PolymerApp","icon":"fa-cube","path":"/polymerapp","items":[],"id":"polymerapp.0"},{"label":"TraceID App","icon":"fa-heartbeat","path":"/sample-traceid-app","items":[],"id":"app2.0"},{"label":"StoppedMicroapp","icon":"fa-circle","path":"/stoppedmicroapp","items":[],"id":"stoppedmicroapp.0"}]},"profile":{"items":[{"label":"My Profile","icon":"fa-user","path":"/profile","items":[],"id":"profileapp.0"}]},"settings":{"items":[{"label":"Settings App","icon":"fa-gear","path":"/settings","items":[],"id":"settings.0"}]},"paths":{"pollapp":"/pollapp","testapp":"/testapp","angularapp":"/angularapp","polymerapp":"/polymerapp","app2":"/sample-traceid-app","stoppedmicroapp":"/stoppedmicroapp","settings":"/settings","profileapp":"/profile"},"contextPath":"","user":{"name":"@jonniespratley","firstName":"Jonnie","lastName":"Spratley","picture":"https://s3-us-west-2.amazonaws.com/s.cdpn.io/49212/profile/profile-80.jpg?4","user_id":"cef303ee-0830-4589-adae-b37088555946","user_name":"test","email":"jonniespratley@gmail.com"},"preferences":{"preferredLocale":"en"},"appName":"AppHub Dev","localeData":{"logOut":"Log Out","toastTextDefault":"You received a new notification.","toastActionLabelDefault":"Action"}}
+    <script>
+      window.nav = {
+        main: {
+          items: [
+            { label: 'Polling App', icon: 'fa-html5', path: '/pollapp', items: [], id: 'pollapp.0' },
+            { label: 'Mocha App', icon: 'fa-code', path: '/testapp', items: [], id: 'testapp.0' },
+            { label: 'AngularApp', icon: 'fa-handicap', path: '/angularapp', items: [], id: 'angularapp.0' },
+            { label: 'PolymerApp', icon: 'fa-cube', path: '/polymerapp', items: [], id: 'polymerapp.0' },
+            { label: 'TraceID App', icon: 'fa-heartbeat', path: '/sample-traceid-app', items: [], id: 'app2.0' },
+            { label: 'StoppedMicroapp', icon: 'fa-circle', path: '/stoppedmicroapp', items: [], id: 'stoppedmicroapp.0' },
+          ],
+        },
+        profile: { items: [{ label: 'My Profile', icon: 'fa-user', path: '/profile', items: [], id: 'profileapp.0' }] },
+        settings: { items: [{ label: 'Settings App', icon: 'fa-gear', path: '/settings', items: [], id: 'settings.0' }] },
+        paths: {
+          pollapp: '/pollapp',
+          testapp: '/testapp',
+          angularapp: '/angularapp',
+          polymerapp: '/polymerapp',
+          app2: '/sample-traceid-app',
+          stoppedmicroapp: '/stoppedmicroapp',
+          settings: '/settings',
+          profileapp: '/profile',
+        },
+        contextPath: '',
+        user: {
+          name: '@jonniespratley',
+          firstName: 'Jonnie',
+          lastName: 'Spratley',
+          picture: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/49212/profile/profile-80.jpg?4',
+          user_id: 'cef303ee-0830-4589-adae-b37088555946',
+          user_name: 'test',
+          email: 'jonniespratley@gmail.com',
+        },
+        preferences: { preferredLocale: 'en' },
+        appName: 'AppHub Dev',
+        localeData: { logOut: 'Log Out', toastTextDefault: 'You received a new notification.', toastActionLabelDefault: 'Action' },
+      };
     </script>
     <script type="module" src="/build/ns-theme.esm.js"></script>
     <script nomodule src="/build/ns-theme.js"></script>
-    
   </head>
   <body>
+    <h2>ns-theme demo</h2>
+    <ns-theme id="theme">
+     
+    </ns-theme>
+    <ns-theme-header id="headerExample" show-menu slot="header">
+      <div slot="tabs">
+        <ns-theme-tabs id="exampleTabs"></ns-theme-tabs>
+      </div>
+      <div slot="right">Right side</div>
+    </ns-theme-header>
+    <ns-theme-panels id="examplePanels" slot="content"> </ns-theme-panels>
+    <ns-theme-drawer id="themeDrawer" headerText="Tab Manager" slot="drawer"> This is drawer custom content </ns-theme-drawer>
+    <br />
+    <hr />
 
-      <h2>ns-theme demo</h2>
-      <ns-theme id="theme">
-         This can be rendered content
-          <ns-theme-drawer id="themeDrawer" headerText="Tab Manager" slot="drawer">
-            This is drawer custom content
-          </ns-theme-drawer>
-      </ns-theme>
-    
-      <br>
-      <hr>
+    <!--
       <h2>ns-theme-header demo</h2>
 
       <ns-theme-header id="headerExample">
@@ -55,29 +95,26 @@
       <ns-theme-header id="headerExample4" show-menu="true" show-home="true"></ns-theme-header>
 
 
+    -->
+    <ns-theme-drawer id="d1" anchor="left">
+      <p>This is DEFAULT drawer 1</p>
+    </ns-theme-drawer>
+    <ns-theme-drawer id="d2" anchor="top">
+      <p>This is top drawer 2</p>
+    </ns-theme-drawer>
+    <ns-theme-drawer id="d3" anchor="right">
+      <p>This is RIGHT drawer 3</p>
+    </ns-theme-drawer>
 
-      <br>
-      <hr>
-      <h2>ns-theme-tabs demo</h2>
-      <ns-theme-header id="headerExample" show-menu>
-        
-        <div slot="home"></div>
-        <div slot="tabs">
-          <ns-theme-tabs id="exampleTabs"></ns-theme-tabs>
-        </div>
-        <div slot="right">Right side</div>
-      </ns-theme-header>
-      
-      <ns-theme-panels id="examplePanels">
-         </ns-theme-panels>
-      <br>
-      <button id="addTab">Add Tab</button>
+    <br />
+    <button id="addTab">Add Tab</button>
 
-      <br>
-      <br>
-  
+    <button id="d1btn">left drawer</button>
+    <button id="d2btn">top drawer</button>
+    <button id="d3btn">right drawer</button>
+    <button id="d4btn">bottom drawer</button>
+ 
 
-    
     <style>
       .content {
         height: 99vh;
@@ -89,60 +126,79 @@
     </style>
 
     <script>
-     
-(async () => {
-    let count = 0;
-    
+      (async () => {
+        let count = 0;
 
-    await customElements.whenDefined('ns-theme');
-    const nsTheme = document.querySelector('ns-theme');
+        await customElements.whenDefined('ns-theme');
+        const nsTheme = document.querySelector('ns-theme');
 
-    
-    
-    /**
-     * Example using tabs
-     */
-    await customElements.whenDefined('ns-theme-tabs');
-    const nsThemeTabs = document.querySelector('ns-theme-tabs');
-    
-    const nsThemePanels = document.querySelector('ns-theme-panels');
-    console.log(nsTheme);
-    console.log(nsThemePanels);
-    
-    
-    nsThemeTabs.addEventListener('tabClick', (e) => {
-      //nsThemePanels.selected = e.detail.id;
-      console.log('tabClick', e);
-    });
+        /**
+         * Example using tabs
+         */
+        await customElements.whenDefined('ns-theme-tabs');
+        const nsThemeTabs = document.querySelector('ns-theme-tabs');
 
-    nsThemeTabs.addEventListener('tabClose', (e) => {
-      //nsThemePanels.closePanel(e.detail.id);
-      console.log('tabClose', e);
-    });
+        const nsThemePanels = document.querySelector('ns-theme-panels');
+        console.log(nsTheme);
+        console.log(nsThemePanels);
 
-    async function addTab(){
-        count++
-        let t = {
-            id: `tab${count}`,
+
+        nsThemeTabs.addEventListener('tabClick', e => {
+          console.log('tabClick', e.detail);
+          nsThemeTabs.selectedIndex = e.detail.index;
+          nsThemePanels.selectedIndex = e.detail.index;
+        });
+
+        // TODO - Close panel when tab is closed.
+        nsThemeTabs.addEventListener('tabClose', e => {
+          //Remove panel
+          nsThemePanels.closePanel(e.detail.index)
+          //Change selected panel
+          nsThemePanels.selectedIndex = e.detail.index;
+          nsThemeTabs.selectedIndex = e.detail.index;
+        });
+
+        async function addTab() {
+          count++;
+          let t = {
+            id: `app-${count}`,
             label: `Tab ${count}`,
-            href: `tab${count}`
+            href: `/some-app/${count}`,
+            panelId: `panel-${count}`,
+          };
+          let newTab = await nsThemeTabs.addTab(t);
+          let pane = document.createElement('div');
+              pane.id = t.panelId;
+              pane.innerHTML = `
+              <h4>${t.id}</h4>
+              <p>This is the tab content</p>
+              `;
+              console.log('newTab', newTab);
+            
+            let newPanel = await nsThemePanels.addPanel(newTab, pane);
+            
+             console.log('newPanel', newPanel);
+
+             nsThemePanels.selectedIndex = newTab.index;
+             nsThemeTabs.selectedIndex = newTab.index;
         }
-        await nsThemeTabs.addTab(t);
-        let pane = document.createElement('div');
-        pane.id = t.id;
-        pane.innerHTML = `
-        <h4>${t.id}</h4>
-        <p>This is the tab content</p>
-        `;
-        await nsThemePanels.addPanel(t, pane);
-    }
 
-    document.querySelector('#addTab').addEventListener('click', () => {
-     addTab()
-    });
-
-  })();
+        document.querySelector('#addTab').addEventListener('click', () => {
+          addTab();
+        });
+        document.querySelector('#d1btn').addEventListener('click', () => {
+          document.querySelector('#d1').toggle();
+        });
+        document.querySelector('#d2btn').addEventListener('click', () => {
+          document.querySelector('#d2').toggle();
+        });
+        document.querySelector('#d3btn').addEventListener('click', () => {
+          document.querySelector('#d3').toggle();
+        });
+        document.querySelector('#d4btn').addEventListener('click', () => {
+          document.querySelector('#d4').toggle();
+        });
+      })();
     </script>
-    
   </body>
 </html>

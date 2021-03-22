@@ -61,25 +61,6 @@ Type: `Promise<boolean>`
 
 
 
-## Dependencies
-
-### Depends on
-
-- [ns-theme-header](../ns-theme-header)
-- [ns-theme-tabs](../ns-theme-tabs)
-- [ns-theme-panels](../ns-theme-panels)
-- [ns-theme-panel](../ns-theme-panel)
-
-### Graph
-```mermaid
-graph TD;
-  ns-theme --> ns-theme-header
-  ns-theme --> ns-theme-tabs
-  ns-theme --> ns-theme-panels
-  ns-theme --> ns-theme-panel
-  style ns-theme fill:#f9f,stroke:#333,stroke-width:4px
-```
-
 ----------------------------------------------
 
 *Build with Love by JS!*
