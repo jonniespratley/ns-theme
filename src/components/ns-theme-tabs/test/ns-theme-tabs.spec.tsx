@@ -7,6 +7,9 @@ describe('ns-theme-tabs', () => {
       components: [NsThemeTabs],
       html: `<ns-theme-tabs></ns-theme-tabs>`,
     });
+
+    console.log(page.root);
+    console.log(page.body);
     expect(page.root).toEqualHtml(`
       <ns-theme-tabs>
         <mock:shadow-root>

@@ -21,7 +21,7 @@ export interface TabItem {
 }
 
 export interface TabProps extends TabItem {
-  onClick?: (e:MouseEvent) => void;
+  onClick?: (e?:MouseEvent) => void;
   onRemove?: () => void;
 }
 
@@ -69,6 +69,16 @@ export interface TabProps extends TabItem {
     workflows?: Workflow[];
     workflow?: Workflow;
     menus?: any;
+    appName?: string;
+    appLogo?: string;
+    contextPath?: string;
+    paths?: object;
+    user?: User;
+    settings?: NavItems;
+    profile?: NavItems;
+    localeData?: object;
+    preferences?: object;
+    tabs?: any;
   }
   
   export interface Config {

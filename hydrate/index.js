@@ -4682,7 +4682,7 @@ function hydrateFactory($stencilWindow, $stencilHydrateOpts, $stencilHydrateResu
 
 
 const NAMESPACE = 'ns-theme';
-const BUILD = /* ns-theme */ { allRenderFn: true, appendChildSlotFix: false, asyncLoading: true, attachStyles: true, cloneNodeFix: false, cmpDidLoad: true, cmpDidRender: true, cmpDidUnload: false, cmpDidUpdate: true, cmpShouldUpdate: false, cmpWillLoad: true, cmpWillRender: true, cmpWillUpdate: true, connectedCallback: true, constructableCSS: false, cssAnnotations: true, cssVarShim: false, devTools: false, disconnectedCallback: true, dynamicImportShim: false, element: false, event: true, hasRenderFn: true, hostListener: true, hostListenerTarget: true, hostListenerTargetBody: false, hostListenerTargetDocument: true, hostListenerTargetParent: false, hostListenerTargetWindow: false, hotModuleReplacement: false, hydrateClientSide: true, hydrateServerSide: true, hydratedAttribute: false, hydratedClass: true, isDebug: false, isDev: false, isTesting: false, lazyLoad: true, lifecycle: true, lifecycleDOMEvents: false, member: true, method: true, mode: false, observeAttribute: true, profile: false, prop: true, propBoolean: true, propMutable: true, propNumber: true, propString: true, reflect: false, safari10: false, scoped: false, scriptDataOpts: false, shadowDelegatesFocus: false, shadowDom: true, shadowDomShim: true, slot: true, slotChildNodesFix: false, slotRelocation: true, state: true, style: true, svg: true, taskQueue: true, updatable: true, vdomAttribute: true, vdomClass: true, vdomFunctional: true, vdomKey: true, vdomListener: true, vdomPropOrAttr: true, vdomRef: true, vdomRender: true, vdomStyle: true, vdomText: true, vdomXlink: true, watchCallback: true };
+const BUILD = /* ns-theme */ { allRenderFn: true, appendChildSlotFix: false, asyncLoading: true, attachStyles: true, cloneNodeFix: false, cmpDidLoad: true, cmpDidRender: true, cmpDidUnload: false, cmpDidUpdate: true, cmpShouldUpdate: false, cmpWillLoad: true, cmpWillRender: true, cmpWillUpdate: true, connectedCallback: true, constructableCSS: false, cssAnnotations: true, cssVarShim: false, devTools: false, disconnectedCallback: true, dynamicImportShim: false, element: false, event: true, hasRenderFn: true, hostListener: true, hostListenerTarget: true, hostListenerTargetBody: false, hostListenerTargetDocument: true, hostListenerTargetParent: false, hostListenerTargetWindow: false, hotModuleReplacement: false, hydrateClientSide: true, hydrateServerSide: true, hydratedAttribute: false, hydratedClass: true, isDebug: false, isDev: false, isTesting: false, lazyLoad: true, lifecycle: true, lifecycleDOMEvents: false, member: true, method: true, mode: false, observeAttribute: true, profile: false, prop: true, propBoolean: true, propMutable: true, propNumber: true, propString: true, reflect: true, safari10: false, scoped: false, scriptDataOpts: false, shadowDelegatesFocus: false, shadowDom: true, shadowDomShim: true, slot: true, slotChildNodesFix: false, slotRelocation: true, state: true, style: true, svg: true, taskQueue: true, updatable: true, vdomAttribute: true, vdomClass: true, vdomFunctional: true, vdomKey: true, vdomListener: true, vdomPropOrAttr: true, vdomRef: true, vdomRender: true, vdomStyle: true, vdomText: true, vdomXlink: true, watchCallback: true };
 
 var appGlobalScript = async () => {
   console.log('global/app.ts');
@@ -5079,9 +5079,10 @@ const createElm = (e, t, o, n) => {
 }, isNodeLocatedInSlot = (e, t) => 1 === e.nodeType ? null === e.getAttribute("slot") && "" === t || e.getAttribute("slot") === t : e["s-sn"] === t || "" === t, callNodeRefs = e => {
   (e.$attrs$ && e.$attrs$.ref && e.$attrs$.ref(null), e.$children$ && e.$children$.map(callNodeRefs));
 }, renderVdom = (e, t) => {
- const o = e.$hostElement$, s = e.$vnode$ || newVNode(null, null), l = isHost(t) ? t : h(null, null, t);
+ const o = e.$hostElement$, n = e.$cmpMeta$, s = e.$vnode$ || newVNode(null, null), l = isHost(t) ? t : h(null, null, t);
  if (hostTagName = o.tagName, BUILD.isDev  ) ;
- if (l.$tag$ = null, l.$flags$ |= 4, e.$vnode$ = l, l.$elm$ = s.$elm$ =  o.shadowRoot || o, 
+ if ( n.$attrsToReflect$ && (l.$attrs$ = l.$attrs$ || {}, n.$attrsToReflect$.map((([e, t]) => l.$attrs$[t] = o[e]))), 
+ l.$tag$ = null, l.$flags$ |= 4, e.$vnode$ = l, l.$elm$ = s.$elm$ =  o.shadowRoot || o, 
   (scopeId = o["s-sc"]),  (contentRef = o["s-cr"], 
  useNativeShadowDom = supportsShadow, checkSlotFallbackVisibility = !1), patch(s, l), 
  BUILD.slotRelocation) {
@@ -5286,7 +5287,8 @@ const callRender = (e, t, o) => {
     }));
    }, e.observedAttributes = n.filter((([e, t]) => 15 & t[0])).map((([e, n]) => {
     const s = n[1] || e;
-    return o.set(s, e), s;
+    return o.set(s, e),  512 & n[0] && t.$attrsToReflect$.push([ e, s ]), 
+    s;
    }));
   }
  }
@@ -5501,9 +5503,25 @@ class NsSpinner {
     this.width = 100;
     this.height = 100;
   }
-  render() {
-    return (hAsync(Host, null, hAsync("div", { class: "ns-theme-spinner" }, hAsync("svg", { viewBox: "0 0 100 100", height: this.height, width: this.width }, hAsync("circle", { class: "circle1", cx: "50", cy: "50", r: "45" }), hAsync("circle", { class: "circle2", cx: "50", cy: "50", r: "45", transform: "rotate(-45,50,50)" })))));
+  componentWillLoad() {
+    /*
+     const appMenuContainer = this.el.querySelector('#menu');
+     const appMenu = shell.AppMenu.AppMenuDucklet.of({}, {
+       title: 'test',
+       //toggleTooltip: this.store.get("appName"),
+       collapseAllLabel: "Collapse All",
+       expandAllLabel: "Expand All",
+       closeTooltip: "Close",
+       showAlphaViewTooltip: "Show Alphabetical View",
+       showFolderViewTooltip: "Show Folder View"
+     });
+     appMenu.mount(appMenuContainer);
+     */
   }
+  render() {
+    return (hAsync(Host, null, hAsync("div", { id: "menu" }), hAsync("div", { class: "ns-theme-spinner" }, hAsync("svg", { viewBox: "0 0 100 100", height: this.height, width: this.width }, hAsync("circle", { class: "circle1", cx: "50", cy: "50", r: "45" }), hAsync("circle", { class: "circle2", cx: "50", cy: "50", r: "45", transform: "rotate(-45,50,50)" })))));
+  }
+  get el() { return getElement(this); }
   static get style() { return nsSpinnerCss; }
   static get cmpMeta() { return {
     "$flags$": 9,
@@ -5518,11 +5536,13 @@ class NsSpinner {
   }; }
 }
 
-const nsThemeCss = "/*!@:host*/.sc-ns-theme-h{display:block}";
+const nsThemeCss = "@charset \"UTF-8\";/*!@[class^=gedi-], [class*=\" gedi-\"]*/[class^=gedi-].sc-ns-theme,[class*=\" gedi-\"].sc-ns-theme{font-family:gedi !important;font-style:normal;font-weight:normal !important;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}/*!@.gedi-add-brush-22:before*/.gedi-add-brush-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-add-column-left:before*/.gedi-add-column-left.sc-ns-theme:before{content:\"\"}/*!@.gedi-add-column-right:before*/.gedi-add-column-right.sc-ns-theme:before{content:\"\"}/*!@.gedi-add-details:before*/.gedi-add-details.sc-ns-theme:before{content:\"\"}/*!@.gedi-add-doc:before*/.gedi-add-doc.sc-ns-theme:before{content:\"\"}/*!@.gedi-add-record-22:before*/.gedi-add-record-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-add-row-bottom:before*/.gedi-add-row-bottom.sc-ns-theme:before{content:\"\"}/*!@.gedi-add-row-top:before*/.gedi-add-row-top.sc-ns-theme:before{content:\"\"}/*!@.gedi-add-tab:before*/.gedi-add-tab.sc-ns-theme:before{content:\"\"}/*!@.gedi-add-time-series:before*/.gedi-add-time-series.sc-ns-theme:before{content:\"\"}/*!@.gedi-add-to-health-indicator:before*/.gedi-add-to-health-indicator.sc-ns-theme:before{content:\"\"}/*!@.gedi-add:before*/.gedi-add.sc-ns-theme:before{content:\"\"}/*!@.gedi-added:before*/.gedi-added.sc-ns-theme:before{content:\"\"}/*!@.gedi-ahm:before*/.gedi-ahm.sc-ns-theme:before{content:\"\"}/*!@.gedi-alarm-blocking:before*/.gedi-alarm-blocking.sc-ns-theme:before{content:\"\"}/*!@.gedi-alarm-printer:before*/.gedi-alarm-printer.sc-ns-theme:before{content:\"\"}/*!@.gedi-alarm:before*/.gedi-alarm.sc-ns-theme:before{content:\"\"}/*!@.gedi-alert-32:before*/.gedi-alert-32.sc-ns-theme:before{content:\"\"}/*!@.gedi-alert-add:before*/.gedi-alert-add.sc-ns-theme:before{content:\"\"}/*!@.gedi-alert-query:before*/.gedi-alert-query.sc-ns-theme:before{content:\"\"}/*!@.gedi-alert:before*/.gedi-alert.sc-ns-theme:before{content:\"\"}/*!@.gedi-all-points-in-area-22:before*/.gedi-all-points-in-area-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-alphabet-sort:before*/.gedi-alphabet-sort.sc-ns-theme:before{content:\"\"}/*!@.gedi-ams-tag:before*/.gedi-ams-tag.sc-ns-theme:before{content:\"\"}/*!@.gedi-and-alt:before*/.gedi-and-alt.sc-ns-theme:before{content:\"\"}/*!@.gedi-and:before*/.gedi-and.sc-ns-theme:before{content:\"\"}/*!@.gedi-apply-analysis:before*/.gedi-apply-analysis.sc-ns-theme:before{content:\"\"}/*!@.gedi-apply-component:before*/.gedi-apply-component.sc-ns-theme:before{content:\"\"}/*!@.gedi-apply-template:before*/.gedi-apply-template.sc-ns-theme:before{content:\"\"}/*!@.gedi-arrow-down:before*/.gedi-arrow-down.sc-ns-theme:before{content:\"\"}/*!@.gedi-arrow-left:before*/.gedi-arrow-left.sc-ns-theme:before{content:\"\"}/*!@.gedi-arrow-right:before*/.gedi-arrow-right.sc-ns-theme:before{content:\"\"}/*!@.gedi-arrow-up:before*/.gedi-arrow-up.sc-ns-theme:before{content:\"\"}/*!@.gedi-asset-22:before*/.gedi-asset-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-asset-add:before*/.gedi-asset-add.sc-ns-theme:before{content:\"\"}/*!@.gedi-asset-group:before*/.gedi-asset-group.sc-ns-theme:before{content:\"\"}/*!@.gedi-asset:before*/.gedi-asset.sc-ns-theme:before{content:\"\"}/*!@.gedi-attachment:before*/.gedi-attachment.sc-ns-theme:before{content:\"\"}/*!@.gedi-attribute-hierarchy:before*/.gedi-attribute-hierarchy.sc-ns-theme:before{content:\"\"}/*!@.gedi-attribute-set:before*/.gedi-attribute-set.sc-ns-theme:before{content:\"\"}/*!@.gedi-attribute:before*/.gedi-attribute.sc-ns-theme:before{content:\"\"}/*!@.gedi-average:before*/.gedi-average.sc-ns-theme:before{content:\"\"}/*!@.gedi-back-to-browser:before*/.gedi-back-to-browser.sc-ns-theme:before{content:\"\"}/*!@.gedi-base-rule:before*/.gedi-base-rule.sc-ns-theme:before{content:\"\"}/*!@.gedi-below-t-min:before*/.gedi-below-t-min.sc-ns-theme:before{content:\"\"}/*!@.gedi-bento-box:before*/.gedi-bento-box.sc-ns-theme:before{content:\"\"}/*!@.gedi-bookmark:before*/.gedi-bookmark.sc-ns-theme:before{content:\"\"}/*!@.gedi-bring-to-front-22:before*/.gedi-bring-to-front-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-brush-22:before*/.gedi-brush-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-bulk-data:before*/.gedi-bulk-data.sc-ns-theme:before{content:\"\"}/*!@.gedi-calculator:before*/.gedi-calculator.sc-ns-theme:before{content:\"\"}/*!@.gedi-calendar-add:before*/.gedi-calendar-add.sc-ns-theme:before{content:\"\"}/*!@.gedi-calendar-ban:before*/.gedi-calendar-ban.sc-ns-theme:before{content:\"\"}/*!@.gedi-calendar-production-event:before*/.gedi-calendar-production-event.sc-ns-theme:before{content:\"\"}/*!@.gedi-calendar-remove:before*/.gedi-calendar-remove.sc-ns-theme:before{content:\"\"}/*!@.gedi-calendar:before*/.gedi-calendar.sc-ns-theme:before{content:\"\"}/*!@.gedi-camera-22:before*/.gedi-camera-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-camera-flip-22:before*/.gedi-camera-flip-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-camera-flip-32:before*/.gedi-camera-flip-32.sc-ns-theme:before{content:\"\"}/*!@.gedi-camera:before*/.gedi-camera.sc-ns-theme:before{content:\"\"}/*!@.gedi-card-add-22:before*/.gedi-card-add-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-cards-22:before*/.gedi-cards-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-cards-menu-22:before*/.gedi-cards-menu-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-cards:before*/.gedi-cards.sc-ns-theme:before{content:\"\"}/*!@.gedi-cart:before*/.gedi-cart.sc-ns-theme:before{content:\"\"}/*!@.gedi-case-add-22:before*/.gedi-case-add-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-case-add:before*/.gedi-case-add.sc-ns-theme:before{content:\"\"}/*!@.gedi-case-edit:before*/.gedi-case-edit.sc-ns-theme:before{content:\"\"}/*!@.gedi-case-node:before*/.gedi-case-node.sc-ns-theme:before{content:\"\"}/*!@.gedi-case:before*/.gedi-case.sc-ns-theme:before{content:\"\"}/*!@.gedi-case_query:before*/.gedi-case_query.sc-ns-theme:before{content:\"\"}/*!@.gedi-change-state:before*/.gedi-change-state.sc-ns-theme:before{content:\"\"}/*!@.gedi-chart-bar:before*/.gedi-chart-bar.sc-ns-theme:before{content:\"\"}/*!@.gedi-chart-line-22:before*/.gedi-chart-line-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-chart-line:before*/.gedi-chart-line.sc-ns-theme:before{content:\"\"}/*!@.gedi-chart-pie:before*/.gedi-chart-pie.sc-ns-theme:before{content:\"\"}/*!@.gedi-chart-residual-22:before*/.gedi-chart-residual-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-chart-residual:before*/.gedi-chart-residual.sc-ns-theme:before{content:\"\"}/*!@.gedi-chart-settings-22:before*/.gedi-chart-settings-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-chart-trend:before*/.gedi-chart-trend.sc-ns-theme:before{content:\"\"}/*!@.gedi-check:before*/.gedi-check.sc-ns-theme:before{content:\"\"}/*!@.gedi-chevron-down:before*/.gedi-chevron-down.sc-ns-theme:before{content:\"\"}/*!@.gedi-chevron-left:before*/.gedi-chevron-left.sc-ns-theme:before{content:\"\"}/*!@.gedi-chevron-right:before*/.gedi-chevron-right.sc-ns-theme:before{content:\"\"}/*!@.gedi-chevron-up:before*/.gedi-chevron-up.sc-ns-theme:before{content:\"\"}/*!@.gedi-circle:before*/.gedi-circle.sc-ns-theme:before{content:\"\"}/*!@.gedi-class:before*/.gedi-class.sc-ns-theme:before{content:\"\"}/*!@.gedi-clock:before*/.gedi-clock.sc-ns-theme:before{content:\"\"}/*!@.gedi-close-small:before*/.gedi-close-small.sc-ns-theme:before{content:\"\"}/*!@.gedi-close:before*/.gedi-close.sc-ns-theme:before{content:\"\"}/*!@.gedi-closest-point-22:before*/.gedi-closest-point-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-closest-point-series-22:before*/.gedi-closest-point-series-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-cloud:before*/.gedi-cloud.sc-ns-theme:before{content:\"\"}/*!@.gedi-code:before*/.gedi-code.sc-ns-theme:before{content:\"\"}/*!@.gedi-cogs:before*/.gedi-cogs.sc-ns-theme:before{content:\"\"}/*!@.gedi-collapse-22:before*/.gedi-collapse-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-collapse-card:before*/.gedi-collapse-card.sc-ns-theme:before{content:\"\"}/*!@.gedi-collapse:before*/.gedi-collapse.sc-ns-theme:before{content:\"\"}/*!@.gedi-comment-22:before*/.gedi-comment-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-comment:before*/.gedi-comment.sc-ns-theme:before{content:\"\"}/*!@.gedi-compare:before*/.gedi-compare.sc-ns-theme:before{content:\"\"}/*!@.gedi-component:before*/.gedi-component.sc-ns-theme:before{content:\"\"}/*!@.gedi-computer-parameters:before*/.gedi-computer-parameters.sc-ns-theme:before{content:\"\"}/*!@.gedi-confirmed-22:before*/.gedi-confirmed-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-confirmed:before*/.gedi-confirmed.sc-ns-theme:before{content:\"\"}/*!@.gedi-consolidate:before*/.gedi-consolidate.sc-ns-theme:before{content:\"\"}/*!@.gedi-constant:before*/.gedi-constant.sc-ns-theme:before{content:\"\"}/*!@.gedi-contains:before*/.gedi-contains.sc-ns-theme:before{content:\"\"}/*!@.gedi-content-validation:before*/.gedi-content-validation.sc-ns-theme:before{content:\"\"}/*!@.gedi-convert-type:before*/.gedi-convert-type.sc-ns-theme:before{content:\"\"}/*!@.gedi-copy-existing:before*/.gedi-copy-existing.sc-ns-theme:before{content:\"\"}/*!@.gedi-copy:before*/.gedi-copy.sc-ns-theme:before{content:\"\"}/*!@.gedi-cost-benefit:before*/.gedi-cost-benefit.sc-ns-theme:before{content:\"\"}/*!@.gedi-count:before*/.gedi-count.sc-ns-theme:before{content:\"\"}/*!@.gedi-create-datasheet:before*/.gedi-create-datasheet.sc-ns-theme:before{content:\"\"}/*!@.gedi-create-entity:before*/.gedi-create-entity.sc-ns-theme:before{content:\"\"}/*!@.gedi-create-recommendation:before*/.gedi-create-recommendation.sc-ns-theme:before{content:\"\"}/*!@.gedi-create-relationship:before*/.gedi-create-relationship.sc-ns-theme:before{content:\"\"}/*!@.gedi-create-what-if:before*/.gedi-create-what-if.sc-ns-theme:before{content:\"\"}/*!@.gedi-cross-reference:before*/.gedi-cross-reference.sc-ns-theme:before{content:\"\"}/*!@.gedi-crosshair-22:before*/.gedi-crosshair-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-cube-calculated-measure:before*/.gedi-cube-calculated-measure.sc-ns-theme:before{content:\"\"}/*!@.gedi-dashboard:before*/.gedi-dashboard.sc-ns-theme:before{content:\"\"}/*!@.gedi-data-quality:before*/.gedi-data-quality.sc-ns-theme:before{content:\"\"}/*!@.gedi-data-resolution:before*/.gedi-data-resolution.sc-ns-theme:before{content:\"\"}/*!@.gedi-data-source:before*/.gedi-data-source.sc-ns-theme:before{content:\"\"}/*!@.gedi-database-code:before*/.gedi-database-code.sc-ns-theme:before{content:\"\"}/*!@.gedi-datasheet-info:before*/.gedi-datasheet-info.sc-ns-theme:before{content:\"\"}/*!@.gedi-datasheet-item:before*/.gedi-datasheet-item.sc-ns-theme:before{content:\"\"}/*!@.gedi-deactivated-indicator:before*/.gedi-deactivated-indicator.sc-ns-theme:before{content:\"\"}/*!@.gedi-delete-22:before*/.gedi-delete-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-delete-column:before*/.gedi-delete-column.sc-ns-theme:before{content:\"\"}/*!@.gedi-delete-entity:before*/.gedi-delete-entity.sc-ns-theme:before{content:\"\"}/*!@.gedi-delete-node:before*/.gedi-delete-node.sc-ns-theme:before{content:\"\"}/*!@.gedi-delete-relationship:before*/.gedi-delete-relationship.sc-ns-theme:before{content:\"\"}/*!@.gedi-delete-row:before*/.gedi-delete-row.sc-ns-theme:before{content:\"\"}/*!@.gedi-delete:before*/.gedi-delete.sc-ns-theme:before{content:\"\"}/*!@.gedi-deleted:before*/.gedi-deleted.sc-ns-theme:before{content:\"\"}/*!@.gedi-delta-22:before*/.gedi-delta-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-deploy:before*/.gedi-deploy.sc-ns-theme:before{content:\"\"}/*!@.gedi-deployment-22:before*/.gedi-deployment-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-deployment-configuration:before*/.gedi-deployment-configuration.sc-ns-theme:before{content:\"\"}/*!@.gedi-desktop:before*/.gedi-desktop.sc-ns-theme:before{content:\"\"}/*!@.gedi-device:before*/.gedi-device.sc-ns-theme:before{content:\"\"}/*!@.gedi-diagram-tree:before*/.gedi-diagram-tree.sc-ns-theme:before{content:\"\"}/*!@.gedi-dimension:before*/.gedi-dimension.sc-ns-theme:before{content:\"\"}/*!@.gedi-divide:before*/.gedi-divide.sc-ns-theme:before{content:\"\"}/*!@.gedi-doc:before*/.gedi-doc.sc-ns-theme:before{content:\"\"}/*!@.gedi-document-csv:before*/.gedi-document-csv.sc-ns-theme:before{content:\"\"}/*!@.gedi-document-pdf:before*/.gedi-document-pdf.sc-ns-theme:before{content:\"\"}/*!@.gedi-document-word:before*/.gedi-document-word.sc-ns-theme:before{content:\"\"}/*!@.gedi-document-xls:before*/.gedi-document-xls.sc-ns-theme:before{content:\"\"}/*!@.gedi-does-not-contain:before*/.gedi-does-not-contain.sc-ns-theme:before{content:\"\"}/*!@.gedi-download:before*/.gedi-download.sc-ns-theme:before{content:\"\"}/*!@.gedi-draw-stripe-22:before*/.gedi-draw-stripe-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-drop-22:before*/.gedi-drop-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-drop:before*/.gedi-drop.sc-ns-theme:before{content:\"\"}/*!@.gedi-edit-alert:before*/.gedi-edit-alert.sc-ns-theme:before{content:\"\"}/*!@.gedi-edit-entity:before*/.gedi-edit-entity.sc-ns-theme:before{content:\"\"}/*!@.gedi-edit-form:before*/.gedi-edit-form.sc-ns-theme:before{content:\"\"}/*!@.gedi-edit:before*/.gedi-edit.sc-ns-theme:before{content:\"\"}/*!@.gedi-edited:before*/.gedi-edited.sc-ns-theme:before{content:\"\"}/*!@.gedi-email:before*/.gedi-email.sc-ns-theme:before{content:\"\"}/*!@.gedi-enable-multiple-selection:before*/.gedi-enable-multiple-selection.sc-ns-theme:before{content:\"\"}/*!@.gedi-ends-with:before*/.gedi-ends-with.sc-ns-theme:before{content:\"\"}/*!@.gedi-entity-current:before*/.gedi-entity-current.sc-ns-theme:before{content:\"\"}/*!@.gedi-entity:before*/.gedi-entity.sc-ns-theme:before{content:\"\"}/*!@.gedi-equal:before*/.gedi-equal.sc-ns-theme:before{content:\"\"}/*!@.gedi-exclamation-circled:before*/.gedi-exclamation-circled.sc-ns-theme:before{content:\"\"}/*!@.gedi-exclamation:before*/.gedi-exclamation.sc-ns-theme:before{content:\"\"}/*!@.gedi-expand-22:before*/.gedi-expand-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-expand-radius-22:before*/.gedi-expand-radius-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-expand-text-area:before*/.gedi-expand-text-area.sc-ns-theme:before{content:\"\"}/*!@.gedi-expand:before*/.gedi-expand.sc-ns-theme:before{content:\"\"}/*!@.gedi-exponent:before*/.gedi-exponent.sc-ns-theme:before{content:\"\"}/*!@.gedi-factory:before*/.gedi-factory.sc-ns-theme:before{content:\"\"}/*!@.gedi-failure:before*/.gedi-failure.sc-ns-theme:before{content:\"\"}/*!@.gedi-favorite-12:before*/.gedi-favorite-12.sc-ns-theme:before{content:\"\"}/*!@.gedi-favorite:before*/.gedi-favorite.sc-ns-theme:before{content:\"\"}/*!@.gedi-favorited-12:before*/.gedi-favorited-12.sc-ns-theme:before{content:\"\"}/*!@.gedi-field-constant:before*/.gedi-field-constant.sc-ns-theme:before{content:\"\"}/*!@.gedi-field-map:before*/.gedi-field-map.sc-ns-theme:before{content:\"\"}/*!@.gedi-field-value-change-condition-node:before*/.gedi-field-value-change-condition-node.sc-ns-theme:before{content:\"\"}/*!@.gedi-filter:before*/.gedi-filter.sc-ns-theme:before{content:\"\"}/*!@.gedi-find:before*/.gedi-find.sc-ns-theme:before{content:\"\"}/*!@.gedi-fit:before*/.gedi-fit.sc-ns-theme:before{content:\"\"}/*!@.gedi-flag:before*/.gedi-flag.sc-ns-theme:before{content:\"\"}/*!@.gedi-focus:before*/.gedi-focus.sc-ns-theme:before{content:\"\"}/*!@.gedi-folder-add:before*/.gedi-folder-add.sc-ns-theme:before{content:\"\"}/*!@.gedi-folder-closed:before*/.gedi-folder-closed.sc-ns-theme:before{content:\"\"}/*!@.gedi-folder-open:before*/.gedi-folder-open.sc-ns-theme:before{content:\"\"}/*!@.gedi-folder-shift-left:before*/.gedi-folder-shift-left.sc-ns-theme:before{content:\"\"}/*!@.gedi-folder-shift-right:before*/.gedi-folder-shift-right.sc-ns-theme:before{content:\"\"}/*!@.gedi-formula:before*/.gedi-formula.sc-ns-theme:before{content:\"\"}/*!@.gedi-fullscreen-22:before*/.gedi-fullscreen-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-fullscreen:before*/.gedi-fullscreen.sc-ns-theme:before{content:\"\"}/*!@.gedi-ge-tag:before*/.gedi-ge-tag.sc-ns-theme:before{content:\"\"}/*!@.gedi-generate-report:before*/.gedi-generate-report.sc-ns-theme:before{content:\"\"}/*!@.gedi-go-to-source:before*/.gedi-go-to-source.sc-ns-theme:before{content:\"\"}/*!@.gedi-greater-than-or-equal:before*/.gedi-greater-than-or-equal.sc-ns-theme:before{content:\"\"}/*!@.gedi-greater-than:before*/.gedi-greater-than.sc-ns-theme:before{content:\"\"}/*!@.gedi-grid:before*/.gedi-grid.sc-ns-theme:before{content:\"\"}/*!@.gedi-group-data-by:before*/.gedi-group-data-by.sc-ns-theme:before{content:\"\"}/*!@.gedi-group-data:before*/.gedi-group-data.sc-ns-theme:before{content:\"\"}/*!@.gedi-group:before*/.gedi-group.sc-ns-theme:before{content:\"\"}/*!@.gedi-growth:before*/.gedi-growth.sc-ns-theme:before{content:\"\"}/*!@.gedi-health-alert:before*/.gedi-health-alert.sc-ns-theme:before{content:\"\"}/*!@.gedi-health-indicator:before*/.gedi-health-indicator.sc-ns-theme:before{content:\"\"}/*!@.gedi-health-no-data:before*/.gedi-health-no-data.sc-ns-theme:before{content:\"\"}/*!@.gedi-health-normal:before*/.gedi-health-normal.sc-ns-theme:before{content:\"\"}/*!@.gedi-health-warning:before*/.gedi-health-warning.sc-ns-theme:before{content:\"\"}/*!@.gedi-help-22:before*/.gedi-help-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-help:before*/.gedi-help.sc-ns-theme:before{content:\"\"}/*!@.gedi-hide-22:before*/.gedi-hide-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-hide-grid:before*/.gedi-hide-grid.sc-ns-theme:before{content:\"\"}/*!@.gedi-hide:before*/.gedi-hide.sc-ns-theme:before{content:\"\"}/*!@.gedi-hierarchy-classic-22:before*/.gedi-hierarchy-classic-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-hierarchy:before*/.gedi-hierarchy.sc-ns-theme:before{content:\"\"}/*!@.gedi-history:before*/.gedi-history.sc-ns-theme:before{content:\"\"}/*!@.gedi-home-set:before*/.gedi-home-set.sc-ns-theme:before{content:\"\"}/*!@.gedi-home:before*/.gedi-home.sc-ns-theme:before{content:\"\"}/*!@.gedi-hypothesis-state:before*/.gedi-hypothesis-state.sc-ns-theme:before{content:\"\"}/*!@.gedi-image:before*/.gedi-image.sc-ns-theme:before{content:\"\"}/*!@.gedi-in-progress-22:before*/.gedi-in-progress-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-information-22:before*/.gedi-information-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-information:before*/.gedi-information.sc-ns-theme:before{content:\"\"}/*!@.gedi-institution:before*/.gedi-institution.sc-ns-theme:before{content:\"\"}/*!@.gedi-inventory-22:before*/.gedi-inventory-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-is-null:before*/.gedi-is-null.sc-ns-theme:before{content:\"\"}/*!@.gedi-k-consumed-22:before*/.gedi-k-consumed-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-k-dough-mixing-22:before*/.gedi-k-dough-mixing-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-k-dough-up-22:before*/.gedi-k-dough-up-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-k-hold-22:before*/.gedi-k-hold-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-k-preparation-22:before*/.gedi-k-preparation-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-k-scrap-22:before*/.gedi-k-scrap-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-k-slurry-mixing-22:before*/.gedi-k-slurry-mixing-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-key:before*/.gedi-key.sc-ns-theme:before{content:\"\"}/*!@.gedi-lasso-22:before*/.gedi-lasso-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-last:before*/.gedi-last.sc-ns-theme:before{content:\"\"}/*!@.gedi-layout:before*/.gedi-layout.sc-ns-theme:before{content:\"\"}/*!@.gedi-less-than-or-equal:before*/.gedi-less-than-or-equal.sc-ns-theme:before{content:\"\"}/*!@.gedi-less-than:before*/.gedi-less-than.sc-ns-theme:before{content:\"\"}/*!@.gedi-level-five:before*/.gedi-level-five.sc-ns-theme:before{content:\"\"}/*!@.gedi-level-four:before*/.gedi-level-four.sc-ns-theme:before{content:\"\"}/*!@.gedi-level-one:before*/.gedi-level-one.sc-ns-theme:before{content:\"\"}/*!@.gedi-level-three:before*/.gedi-level-three.sc-ns-theme:before{content:\"\"}/*!@.gedi-level-two:before*/.gedi-level-two.sc-ns-theme:before{content:\"\"}/*!@.gedi-lightbulb:before*/.gedi-lightbulb.sc-ns-theme:before{content:\"\"}/*!@.gedi-link:before*/.gedi-link.sc-ns-theme:before{content:\"\"}/*!@.gedi-location:before*/.gedi-location.sc-ns-theme:before{content:\"\"}/*!@.gedi-lock:before*/.gedi-lock.sc-ns-theme:before{content:\"\"}/*!@.gedi-log-out:before*/.gedi-log-out.sc-ns-theme:before{content:\"\"}/*!@.gedi-logic-gate:before*/.gedi-logic-gate.sc-ns-theme:before{content:\"\"}/*!@.gedi-login-panel:before*/.gedi-login-panel.sc-ns-theme:before{content:\"\"}/*!@.gedi-maintenance:before*/.gedi-maintenance.sc-ns-theme:before{content:\"\"}/*!@.gedi-manage-tml-group-components:before*/.gedi-manage-tml-group-components.sc-ns-theme:before{content:\"\"}/*!@.gedi-mandatory:before*/.gedi-mandatory.sc-ns-theme:before{content:\"\"}/*!@.gedi-map:before*/.gedi-map.sc-ns-theme:before{content:\"\"}/*!@.gedi-margin-currency:before*/.gedi-margin-currency.sc-ns-theme:before{content:\"\"}/*!@.gedi-margin-value:before*/.gedi-margin-value.sc-ns-theme:before{content:\"\"}/*!@.gedi-math:before*/.gedi-math.sc-ns-theme:before{content:\"\"}/*!@.gedi-maximum:before*/.gedi-maximum.sc-ns-theme:before{content:\"\"}/*!@.gedi-mdx:before*/.gedi-mdx.sc-ns-theme:before{content:\"\"}/*!@.gedi-measure:before*/.gedi-measure.sc-ns-theme:before{content:\"\"}/*!@.gedi-measurement-location-group:before*/.gedi-measurement-location-group.sc-ns-theme:before{content:\"\"}/*!@.gedi-measurement-location:before*/.gedi-measurement-location.sc-ns-theme:before{content:\"\"}/*!@.gedi-measurement-units:before*/.gedi-measurement-units.sc-ns-theme:before{content:\"\"}/*!@.gedi-menu:before*/.gedi-menu.sc-ns-theme:before{content:\"\"}/*!@.gedi-minimum-production:before*/.gedi-minimum-production.sc-ns-theme:before{content:\"\"}/*!@.gedi-minimum:before*/.gedi-minimum.sc-ns-theme:before{content:\"\"}/*!@.gedi-mobile-menu:before*/.gedi-mobile-menu.sc-ns-theme:before{content:\"\"}/*!@.gedi-module-settings:before*/.gedi-module-settings.sc-ns-theme:before{content:\"\"}/*!@.gedi-more:before*/.gedi-more.sc-ns-theme:before{content:\"\"}/*!@.gedi-move-axis-22:before*/.gedi-move-axis-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-move-handle:before*/.gedi-move-handle.sc-ns-theme:before{content:\"\"}/*!@.gedi-multiple-column:before*/.gedi-multiple-column.sc-ns-theme:before{content:\"\"}/*!@.gedi-multiply:before*/.gedi-multiply.sc-ns-theme:before{content:\"\"}/*!@.gedi-new-policy:before*/.gedi-new-policy.sc-ns-theme:before{content:\"\"}/*!@.gedi-new-window:before*/.gedi-new-window.sc-ns-theme:before{content:\"\"}/*!@.gedi-node-execution:before*/.gedi-node-execution.sc-ns-theme:before{content:\"\"}/*!@.gedi-nominal-measurements:before*/.gedi-nominal-measurements.sc-ns-theme:before{content:\"\"}/*!@.gedi-not-allowed:before*/.gedi-not-allowed.sc-ns-theme:before{content:\"\"}/*!@.gedi-not-equal:before*/.gedi-not-equal.sc-ns-theme:before{content:\"\"}/*!@.gedi-note:before*/.gedi-note.sc-ns-theme:before{content:\"\"}/*!@.gedi-notification-off-22:before*/.gedi-notification-off-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-notification-off:before*/.gedi-notification-off.sc-ns-theme:before{content:\"\"}/*!@.gedi-notification:before*/.gedi-notification.sc-ns-theme:before{content:\"\"}/*!@.gedi-offline:before*/.gedi-offline.sc-ns-theme:before{content:\"\"}/*!@.gedi-online:before*/.gedi-online.sc-ns-theme:before{content:\"\"}/*!@.gedi-opc-tag:before*/.gedi-opc-tag.sc-ns-theme:before{content:\"\"}/*!@.gedi-open-record:before*/.gedi-open-record.sc-ns-theme:before{content:\"\"}/*!@.gedi-optimize-strategy:before*/.gedi-optimize-strategy.sc-ns-theme:before{content:\"\"}/*!@.gedi-or-alt:before*/.gedi-or-alt.sc-ns-theme:before{content:\"\"}/*!@.gedi-or:before*/.gedi-or.sc-ns-theme:before{content:\"\"}/*!@.gedi-otc-tag:before*/.gedi-otc-tag.sc-ns-theme:before{content:\"\"}/*!@.gedi-overdue-inspection-date:before*/.gedi-overdue-inspection-date.sc-ns-theme:before{content:\"\"}/*!@.gedi-overflow-down:before*/.gedi-overflow-down.sc-ns-theme:before{content:\"\"}/*!@.gedi-overflow-left:before*/.gedi-overflow-left.sc-ns-theme:before{content:\"\"}/*!@.gedi-overflow-right:before*/.gedi-overflow-right.sc-ns-theme:before{content:\"\"}/*!@.gedi-overflow-up:before*/.gedi-overflow-up.sc-ns-theme:before{content:\"\"}/*!@.gedi-paintbrush:before*/.gedi-paintbrush.sc-ns-theme:before{content:\"\"}/*!@.gedi-pan-22:before*/.gedi-pan-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-pan:before*/.gedi-pan.sc-ns-theme:before{content:\"\"}/*!@.gedi-paste:before*/.gedi-paste.sc-ns-theme:before{content:\"\"}/*!@.gedi-performance:before*/.gedi-performance.sc-ns-theme:before{content:\"\"}/*!@.gedi-phone:before*/.gedi-phone.sc-ns-theme:before{content:\"\"}/*!@.gedi-pin-22:before*/.gedi-pin-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-pin:before*/.gedi-pin.sc-ns-theme:before{content:\"\"}/*!@.gedi-play:before*/.gedi-play.sc-ns-theme:before{content:\"\"}/*!@.gedi-point-control-panel:before*/.gedi-point-control-panel.sc-ns-theme:before{content:\"\"}/*!@.gedi-point-enumerations:before*/.gedi-point-enumerations.sc-ns-theme:before{content:\"\"}/*!@.gedi-point-value:before*/.gedi-point-value.sc-ns-theme:before{content:\"\"}/*!@.gedi-point:before*/.gedi-point.sc-ns-theme:before{content:\"\"}/*!@.gedi-policy-activated-indicator:before*/.gedi-policy-activated-indicator.sc-ns-theme:before{content:\"\"}/*!@.gedi-policy-active-all:before*/.gedi-policy-active-all.sc-ns-theme:before{content:\"\"}/*!@.gedi-policy-active:before*/.gedi-policy-active.sc-ns-theme:before{content:\"\"}/*!@.gedi-policy-deactivate-all:before*/.gedi-policy-deactivate-all.sc-ns-theme:before{content:\"\"}/*!@.gedi-policy-deactivate:before*/.gedi-policy-deactivate.sc-ns-theme:before{content:\"\"}/*!@.gedi-policy-deactivated:before*/.gedi-policy-deactivated.sc-ns-theme:before{content:\"\"}/*!@.gedi-policy-error-indicator:before*/.gedi-policy-error-indicator.sc-ns-theme:before{content:\"\"}/*!@.gedi-port:before*/.gedi-port.sc-ns-theme:before{content:\"\"}/*!@.gedi-prd-component-identifier:before*/.gedi-prd-component-identifier.sc-ns-theme:before{content:\"\"}/*!@.gedi-preferences:before*/.gedi-preferences.sc-ns-theme:before{content:\"\"}/*!@.gedi-print:before*/.gedi-print.sc-ns-theme:before{content:\"\"}/*!@.gedi-project-parameters:before*/.gedi-project-parameters.sc-ns-theme:before{content:\"\"}/*!@.gedi-promote-to-asm:before*/.gedi-promote-to-asm.sc-ns-theme:before{content:\"\"}/*!@.gedi-puzzle-piece:before*/.gedi-puzzle-piece.sc-ns-theme:before{content:\"\"}/*!@.gedi-qr-code:before*/.gedi-qr-code.sc-ns-theme:before{content:\"\"}/*!@.gedi-query:before*/.gedi-query.sc-ns-theme:before{content:\"\"}/*!@.gedi-question-mark:before*/.gedi-question-mark.sc-ns-theme:before{content:\"\"}/*!@.gedi-r-script:before*/.gedi-r-script.sc-ns-theme:before{content:\"\"}/*!@.gedi-re-syncing:before*/.gedi-re-syncing.sc-ns-theme:before{content:\"\"}/*!@.gedi-recommendation:before*/.gedi-recommendation.sc-ns-theme:before{content:\"\"}/*!@.gedi-record-add:before*/.gedi-record-add.sc-ns-theme:before{content:\"\"}/*!@.gedi-redo:before*/.gedi-redo.sc-ns-theme:before{content:\"\"}/*!@.gedi-reference-document-shift-left:before*/.gedi-reference-document-shift-left.sc-ns-theme:before{content:\"\"}/*!@.gedi-reference-document-shift-right:before*/.gedi-reference-document-shift-right.sc-ns-theme:before{content:\"\"}/*!@.gedi-refresh-22:before*/.gedi-refresh-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-refresh-32:before*/.gedi-refresh-32.sc-ns-theme:before{content:\"\"}/*!@.gedi-refresh:before*/.gedi-refresh.sc-ns-theme:before{content:\"\"}/*!@.gedi-regenerate-plan:before*/.gedi-regenerate-plan.sc-ns-theme:before{content:\"\"}/*!@.gedi-relationship-input-mode:before*/.gedi-relationship-input-mode.sc-ns-theme:before{content:\"\"}/*!@.gedi-reliability-distribution:before*/.gedi-reliability-distribution.sc-ns-theme:before{content:\"\"}/*!@.gedi-reliability-growth:before*/.gedi-reliability-growth.sc-ns-theme:before{content:\"\"}/*!@.gedi-remainder:before*/.gedi-remainder.sc-ns-theme:before{content:\"\"}/*!@.gedi-remove-brush-22:before*/.gedi-remove-brush-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-remove-stripe-22:before*/.gedi-remove-stripe-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-removed:before*/.gedi-removed.sc-ns-theme:before{content:\"\"}/*!@.gedi-rename:before*/.gedi-rename.sc-ns-theme:before{content:\"\"}/*!@.gedi-reply:before*/.gedi-reply.sc-ns-theme:before{content:\"\"}/*!@.gedi-report-32:before*/.gedi-report-32.sc-ns-theme:before{content:\"\"}/*!@.gedi-report:before*/.gedi-report.sc-ns-theme:before{content:\"\"}/*!@.gedi-reset-22:before*/.gedi-reset-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-reset-zoom-22:before*/.gedi-reset-zoom-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-resize-22:before*/.gedi-resize-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-return-value:before*/.gedi-return-value.sc-ns-theme:before{content:\"\"}/*!@.gedi-risk-matrix:before*/.gedi-risk-matrix.sc-ns-theme:before{content:\"\"}/*!@.gedi-round:before*/.gedi-round.sc-ns-theme:before{content:\"\"}/*!@.gedi-rounds:before*/.gedi-rounds.sc-ns-theme:before{content:\"\"}/*!@.gedi-rule:before*/.gedi-rule.sc-ns-theme:before{content:\"\"}/*!@.gedi-save-as-22:before*/.gedi-save-as-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-save-as:before*/.gedi-save-as.sc-ns-theme:before{content:\"\"}/*!@.gedi-save-policy-model-as-instances:before*/.gedi-save-policy-model-as-instances.sc-ns-theme:before{content:\"\"}/*!@.gedi-save:before*/.gedi-save.sc-ns-theme:before{content:\"\"}/*!@.gedi-scan:before*/.gedi-scan.sc-ns-theme:before{content:\"\"}/*!@.gedi-screen-collapse:before*/.gedi-screen-collapse.sc-ns-theme:before{content:\"\"}/*!@.gedi-screen-expand:before*/.gedi-screen-expand.sc-ns-theme:before{content:\"\"}/*!@.gedi-script:before*/.gedi-script.sc-ns-theme:before{content:\"\"}/*!@.gedi-search:before*/.gedi-search.sc-ns-theme:before{content:\"\"}/*!@.gedi-select-all:before*/.gedi-select-all.sc-ns-theme:before{content:\"\"}/*!@.gedi-send-to-device:before*/.gedi-send-to-device.sc-ns-theme:before{content:\"\"}/*!@.gedi-send:before*/.gedi-send.sc-ns-theme:before{content:\"\"}/*!@.gedi-sequence-profile:before*/.gedi-sequence-profile.sc-ns-theme:before{content:\"\"}/*!@.gedi-settings-22:before*/.gedi-settings-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-settings:before*/.gedi-settings.sc-ns-theme:before{content:\"\"}/*!@.gedi-share:before*/.gedi-share.sc-ns-theme:before{content:\"\"}/*!@.gedi-show-users:before*/.gedi-show-users.sc-ns-theme:before{content:\"\"}/*!@.gedi-show:before*/.gedi-show.sc-ns-theme:before{content:\"\"}/*!@.gedi-shrink-radius-22:before*/.gedi-shrink-radius-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-single-server:before*/.gedi-single-server.sc-ns-theme:before{content:\"\"}/*!@.gedi-sitemap:before*/.gedi-sitemap.sc-ns-theme:before{content:\"\"}/*!@.gedi-skip-32:before*/.gedi-skip-32.sc-ns-theme:before{content:\"\"}/*!@.gedi-skip:before*/.gedi-skip.sc-ns-theme:before{content:\"\"}/*!@.gedi-skipped-measurement:before*/.gedi-skipped-measurement.sc-ns-theme:before{content:\"\"}/*!@.gedi-sort:before*/.gedi-sort.sc-ns-theme:before{content:\"\"}/*!@.gedi-sound:before*/.gedi-sound.sc-ns-theme:before{content:\"\"}/*!@.gedi-spinner:before*/.gedi-spinner.sc-ns-theme:before{content:\"\"}/*!@.gedi-splitter:before*/.gedi-splitter.sc-ns-theme:before{content:\"\"}/*!@.gedi-square:before*/.gedi-square.sc-ns-theme:before{content:\"\"}/*!@.gedi-standalone-recommendation:before*/.gedi-standalone-recommendation.sc-ns-theme:before{content:\"\"}/*!@.gedi-starts-with:before*/.gedi-starts-with.sc-ns-theme:before{content:\"\"}/*!@.gedi-step-strategy:before*/.gedi-step-strategy.sc-ns-theme:before{content:\"\"}/*!@.gedi-step-template:before*/.gedi-step-template.sc-ns-theme:before{content:\"\"}/*!@.gedi-step:before*/.gedi-step.sc-ns-theme:before{content:\"\"}/*!@.gedi-sub-policy:before*/.gedi-sub-policy.sc-ns-theme:before{content:\"\"}/*!@.gedi-subscribe:before*/.gedi-subscribe.sc-ns-theme:before{content:\"\"}/*!@.gedi-subsystem:before*/.gedi-subsystem.sc-ns-theme:before{content:\"\"}/*!@.gedi-subtract:before*/.gedi-subtract.sc-ns-theme:before{content:\"\"}/*!@.gedi-sum:before*/.gedi-sum.sc-ns-theme:before{content:\"\"}/*!@.gedi-switch:before*/.gedi-switch.sc-ns-theme:before{content:\"\"}/*!@.gedi-syncing:before*/.gedi-syncing.sc-ns-theme:before{content:\"\"}/*!@.gedi-table-sort:before*/.gedi-table-sort.sc-ns-theme:before{content:\"\"}/*!@.gedi-table-view:before*/.gedi-table-view.sc-ns-theme:before{content:\"\"}/*!@.gedi-tablet:before*/.gedi-tablet.sc-ns-theme:before{content:\"\"}/*!@.gedi-tag-22:before*/.gedi-tag-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-tag-group-22:before*/.gedi-tag-group-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-tag-group:before*/.gedi-tag-group.sc-ns-theme:before{content:\"\"}/*!@.gedi-tag-smart:before*/.gedi-tag-smart.sc-ns-theme:before{content:\"\"}/*!@.gedi-tag-visibility:before*/.gedi-tag-visibility.sc-ns-theme:before{content:\"\"}/*!@.gedi-tag:before*/.gedi-tag.sc-ns-theme:before{content:\"\"}/*!@.gedi-team-member-shift-left:before*/.gedi-team-member-shift-left.sc-ns-theme:before{content:\"\"}/*!@.gedi-team-member-shift-right:before*/.gedi-team-member-shift-right.sc-ns-theme:before{content:\"\"}/*!@.gedi-template:before*/.gedi-template.sc-ns-theme:before{content:\"\"}/*!@.gedi-threshold-statistics:before*/.gedi-threshold-statistics.sc-ns-theme:before{content:\"\"}/*!@.gedi-time-series-tag:before*/.gedi-time-series-tag.sc-ns-theme:before{content:\"\"}/*!@.gedi-time-units:before*/.gedi-time-units.sc-ns-theme:before{content:\"\"}/*!@.gedi-timezone:before*/.gedi-timezone.sc-ns-theme:before{content:\"\"}/*!@.gedi-tm-data-entry:before*/.gedi-tm-data-entry.sc-ns-theme:before{content:\"\"}/*!@.gedi-translation:before*/.gedi-translation.sc-ns-theme:before{content:\"\"}/*!@.gedi-transpose:before*/.gedi-transpose.sc-ns-theme:before{content:\"\"}/*!@.gedi-tree-collapse:before*/.gedi-tree-collapse.sc-ns-theme:before{content:\"\"}/*!@.gedi-tree-expand:before*/.gedi-tree-expand.sc-ns-theme:before{content:\"\"}/*!@.gedi-type:before*/.gedi-type.sc-ns-theme:before{content:\"\"}/*!@.gedi-unconsolidate:before*/.gedi-unconsolidate.sc-ns-theme:before{content:\"\"}/*!@.gedi-undo:before*/.gedi-undo.sc-ns-theme:before{content:\"\"}/*!@.gedi-ungrouped-tab-group:before*/.gedi-ungrouped-tab-group.sc-ns-theme:before{content:\"\"}/*!@.gedi-unlink:before*/.gedi-unlink.sc-ns-theme:before{content:\"\"}/*!@.gedi-unlocked:before*/.gedi-unlocked.sc-ns-theme:before{content:\"\"}/*!@.gedi-unmerge:before*/.gedi-unmerge.sc-ns-theme:before{content:\"\"}/*!@.gedi-unpin:before*/.gedi-unpin.sc-ns-theme:before{content:\"\"}/*!@.gedi-uom:before*/.gedi-uom.sc-ns-theme:before{content:\"\"}/*!@.gedi-upload:before*/.gedi-upload.sc-ns-theme:before{content:\"\"}/*!@.gedi-user-hierarchy:before*/.gedi-user-hierarchy.sc-ns-theme:before{content:\"\"}/*!@.gedi-user-key:before*/.gedi-user-key.sc-ns-theme:before{content:\"\"}/*!@.gedi-user-not-allowed:before*/.gedi-user-not-allowed.sc-ns-theme:before{content:\"\"}/*!@.gedi-user-settings:before*/.gedi-user-settings.sc-ns-theme:before{content:\"\"}/*!@.gedi-user-verified:before*/.gedi-user-verified.sc-ns-theme:before{content:\"\"}/*!@.gedi-user:before*/.gedi-user.sc-ns-theme:before{content:\"\"}/*!@.gedi-users:before*/.gedi-users.sc-ns-theme:before{content:\"\"}/*!@.gedi-view-datasheet:before*/.gedi-view-datasheet.sc-ns-theme:before{content:\"\"}/*!@.gedi-view-inbox:before*/.gedi-view-inbox.sc-ns-theme:before{content:\"\"}/*!@.gedi-view-list:before*/.gedi-view-list.sc-ns-theme:before{content:\"\"}/*!@.gedi-view-recommendation-32:before*/.gedi-view-recommendation-32.sc-ns-theme:before{content:\"\"}/*!@.gedi-website:before*/.gedi-website.sc-ns-theme:before{content:\"\"}/*!@.gedi-x-axis-22:before*/.gedi-x-axis-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-x-axis:before*/.gedi-x-axis.sc-ns-theme:before{content:\"\"}/*!@.gedi-xy-axis-22:before*/.gedi-xy-axis-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-xy-axis:before*/.gedi-xy-axis.sc-ns-theme:before{content:\"\"}/*!@.gedi-y-axis-22:before*/.gedi-y-axis-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-y-axis:before*/.gedi-y-axis.sc-ns-theme:before{content:\"\"}/*!@.gedi-zoom-generic-22:before*/.gedi-zoom-generic-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-zoom-in-22:before*/.gedi-zoom-in-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-zoom-in:before*/.gedi-zoom-in.sc-ns-theme:before{content:\"\"}/*!@.gedi-zoom-out-22:before*/.gedi-zoom-out-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-zoom-out-one-level-22:before*/.gedi-zoom-out-one-level-22.sc-ns-theme:before{content:\"\"}/*!@.gedi-zoom-out:before*/.gedi-zoom-out.sc-ns-theme:before{content:\"\"}/*!@.gedi-zoom-toolbar-22:before*/.gedi-zoom-toolbar-22.sc-ns-theme:before{content:\"\"}@font-face{font-family:\"gedi\";src:url(\"https://assets.codepen.io/49212/gedi.eot?dd3a33b6a2034ee871e14624473a90b5?#iefix\") format(\"embedded-opentype\"), url(\"https://assets.codepen.io/49212/gedi.woff2?dd3a33b6a2034ee871e14624473a90b5\") format(\"woff2\"), url(\"https://assets.codepen.io/49212/gedi.woff?dd3a33b6a2034ee871e14624473a90b5\") format(\"woff\"), url(\"https://assets.codepen.io/49212/gedi.ttf?dd3a33b6a2034ee871e14624473a90b5\") format(\"truetype\"), url(\"https://assets.codepen.io/49212/gedi.svg?dd3a33b6a2034ee871e14624473a90b5#gedi\") format(\"svg\")}/*!@[class^=gedi-],\n[class*=\" gedi-\"]*/[class^=gedi-].sc-ns-theme,[class*=\" gedi-\"].sc-ns-theme{font-family:gedi !important;font-style:normal;font-weight:normal !important;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}/*!@:host*/.sc-ns-theme-h{display:block}";
 
+//import { state } from '../../store';
 class NsTheme {
   constructor(hostRef) {
     registerInstance(this, hostRef);
+    this.session = {};
     this.tabs = [];
   }
   todoCompletedHandler(event) {
@@ -5537,15 +5557,23 @@ class NsTheme {
   tabCloseHandler(event) {
     console.log('Received the custom tabClose event: ', event.detail);
   }
-  connectedCallback() { }
+  connectedCallback() {
+    console.log('connectedCallback');
+  }
   disconnectedCallback() { }
-  componentWillLoad() { }
+  componentWillLoad() {
+    console.log('componentWillLoad');
+  }
   componentDidLoad() {
     console.log('componentDidLoad');
   }
   componentWillUpdate() { }
-  componentDidUpdate() { }
-  componentWillRender() { }
+  componentDidUpdate() {
+    console.log('componentDidUpdate');
+  }
+  componentWillRender() {
+    console.log('componentWillRender');
+  }
   componentDidRender() {
     console.log('componentDidRender');
   }
@@ -5556,16 +5584,18 @@ class NsTheme {
   async addTab(tab) {
     //this.themeTabs
     console.log('add', tab);
-    this.tabs.push(tab);
+    let { tabs = [] } = this.session;
+    tabs.push(tab);
+    this.session.tabs = tabs;
   }
   async open() {
     // ...
     return true;
   }
   render() {
-    return (hAsync(Host, null, hAsync("div", null)));
+    return (hAsync(Host, null, hAsync("ns-theme-header", { id: "nsThemeHeader", "show-menu": true }, hAsync("ns-theme-tabs", { id: "nsThemeTabs", slot: "tabs" })), hAsync("slot", { name: "content" }), hAsync("footer", null, hAsync("slot", { name: "footer" }))));
   }
-  static get assetsDirs() { return ["../fonts"]; }
+  static get assetsDirs() { return ["assets"]; }
   get el() { return getElement(this); }
   static get style() { return nsThemeCss; }
   static get cmpMeta() { return {
@@ -5573,6 +5603,7 @@ class NsTheme {
     "$tagName$": "ns-theme",
     "$members$": {
       "tabs": [16],
+      "session": [32],
       "closeTab": [64],
       "addTab": [64],
       "open": [64]
@@ -5607,7 +5638,7 @@ class NsThemeBrandingBar {
   }; }
 }
 
-const nsThemeDrawerCss = "/*!@:host*/.sc-ns-theme-drawer-h{display:block}/*!@.theme__drawer*/.theme__drawer.sc-ns-theme-drawer{font-family:\"GE Inspira Sans\", sans-serif;z-index:10;position:absolute;top:0;width:var(--ns-theme-drawer-width, 320px);height:100%;background-color:var(--ns-theme-drawer-background-color, white);border-right-color:var(--ns-theme-drawer-border-color, black);box-shadow:none;will-change:transform;transition:all 0.2s cubic-bezier(0, 0, 0.2, 1)}/*!@.theme__drawer button*/.theme__drawer.sc-ns-theme-drawer button.sc-ns-theme-drawer{outline:none}/*!@.theme__drawer-content*/.theme__drawer-content.sc-ns-theme-drawer{padding-left:1rem}/*!@.theme__drawer--fixed*/.theme__drawer--fixed.sc-ns-theme-drawer{position:fixed}/*!@.theme__drawer.left*/.theme__drawer.left.sc-ns-theme-drawer{left:0}/*!@.theme__drawer.left.open*/.theme__drawer.left.open.sc-ns-theme-drawer{transform:translate3d(0px, 0px, 0px)}/*!@.theme__drawer.left.close*/.theme__drawer.left.close.sc-ns-theme-drawer{transform:translate3d(-320px, 0px, 0px)}/*!@.theme__drawer.bottom*/.theme__drawer.bottom.sc-ns-theme-drawer{height:auto;width:100%;left:0;right:0;top:auto;bottom:0;min-height:100px;transform:translate3d(0px, 0, 0px)}/*!@.theme__drawer.bottom.close*/.theme__drawer.bottom.close.sc-ns-theme-drawer{transform:translate3d(0px, 320px, 0px)}/*!@.theme__drawer.right*/.theme__drawer.right.sc-ns-theme-drawer{right:0;position:fixed}/*!@.theme__drawer.right.close*/.theme__drawer.right.close.sc-ns-theme-drawer{transform:translate3d(320px, 0px, 0px)}/*!@.theme__drawer.top*/.theme__drawer.top.sc-ns-theme-drawer{right:0;top:0;bottom:auto;left:0;width:100%;min-height:100px;max-height:320px;height:auto}/*!@.theme__drawer.top.close*/.theme__drawer.top.close.sc-ns-theme-drawer{transform:translate3d(0px, -320px, 0px)}/*!@.theme__drawer-header*/.theme__drawer-header.sc-ns-theme-drawer{display:flex;align-items:center;overflow:hidden;color:white;border-bottom:1px solid rgba(255, 255, 255, 0.2);height:3rem;color:var(--px-app-nav-item-text-color, white);justify-content:space-between;padding:0 1.2rem;margin-bottom:1rem}/*!@.theme__drawer h2*/.theme__drawer.sc-ns-theme-drawer h2.sc-ns-theme-drawer{text-align:left;margin:0 !important;padding:0 !important;font-weight:normal;display:flex;align-items:center;justify-content:center;font-size:2em}/*!@.theme__drawer-toggle*/.theme__drawer-toggle.sc-ns-theme-drawer{box-sizing:border-box}/*!@.theme__drawer-toggle__link*/.theme__drawer-toggle__link.sc-ns-theme-drawer{display:flex;width:60px;height:60px;justify-content:center;align-items:center;background:transparent}/*!@.theme__drawer-toggle__link svg*/.theme__drawer-toggle__link.sc-ns-theme-drawer svg.sc-ns-theme-drawer{stroke:var(--px-base-color, rgba(0, 0, 0, 0.5)) !important}/*!@.theme__drawer-toggle__link:link, .theme__drawer-toggle__link:visited*/.theme__drawer-toggle__link.sc-ns-theme-drawer:link,.theme__drawer-toggle__link.sc-ns-theme-drawer:visited{color:var(--iron-icon-stroke-color, #5d707d)}/*!@.theme__drawer .close*/.theme__drawer.sc-ns-theme-drawer .close.sc-ns-theme-drawer{cursor:pointer;padding:0;background-color:transparent;border:0;-webkit-appearance:none;-moz-appearance:none;appearance:none;font-weight:700;text-shadow:0 1px 0 #fff;color:inherit}/*!@.theme__drawer-nav*/.theme__drawer-nav.sc-ns-theme-drawer{list-style:none;margin:0;padding:0}/*!@.theme__drawer .px-nav-close*/.theme__drawer.sc-ns-theme-drawer .px-nav-close.sc-ns-theme-drawer{stroke:var(--px-base-text-color, white)}/*!@.theme__drawer-nav-item a*/.theme__drawer-nav-item.sc-ns-theme-drawer a.sc-ns-theme-drawer{display:block;padding:1.2rem 1.5rem;text-decoration:none;color:var(--px-app-nav-item-text-color, white)}/*!@.theme__drawer-nav-item a:hover*/.theme__drawer-nav-item.sc-ns-theme-drawer a.sc-ns-theme-drawer:hover{color:var(--px-app-nav-item-text-color--hover, #ddd);background-color:var(--px-app-nav-item-background-color--hover, #333)}/*!@.theme__drawer-nav-item a:active*/.theme__drawer-nav-item.sc-ns-theme-drawer a.sc-ns-theme-drawer:active{color:var(--px-app-nav-item-text-color--pressed, #aaa);background-color:var(--px-app-nav-item-background-color--pressed, #333)}/*!@.theme__drawer-nav-item--selected*/.theme__drawer-nav-item--selected.sc-ns-theme-drawer{color:var(--px-app-nav-item-text-color--selected, #a9a9a9);background-color:var(--px-app-nav-item-background-color--selected, #fff)}/*!@.theme__drawer-nav*/.theme__drawer-nav.sc-ns-theme-drawer{display:grid;list-style:none;margin:0;padding:0}/*!@.theme__drawer-nav li*/.theme__drawer-nav.sc-ns-theme-drawer li.sc-ns-theme-drawer{margin:0;padding:0}/*!@.theme__drawer-nav li.divider*/.theme__drawer-nav.sc-ns-theme-drawer li.divider.sc-ns-theme-drawer{padding:0.5rem;background:var(--px-app-nav-item-background-color, whitesmoke)}/*!@.theme__drawer-nav li a*/.theme__drawer-nav.sc-ns-theme-drawer li.sc-ns-theme-drawer a.sc-ns-theme-drawer{height:44px;display:flex;padding:0 1rem;text-decoration:none;align-items:center;color:var(--px-app-nav-item-text-color, green)}/*!@.theme__drawer-nav li a:hover*/.theme__drawer-nav.sc-ns-theme-drawer li.sc-ns-theme-drawer a.sc-ns-theme-drawer:hover{color:var(--px-app-nav-item-text-color--hover, green);background:var(--px-app-nav-item-background-color--hover, blue)}/*!@.theme__drawer-nav li a:active*/.theme__drawer-nav.sc-ns-theme-drawer li.sc-ns-theme-drawer a.sc-ns-theme-drawer:active{color:var(--px-app-nav-item-text-color--pressed, green);background:var(--px-app-nav-item-background-color--pressed, green)}/*!@.list-group*/.list-group.sc-ns-theme-drawer{display:grid;grid-auto-flow:row;grid-row-gap:0.2rem}/*!@.list-group button*/.list-group.sc-ns-theme-drawer button.sc-ns-theme-drawer{background-color:transparent;outline:none;border:none;font-size:1.1rem;cursor:pointer}/*!@.list-group-item*/.list-group-item.sc-ns-theme-drawer{display:grid;text-decoration:none;background-color:#fff;color:#000;grid-auto-flow:column;grid-template-columns:3fr 1fr}/*!@.list-group-item.active*/.list-group-item.active.sc-ns-theme-drawer{background-color:#09809c;color:#fff}/*!@.list-group-item.active button*/.list-group-item.active.sc-ns-theme-drawer button.sc-ns-theme-drawer{color:#fff}/*!@.list-group-content*/.list-group-content.sc-ns-theme-drawer{display:flex;flex-direction:column;padding:0.6rem;padding-left:1rem}/*!@.list-group-actions*/.list-group-actions.sc-ns-theme-drawer{display:flex;align-items:center;justify-content:space-around}";
+const nsThemeDrawerCss = "/*!@:host*/.sc-ns-theme-drawer-h{font-family:\"GE Inspira Sans\", sans-serif;z-index:10;position:fixed;top:0;width:var(--ns-theme-drawer-width, 320px);height:100%;background-color:var(--ns-theme-drawer-background-color, white);border-right-color:var(--ns-theme-drawer-border-color, black);box-shadow:none;will-change:transform;transition:all 0.2s cubic-bezier(0, 0, 0.2, 1);display:block;contain:content}/*!@button*/button.sc-ns-theme-drawer{outline:none}/*!@:host(.theme__drawer--right)*/.theme__drawer--right.sc-ns-theme-drawer-h{right:0;position:fixed;box-shadow:0 0 3px 2px rgba(0, 0, 0, 0.12)}/*!@:host(.theme__drawer--left)*/.theme__drawer--left.sc-ns-theme-drawer-h{left:0;box-shadow:0 0 3px 2px rgba(0, 0, 0, 0.12);transform:translate3d(-320px, 0px, 0px)}/*!@:host(.theme__drawer--top)*/.theme__drawer--top.sc-ns-theme-drawer-h{box-shadow:0 0 3px 2px rgba(0, 0, 0, 0.12);right:0;top:0;bottom:auto;left:0;width:100%;min-height:100px;max-height:320px;height:auto}/*!@:host(.theme__drawer--bottom)*/.theme__drawer--bottom.sc-ns-theme-drawer-h{box-shadow:0 0 3px 2px rgba(0, 0, 0, 0.12);height:auto;width:100%;left:0;right:0;top:auto;bottom:0;min-height:100px}/*!@:host header*/.sc-ns-theme-drawer-h header.sc-ns-theme-drawer{display:flex;align-items:center;overflow:hidden;border-bottom:1px solid rgba(255, 255, 255, 0.2);box-shadow:0 0 3px 2px rgba(0, 0, 0, 0.12);height:3rem;color:var(--px-app-nav-item-text-color, black);justify-content:space-between;padding:0 1rem;margin-bottom:1rem}/*!@:host h3*/.sc-ns-theme-drawer-h h3.sc-ns-theme-drawer{text-align:left;margin:0 !important;padding:0 !important;font-weight:normal;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:500}/*!@:host nav*/.sc-ns-theme-drawer-h nav.sc-ns-theme-drawer{max-height:var(--ns-theme-drawer-max-height, 90vh);overflow-y:auto}/*!@.theme__drawer--fixed*/.theme__drawer--fixed.sc-ns-theme-drawer{position:fixed}/*!@.theme__drawer-toggle*/.theme__drawer-toggle.sc-ns-theme-drawer{box-sizing:border-box}/*!@.theme__drawer-toggle__link*/.theme__drawer-toggle__link.sc-ns-theme-drawer{display:flex;width:60px;height:60px;justify-content:center;align-items:center;background:transparent}/*!@.theme__drawer-toggle__link svg*/.theme__drawer-toggle__link.sc-ns-theme-drawer svg.sc-ns-theme-drawer{stroke:var(--px-base-color, rgba(0, 0, 0, 0.5)) !important}/*!@.theme__drawer-toggle__link:link, .theme__drawer-toggle__link:visited*/.theme__drawer-toggle__link.sc-ns-theme-drawer:link,.theme__drawer-toggle__link.sc-ns-theme-drawer:visited{color:var(--iron-icon-stroke-color, #5d707d)}/*!@.theme__drawer .close*/.theme__drawer.sc-ns-theme-drawer .close.sc-ns-theme-drawer{cursor:pointer;padding:0;background-color:transparent;border:0;-webkit-appearance:none;-moz-appearance:none;appearance:none;font-weight:700;text-shadow:0 1px 0 #fff;color:inherit}/*!@.theme__drawer-nav*/.theme__drawer-nav.sc-ns-theme-drawer{list-style:none;margin:0;padding:0}/*!@.theme__drawer .px-nav-close*/.theme__drawer.sc-ns-theme-drawer .px-nav-close.sc-ns-theme-drawer{stroke:var(--px-base-text-color, white)}/*!@.theme__drawer-nav-item a*/.theme__drawer-nav-item.sc-ns-theme-drawer a.sc-ns-theme-drawer{display:block;padding:1.2rem 1.5rem;text-decoration:none;color:var(--px-app-nav-item-text-color, white)}/*!@.theme__drawer-nav-item a:hover*/.theme__drawer-nav-item.sc-ns-theme-drawer a.sc-ns-theme-drawer:hover{color:var(--px-app-nav-item-text-color--hover, #ddd);background-color:var(--px-app-nav-item-background-color--hover, #333)}/*!@.theme__drawer-nav-item a:active*/.theme__drawer-nav-item.sc-ns-theme-drawer a.sc-ns-theme-drawer:active{color:var(--px-app-nav-item-text-color--pressed, #aaa);background-color:var(--px-app-nav-item-background-color--pressed, #333)}/*!@.theme__drawer-nav-item--selected*/.theme__drawer-nav-item--selected.sc-ns-theme-drawer{color:var(--px-app-nav-item-text-color--selected, #a9a9a9);background-color:var(--px-app-nav-item-background-color--selected, #fff)}/*!@.theme__drawer-nav*/.theme__drawer-nav.sc-ns-theme-drawer{display:grid;list-style:none;margin:0;padding:0}/*!@.theme__drawer-nav li*/.theme__drawer-nav.sc-ns-theme-drawer li.sc-ns-theme-drawer{margin:0;padding:0}/*!@.theme__drawer-nav li.divider*/.theme__drawer-nav.sc-ns-theme-drawer li.divider.sc-ns-theme-drawer{padding:0.5rem;background:var(--px-app-nav-item-background-color, whitesmoke)}/*!@.theme__drawer-nav li a*/.theme__drawer-nav.sc-ns-theme-drawer li.sc-ns-theme-drawer a.sc-ns-theme-drawer{height:44px;display:flex;padding:0 1rem;text-decoration:none;align-items:center;color:var(--px-app-nav-item-text-color, green)}/*!@.theme__drawer-nav li a:hover*/.theme__drawer-nav.sc-ns-theme-drawer li.sc-ns-theme-drawer a.sc-ns-theme-drawer:hover{color:var(--px-app-nav-item-text-color--hover, green);background:var(--px-app-nav-item-background-color--hover, blue)}/*!@.theme__drawer-nav li a:active*/.theme__drawer-nav.sc-ns-theme-drawer li.sc-ns-theme-drawer a.sc-ns-theme-drawer:active{color:var(--px-app-nav-item-text-color--pressed, green);background:var(--px-app-nav-item-background-color--pressed, green)}";
 
 const iconStyles = {
   display: 'block',
@@ -5626,8 +5657,34 @@ class NsThemeDrawer {
      */
     this.items = [];
   }
-  watchHandler(newValue) {
-    console.log('The new value of activated is: ', newValue);
+  componentDidRender() {
+    this.transformDrawer();
+  }
+  getTranslate(x = 0, y = 0) {
+    let str = `translate3d(${x}px, ${y}px, 0)`;
+    return str;
+  }
+  transformDrawer() {
+    if (this.isOpened) {
+      return this.el.style.transform = '';
+    }
+    let { height, width } = this.el.getBoundingClientRect();
+    let str = '';
+    switch (this.anchor) {
+      case 'top':
+        str = this.getTranslate(0, -height);
+        break;
+      case 'bottom':
+        str = this.getTranslate(0, height);
+        break;
+      case 'right':
+        str = this.getTranslate(width, 0);
+        break;
+      case 'left':
+        str = this.getTranslate(-width, 0);
+        break;
+    }
+    this.el.style.transform = str;
   }
   /**
    * Usage document.dispatchEvent(new CustomEvent('toggleDrawer'))
@@ -5643,24 +5700,21 @@ class NsThemeDrawer {
     this.isOpened = true;
   }
   handleClick() {
-    this.open = !this.open;
+    this.isOpened = !this.isOpened;
   }
   async toggle() {
     this.isOpened = !this.isOpened;
   }
   render() {
-    return (hAsync(Host, null, hAsync("div", { class: {
+    return (hAsync(Host, { class: {
         'theme__drawer': true,
-        'open': this.isOpened,
-        'close': !this.isOpened,
-        [`${this.anchor}`]: true
-      } }, hAsync("header", { class: "theme__drawer-header" }, hAsync("div", null, hAsync("ns-theme-branding-bar", null)), hAsync("button", { type: "button", class: "close", "aria-label": "Close", onClick: () => {
+        'theme__drawer--open': this.isOpened,
+        [`theme__drawer--${this.anchor}`]: true
+      } }, hAsync("header", { class: "theme__drawer-header" }, hAsync("div", null, this.headerText && hAsync("h3", null, this.headerText)), hAsync("button", { type: "button", class: "close", "aria-label": "Close", onClick: () => {
         document.dispatchEvent(new CustomEvent('closeDrawer'));
-      } }, hAsync("i", { class: "px-icon px-nav-close", color: "inherit", style: { width: '22px', height: '22px' } }, hAsync("svg", { viewBox: "0 0 22 22", preserveAspectRatio: "xMidYMid meet", style: iconStyles }, hAsync("g", { id: "px-nav-close" }, hAsync("path", { "stroke-miterlimit": "10", d: "M3 19L19 3M3 3l16 16" })))))), hAsync("nav", { class: "theme__drawer-content" }, hAsync("ul", { class: "theme__drawer-nav" }, this.items && this.items.map((item) => (hAsync("li", null, hAsync("a", { href: item.path }, item.label))))), hAsync("slot", null)))));
+      } }, hAsync("i", { class: "px-icon px-nav-close", color: "inherit", style: { width: '22px', height: '22px' } }, hAsync("svg", { viewBox: "0 0 22 22", preserveAspectRatio: "xMidYMid meet", style: iconStyles }, hAsync("g", { id: "px-nav-close" }, hAsync("path", { "stroke-miterlimit": "10", d: "M3 19L19 3M3 3l16 16" })))))), hAsync("nav", { class: "theme__drawer-content" }, hAsync("slot", null))));
   }
-  static get watchers() { return {
-    "isOpened": ["watchHandler"]
-  }; }
+  get el() { return getElement(this); }
   static get style() { return nsThemeDrawerCss; }
   static get cmpMeta() { return {
     "$flags$": 9,
@@ -5846,7 +5900,7 @@ class NsThemeHeader {
   render() {
     return (hAsync(Host, null, this.headerText && hAsync("a", { class: "theme__navbar-brand", href: "#" }, this.headerText), hAsync("header", { class: `theme__header ${this.isFixed ? 'theme__header--fixed' : ''}` }, this.showMenu && (hAsync("button", { class: "btn theme__toggler collapsed", type: "button", "data-toggle": "collapse", "aria-expanded": "false", "aria-label": "Toggle navigation", onClick: () => {
         this.menuToggleClickHandler();
-      } }, hAsync("span", { class: "theme__toggler-icon" }, hAsync("svg", { viewBox: "0 0 22 22", preserveAspectRatio: "xMidYMid meet", focusable: "false", style: iconStyles$1 }, hAsync("g", null, hAsync("path", { "stroke-miterlimit": "10", d: "M0 4.5h22m-22 6h22m-22 6h22" })))))), hAsync("slot", { name: "menu" }), hAsync("div", null, hAsync("slot", { name: "home" }), this.showHome && hAsync(HomeNavItem, null)), hAsync("slot", { name: "tabs" }), hAsync("div", null, hAsync("slot", { name: "right" })))));
+      } }, hAsync("span", { class: "theme__toggler-icon" }, hAsync("svg", { viewBox: "0 0 22 22", preserveAspectRatio: "xMidYMid meet", focusable: "false", style: iconStyles$1 }, hAsync("g", null, hAsync("path", { "stroke-miterlimit": "10", d: "M0 4.5h22m-22 6h22m-22 6h22" })))))), hAsync("slot", { name: "menu" }), hAsync("div", null, hAsync("slot", { name: "home" }), this.showHome && hAsync(HomeNavItem, null)), hAsync("slot", { name: "tabs" }), hAsync("div", { class: "theme__user" }), hAsync("slot", { name: "user" }))));
   }
   static get style() { return nsThemeHeaderCss; }
   static get cmpMeta() { return {
@@ -5861,6 +5915,37 @@ class NsThemeHeader {
       "isFixed": [4, "is-fixed"],
       "showMenu": [4, "show-menu"],
       "showHome": [4, "show-home"]
+    },
+    "$listeners$": undefined,
+    "$lazyBundleId$": "-",
+    "$attrsToReflect$": []
+  }; }
+}
+
+const nsThemeListGroupCss = ":host{display:block}:host *{box-sizing:border-box}ul,li{list-style:none;margin:0;padding:0}.list-group{display:grid;grid-auto-flow:row;grid-row-gap:0.2rem}.list-item{display:grid;text-decoration:none;background-color:#fff;color:#000;grid-auto-flow:column;grid-template-columns:1fr 90px}.list-item--active{background-color:#09809c;color:#fff}.list-item--active button,.list-item--active span{color:#fff}.list-item button{background-color:transparent;outline:none;border:none;font-size:1.1rem;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center}.list-item button:hover{background-color:rgba(0, 0, 0, 0.2)}.list-item--button{cursor:pointer}.list-item__content{display:flex;flex-direction:column;padding:0.6rem;padding-left:1rem}.list-item__actions{display:flex;align-items:center;justify-content:space-around}.list-item__title{color:#333}.list-item__subtitle{color:#888;font-size:0.8rem}";
+
+class NsThemeListGroup {
+  constructor(hostRef) {
+    registerInstance(this, hostRef);
+    this.tabClick = createEvent(this, "tabClick", 7);
+  }
+  onClickHandler(item) {
+    item.selected = true;
+    this.tabClick.emit(item);
+  }
+  render() {
+    return (hAsync(Host, null, hAsync("slot", null), hAsync("ul", { class: "list-group" }, this.items && this.items.map((item) => (hAsync("li", { class: { 'list-item': true, 'list-item--button': true, 'list-item--active': item.selected } }, hAsync("div", { class: "list-item__content", onClick: () => {
+        this.onClickHandler(item);
+      }, role: "button" }, hAsync("span", { class: "list-item__subtitle" }, item.title || 'App'), hAsync("span", { class: "list-item__title" }, item.label)), hAsync("div", { class: "list-item__actions" }, hAsync("button", { title: `Open in ${item.label} New Window` }, hAsync("i", { class: "gedi-new-window" })), hAsync("button", { title: `Close ${item.label} Tab`, onClick: () => {
+        document.dispatchEvent(new CustomEvent('closeTab', { detail: item }));
+      } }, hAsync("i", { class: "gedi-close" })))))))));
+  }
+  static get style() { return nsThemeListGroupCss; }
+  static get cmpMeta() { return {
+    "$flags$": 4,
+    "$tagName$": "ns-theme-list-group",
+    "$members$": {
+      "items": [16]
     },
     "$listeners$": undefined,
     "$lazyBundleId$": "-",
@@ -6023,9 +6108,6 @@ class NsThemeTabs {
      * The default selected index
      */
     this.selectedIndex = 0;
-    /**
-     * The default tabs to render
-     */
     this.items = [];
   }
   /**
@@ -6065,19 +6147,28 @@ class NsThemeTabs {
   * @param tab The tab item to toggle
   */
   async toggleTab(tab) {
+    if (!tab) {
+      return;
+    }
     let oldTabs = Object.assign({}, this.tabs);
     Object.values(oldTabs).forEach((t) => {
-      oldTabs[t.id].selected = false;
+      if (oldTabs[t.id].selected) {
+        oldTabs[t.id].selected = false;
+      }
     });
-    oldTabs[tab.id].selected = true;
+    if (oldTabs[tab.id]) {
+      oldTabs[tab.id].selected = !tab.selected;
+    }
     this.tabs = oldTabs;
   }
+  /**
+   * Select home tab finds the home tab from the tabs.
+   * @returns Home tab
+   */
   async selectHomeTab() {
     let home = null;
-    Object.values(this.tabs).forEach((t) => {
-      if (t.home) {
-        home = t;
-      }
+    home = Object.values(this.tabs).find((item) => {
+      return item.home;
     });
     return home;
   }
@@ -6089,9 +6180,6 @@ class NsThemeTabs {
       this.tabs[t.id] = t;
     });
   }
-  watchHandler(newValue) {
-    //this.selectedTab = newValue
-  }
   watchTabsHandler(newValue) {
     this.tabChange.emit(newValue);
   }
@@ -6099,8 +6187,15 @@ class NsThemeTabs {
     item.selected = true;
     this.tabClick.emit(item);
   }
+  closeTabHandler(event) {
+    this.closeTab(event.detail);
+  }
   render() {
-    return (hAsync(Host, null, hAsync("ul", { class: "ns-theme__tabs" }, this.tabs && Object.values(this.tabs).map((item) => (hAsync(Tab, Object.assign({}, item, { selected: item.selected, home: item.home, onRemove: () => {
+    return (hAsync(Host, null, hAsync("ul", { class: "ns-theme__tabs" }, this.homeTab && hAsync(Tab, Object.assign({ home: true }, this.homeTab, { onClick: (e) => {
+        e.preventDefault();
+        this.homeTab.selected = !this.homeTab.selected;
+        //this.tabClickHandler(this.homeTab);
+      } })), this.tabs && Object.values(this.tabs).map((item) => (hAsync(Tab, Object.assign({}, item, { selected: item.selected, home: item.home, onRemove: () => {
         this.closeTab(item);
       }, onClick: (e) => {
         e.preventDefault();
@@ -6108,7 +6203,6 @@ class NsThemeTabs {
       } })))))));
   }
   static get watchers() { return {
-    "selectedIndex": ["watchHandler"],
     "tabs": ["watchTabsHandler"]
   }; }
   static get style() { return nsThemeTabsCss; }
@@ -6116,7 +6210,8 @@ class NsThemeTabs {
     "$flags$": 9,
     "$tagName$": "ns-theme-tabs",
     "$members$": {
-      "selectedIndex": [2, "selected-index"],
+      "selectedIndex": [514, "selected-index"],
+      "homeTab": [16],
       "items": [16],
       "selectedTab": [32],
       "tabs": [32],
@@ -6126,9 +6221,9 @@ class NsThemeTabs {
       "toggleTab": [64],
       "selectHomeTab": [64]
     },
-    "$listeners$": undefined,
+    "$listeners$": [[4, "closeTab", "closeTabHandler"]],
     "$lazyBundleId$": "-",
-    "$attrsToReflect$": []
+    "$attrsToReflect$": [["selectedIndex", "selected-index"]]
   }; }
 }
 
@@ -6138,6 +6233,7 @@ registerComponents([
   NsThemeBrandingBar,
   NsThemeDrawer,
   NsThemeHeader,
+  NsThemeListGroup,
   NsThemePanel,
   NsThemePanels,
   NsThemeTabs,

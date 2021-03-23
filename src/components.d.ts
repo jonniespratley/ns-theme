@@ -15,7 +15,7 @@ export namespace Components {
         "addTab": (tab: any) => Promise<void>;
         "closeTab": (index: any) => Promise<void>;
         "open": () => Promise<boolean>;
-        "tabs": NavItem[];
+        "tabs": TabItem[];
     }
     interface NsThemeBrandingBar {
         /**
@@ -80,6 +80,9 @@ export namespace Components {
          */
         "user": object;
     }
+    interface NsThemeListGroup {
+        "items": TabItem[];
+    }
     interface NsThemePanel {
         "selected": boolean;
     }
@@ -109,10 +112,12 @@ export namespace Components {
           * @returns Array of tabs
          */
         "getTabs": () => Promise<TabsMap>;
-        /**
-          * The default tabs to render
-         */
+        "homeTab": TabItem;
         "items": TabItem[];
+        /**
+          * Select home tab finds the home tab from the tabs.
+          * @returns Home tab
+         */
         "selectHomeTab": () => Promise<any>;
         /**
           * The default selected index
@@ -156,6 +161,12 @@ declare global {
         prototype: HTMLNsThemeHeaderElement;
         new (): HTMLNsThemeHeaderElement;
     };
+    interface HTMLNsThemeListGroupElement extends Components.NsThemeListGroup, HTMLStencilElement {
+    }
+    var HTMLNsThemeListGroupElement: {
+        prototype: HTMLNsThemeListGroupElement;
+        new (): HTMLNsThemeListGroupElement;
+    };
     interface HTMLNsThemePanelElement extends Components.NsThemePanel, HTMLStencilElement {
     }
     var HTMLNsThemePanelElement: {
@@ -180,6 +191,7 @@ declare global {
         "ns-theme-branding-bar": HTMLNsThemeBrandingBarElement;
         "ns-theme-drawer": HTMLNsThemeDrawerElement;
         "ns-theme-header": HTMLNsThemeHeaderElement;
+        "ns-theme-list-group": HTMLNsThemeListGroupElement;
         "ns-theme-panel": HTMLNsThemePanelElement;
         "ns-theme-panels": HTMLNsThemePanelsElement;
         "ns-theme-tabs": HTMLNsThemeTabsElement;
@@ -191,7 +203,7 @@ declare namespace LocalJSX {
         "width"?: number;
     }
     interface NsTheme {
-        "tabs"?: NavItem[];
+        "tabs"?: TabItem[];
     }
     interface NsThemeBrandingBar {
         /**
@@ -259,6 +271,10 @@ declare namespace LocalJSX {
          */
         "user"?: object;
     }
+    interface NsThemeListGroup {
+        "items"?: TabItem[];
+        "onTabClick"?: (event: CustomEvent<TabItem>) => void;
+    }
     interface NsThemePanel {
         "selected"?: boolean;
     }
@@ -266,14 +282,12 @@ declare namespace LocalJSX {
         "selectedIndex"?: number;
     }
     interface NsThemeTabs {
-        /**
-          * The default tabs to render
-         */
+        "homeTab"?: TabItem;
         "items"?: TabItem[];
         "onTabAdded"?: (event: CustomEvent<TabItem>) => void;
         "onTabChange"?: (event: CustomEvent<TabItem[]>) => void;
         "onTabClick"?: (event: CustomEvent<TabItem>) => void;
-        "onTabClose"?: (event: CustomEvent<any>) => void;
+        "onTabClose"?: (event: CustomEvent<TabItem>) => void;
         /**
           * The default selected index
          */
@@ -285,6 +299,7 @@ declare namespace LocalJSX {
         "ns-theme-branding-bar": NsThemeBrandingBar;
         "ns-theme-drawer": NsThemeDrawer;
         "ns-theme-header": NsThemeHeader;
+        "ns-theme-list-group": NsThemeListGroup;
         "ns-theme-panel": NsThemePanel;
         "ns-theme-panels": NsThemePanels;
         "ns-theme-tabs": NsThemeTabs;
@@ -299,6 +314,7 @@ declare module "@stencil/core" {
             "ns-theme-branding-bar": LocalJSX.NsThemeBrandingBar & JSXBase.HTMLAttributes<HTMLNsThemeBrandingBarElement>;
             "ns-theme-drawer": LocalJSX.NsThemeDrawer & JSXBase.HTMLAttributes<HTMLNsThemeDrawerElement>;
             "ns-theme-header": LocalJSX.NsThemeHeader & JSXBase.HTMLAttributes<HTMLNsThemeHeaderElement>;
+            "ns-theme-list-group": LocalJSX.NsThemeListGroup & JSXBase.HTMLAttributes<HTMLNsThemeListGroupElement>;
             "ns-theme-panel": LocalJSX.NsThemePanel & JSXBase.HTMLAttributes<HTMLNsThemePanelElement>;
             "ns-theme-panels": LocalJSX.NsThemePanels & JSXBase.HTMLAttributes<HTMLNsThemePanelsElement>;
             "ns-theme-tabs": LocalJSX.NsThemeTabs & JSXBase.HTMLAttributes<HTMLNsThemeTabsElement>;

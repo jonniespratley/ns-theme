@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, Event, EventEmitter, FunctionalComponent, State, Method, Watch } from '@stencil/core';
+import { Component, Host, h, Prop, Event, EventEmitter, FunctionalComponent, State, Method, Watch, Listen } from '@stencil/core';
 import { TabProps, TabItem, TabsMap } from '../props';
 
 /**
@@ -84,17 +84,15 @@ export class NsThemeTabs {
   /**
    * The default selected index
    */
-  @Prop() selectedIndex: number = 0;
+  @Prop({ reflect: true }) selectedIndex: number = 0;
 
-  /**
-   * The default tabs to render
-   */
+  @Prop() homeTab: TabItem;
   @Prop() items: TabItem[] = [];
 
   @Event() tabChange: EventEmitter<TabItem[]>;
   @Event() tabAdded: EventEmitter<TabItem>;
   @Event() tabClick: EventEmitter<TabItem>;
-  @Event() tabClose: EventEmitter<any>;
+  @Event() tabClose: EventEmitter<TabItem>;
 
   /**
    * Get the current tabs rendered
@@ -139,26 +137,34 @@ export class NsThemeTabs {
   */
   @Method()
   async toggleTab(tab: TabItem) {
+    if (!tab) {
+      return;
+    }
     let oldTabs = { ...this.tabs }
     Object.values(oldTabs).forEach((t: TabItem) => {
-      oldTabs[t.id].selected = false;
+      if (oldTabs[t.id].selected) {
+        oldTabs[t.id].selected = false;
+      }
     });
+    if (oldTabs[tab.id]) {
+      oldTabs[tab.id].selected = !tab.selected;
+    }
 
-    oldTabs[tab.id].selected = true;
     this.tabs = oldTabs;
   }
+
+  /**
+   * Select home tab finds the home tab from the tabs.
+   * @returns Home tab
+   */
   @Method()
   async selectHomeTab() {
     let home = null;
-    Object.values(this.tabs).forEach((t: TabItem) => {
-      if(t.home){
-        home = t;
-       
-      }
+    home = Object.values(this.tabs).find((item) => {
+      return item.home;
     });
     return home;
   }
-
 
   componentWillLoad() {
     [...this.items].forEach(t => {
@@ -166,13 +172,7 @@ export class NsThemeTabs {
         this.selectedTab = t;
       }
       this.tabs[t.id] = t;
-
     });
-  }
-
-  @Watch('selectedIndex')
-  watchHandler(newValue: number) {
-    //this.selectedTab = newValue
   }
 
   @Watch('tabs')
@@ -185,13 +185,25 @@ export class NsThemeTabs {
     this.tabClick.emit(item);
   }
 
+  @Listen('closeTab', { target: 'document' })
+  closeTabHandler(event: CustomEvent<TabItem>) {
+
+    this.closeTab(event.detail);
+  }
 
   render() {
     return (
       <Host>
         <ul class="ns-theme__tabs">
           {  /** Home Tab */}
-          {  /* Repeat Nav Items  */}
+          {this.homeTab && <Tab home={true}
+            {...this.homeTab}
+            onClick={(e) => {
+              e.preventDefault();
+              this.homeTab.selected = !this.homeTab.selected;
+              //this.tabClickHandler(this.homeTab);
+            }} />}
+
           {this.tabs && Object.values(this.tabs).map((item: TabItem) => (
             <Tab
               {...item}

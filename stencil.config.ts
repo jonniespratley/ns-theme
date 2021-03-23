@@ -5,10 +5,10 @@ export const config: Config = {
   namespace: 'ns-theme',
   buildEs5: 'prod',
   srcDir: 'src',
-  enableCache: true,
-  globalStyle: 'src/global/app.scss',
+  enableCache: false,
+  globalStyle: 'src/global/app.css',
   globalScript: 'src/global/app.ts',
-  hashFileNames: false,
+  hashFileNames: true,
   outputTargets: [
     {
       type: 'dist',
@@ -19,21 +19,19 @@ export const config: Config = {
     },
     {
       type: 'docs-readme',
-      footer: '*Build with Love by JS!*'
+      footer: '*Build with Love by JS!*',
     },
     { type: 'dist-hydrate-script' },
     {
       type: 'www',
-       // comment the following line to disable service workers in production
-       serviceWorker: null,
-       prerenderConfig: './prerender.config.ts',
-       baseUrl: '/',
-       //baseUrl: 'http://myapp.local/',
+      // comment the following line to disable service workers in production
+      serviceWorker: null,
+      prerenderConfig: './prerender.config.ts',
+      baseUrl: '/',
+      //baseUrl: 'http://myapp.local/',
     },
   ],
-  plugins: [
-    sass()
-  ],
+  plugins: [sass()],
   devServer: {
     logRequests: true,
     //reloadStrategy: 'pageReload'
@@ -47,5 +45,5 @@ export const config: Config = {
     appendChildSlotFix: false,
     cloneNodeFix: false,
     slotChildNodesFix: true,
-  }
+  },
 };

@@ -3,23 +3,20 @@
 * @prop --ns-theme-drawer-border-color: Color of the drawer border
 * @prop --ns-theme-drawer-width: Width of the drawer
 */
-:host {
-  display: block;
-}
 
 $drawer-width: 320px;
 
 $prefix: 'theme';
 
-
 $drawer-background-color: white;
 $drawer-border-color: black;
 $drawer-transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+$drawer-header-color: black;
 
-.#{$prefix}__drawer {
+:host {
   font-family: 'GE Inspira Sans', sans-serif;
   z-index: 10;
-  position: absolute;
+  position: fixed;
   top: 0;
   //left: 0;
   width: var(--ns-theme-drawer-width, 320px);
@@ -29,107 +26,88 @@ $drawer-transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
   box-shadow: none;
   will-change: transform;
   transition: $drawer-transition;
+  display: block;
+  contain: content;
+}
 
-  button {
-    outline: none;
-  }
+button {
+  outline: none;
+}
 
-  &-content {
-    padding-left: 1rem;
-  }
+//Right
+:host(.#{$prefix}__drawer--right) {
+  right: 0;
+  position: fixed;
+  box-shadow: 0 0 3px 2px rgb(0 0 0 / 12%);
+  //transform: translate3d($drawer-width, 0px, 0px);
+}
+
+//Left
+:host(.#{$prefix}__drawer--left) {
+  left: 0;
+  box-shadow: 0 0 3px 2px rgb(0 0 0 / 12%);
+  transform: translate3d(-$drawer-width, 0px, 0px);
+}
+//Top
+:host(.#{$prefix}__drawer--top) {
+  box-shadow: 0 0 3px 2px rgb(0 0 0 / 12%);
+  right: 0;
+  top: 0;
+  bottom: auto;
+  left: 0;
+  width: 100%;
+  min-height: 100px;
+  max-height: $drawer-width;
+  height: auto;
+}
+
+//Bottom
+:host(.#{$prefix}__drawer--bottom) {
+  box-shadow: 0 0 3px 2px rgb(0 0 0 / 12%);
+  height: auto;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: auto;
+  bottom: 0;
+  min-height: 100px;
+  //transform: translate3d(0px, $drawer-width, 0px);
+}
+
+//.drawer-header
+:host header {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border-bottom: 1px solid rgb(255 255 255 / 20%);
+  box-shadow: 0 0 3px 2px rgb(0 0 0 / 12%);
+  height: 3rem;
+  color: var(--px-app-nav-item-text-color, $drawer-header-color);
+  justify-content: space-between;
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+}
+
+:host h3 {
+  text-align: left;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+:host nav {
+  max-height: var(--ns-theme-drawer-max-height, 90vh);
+  overflow-y: auto;
+}
+
+.#{$prefix}__drawer {
   &--fixed {
     position: fixed;
-  }
-  
-
-  // Left Anchor
-  &.left {
-    left: 0;
-    &.open {
-      transform: translate3d(0px, 0px, 0px);
-    }
-
-    &.close {
-      transform: translate3d(-$drawer-width, 0px, 0px);
-    }
-  }
-
-  // Bottom Anchor
-  &.bottom {
-    height: auto;
-    width: 100%;
-    left: 0;
-    right: 0;
-    top: auto;
-    bottom: 0;
-    min-height: 100px;
-    transform: translate3d( 0px, 0, 0px);
-    &.close {
-      transform: translate3d( 0px, $drawer-width, 0px);
-    }
-  }
-
-
-  // Right Anchor
-  &.right {
-    right: 0;
-    position: fixed;
-     &.close {
-      transform: translate3d($drawer-width, 0px, 0px);
-    }
-  }
-
-
-
-  // Top Anchor
-  &.top {
-    right: 0;
-    top: 0;
-    bottom: auto;
-    left: 0;
-    width: 100%;
-    min-height: 100px;
-    max-height: $drawer-width;
-    height: auto;
-     &.close {
-      transform: translate3d( 0px, -$drawer-width, 0px);
-    }
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-  //.drawer-header
-  &-header {
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    color: white;
-    border-bottom: 1px solid rgb(255 255 255 / 20%);
-    height: 3rem;
-    color: var(--px-app-nav-item-text-color, white);
-    justify-content: space-between;
-    padding: 0 1.2rem;
-    margin-bottom: 1rem;
-  }
-
-  h2 {
-    text-align: left;
-    margin: 0 !important;
-    padding: 0 !important;
-    font-weight: normal;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2em;
   }
 
   &-toggle {
@@ -231,60 +209,3 @@ $drawer-transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
     }
   }
 }
-
-
-
-/**
-Drawer list group items
-*/
-$list-group-item-color: #000;
-$list-group-item-background-color: #fff;
-
-$list-group-item-color--active: #fff;
-$list-group-item-background-color--active: #09809c;
-
-.list-group {
-  display: grid;
-  grid-auto-flow: row;
-  grid-row-gap: .2rem;
-
-  button {
-    background-color: transparent;
-    outline: none;
-    border: none;
-    font-size: 1.1rem;
-    cursor: pointer;
-  }
-
-  &-item {
-    display: grid;
-    text-decoration: none;
-    background-color: $list-group-item-background-color;
-    color: $list-group-item-color;
-    grid-auto-flow: column;
-    grid-template-columns: 3fr 1fr;
-    &.active {
-      background-color: $list-group-item-background-color--active;
-      color: $list-group-item-color--active;
-      button {
-        color: $list-group-item-color--active;
-      }
-    }
-  }
-
-  &-content {
-    display: flex;
-    flex-direction: column;
-    padding: .6rem;
-    padding-left: 1rem;
-  }
-  &-actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-  }
-
-  
-}
-
-

@@ -1,3 +1,26 @@
+@import './assets/gedicons.scss';
+
+@font-face {
+  font-family: 'gedi';
+  src: url('https://assets.codepen.io/49212/gedi.eot?dd3a33b6a2034ee871e14624473a90b5?#iefix') format('embedded-opentype'),
+    url('https://assets.codepen.io/49212/gedi.woff2?dd3a33b6a2034ee871e14624473a90b5') format('woff2'),
+    url('https://assets.codepen.io/49212/gedi.woff?dd3a33b6a2034ee871e14624473a90b5') format('woff'),
+    url('https://assets.codepen.io/49212/gedi.ttf?dd3a33b6a2034ee871e14624473a90b5') format('truetype'),
+    url('https://assets.codepen.io/49212/gedi.svg?dd3a33b6a2034ee871e14624473a90b5#gedi') format('svg');
+}
+
+[class^='gedi-'],
+[class*=' gedi-'] {
+  font-family: gedi !important;
+  font-style: normal;
+  font-weight: normal !important;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 :host {
   display: block;
 }

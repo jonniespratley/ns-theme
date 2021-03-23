@@ -6,7 +6,7 @@ const iconStyles = {
   height: '22px'
 }
 
-const HomeNavItem = ({selected = false}) => (
+const HomeNavItem = ({ selected = false }) => (
   <div class={`theme__nav-item theme__nav-item-icon ${selected ? 'theme__nav-item--selected' : ''}`}>
     <button title="Home" class="btn theme__nav-link">
       <i class="px-icon px-nav-home m-0">
@@ -163,20 +163,20 @@ export class NsThemeHeader {
   /**
    * Main navigation items
    */
-  @Prop() items:NavItem[] = [];
+  @Prop() items: NavItem[] = [];
   /**
    * Profile navigation items
    */
-  @Prop() profile:NavItem[] = [];
+  @Prop() profile: NavItem[] = [];
   /**
    * Settings navigation items
    */
-  @Prop() settings:NavItem[] = [];
+  @Prop() settings: NavItem[] = [];
   /**
    * User properties for user menu
    */
-  @Prop() user:object = { name: null, picture: null, email: null };
-  
+  @Prop() user: object = { name: null, picture: null, email: null };
+
   /**
    * Header in fixed position or not
    */
@@ -202,29 +202,28 @@ export class NsThemeHeader {
   render() {
     return (
       <Host>
-        {this.headerText && <a class="theme__navbar-brand" href="#">{this.headerText}</a>}        
+        {this.headerText && <a class="theme__navbar-brand" href="#">{this.headerText}</a>}
         <header class={`theme__header ${this.isFixed ? 'theme__header--fixed' : ''}`}>
-            {this.showMenu && (
-              <button class="btn theme__toggler collapsed" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation"
+          {this.showMenu && (
+            <button class="btn theme__toggler collapsed" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation"
               onClick={() => {
                 this.menuToggleClickHandler()
               }}>
-                <span class="theme__toggler-icon">
-                  <svg viewBox="0 0 22 22" preserveAspectRatio="xMidYMid meet" focusable="false" style={iconStyles}>
-                    <g><path stroke-miterlimit="10" d="M0 4.5h22m-22 6h22m-22 6h22"></path></g>
-                  </svg>
-                </span>
-              </button>
-            )}
-            <slot name="menu"></slot>
-            <div>
-              <slot name="home"></slot>
-              {this.showHome && <HomeNavItem/>}
-            </div>
-            <slot name="tabs"></slot>
-            <div>
-              <slot name="right"></slot>
-            </div>
+              <span class="theme__toggler-icon">
+                <svg viewBox="0 0 22 22" preserveAspectRatio="xMidYMid meet" focusable="false" style={iconStyles}>
+                  <g><path stroke-miterlimit="10" d="M0 4.5h22m-22 6h22m-22 6h22"></path></g>
+                </svg>
+              </span>
+            </button>
+          )}
+          <slot name="menu"></slot>
+          <div>
+            <slot name="home"></slot>
+            {this.showHome && <HomeNavItem />}
+          </div>
+          <slot name="tabs"></slot>
+          <div class="theme__user"></div>
+          <slot name="user"></slot>
           {/**
             <ul class="theme__nav">
               <SearchNavItem/>

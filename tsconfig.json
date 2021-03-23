@@ -20,6 +20,7 @@
     "src"
   ],
   "exclude": [
+    "lib",
     "*.md",
     "node_modules",
     "test"

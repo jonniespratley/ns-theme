@@ -1,9 +1,9 @@
-
 $prefix: 'theme';
 $header-background-color: rgb(235, 239, 242);
 $header-border-bottom: 1px solid rgb(196, 207, 214);
 $header-color: black;
 $header-max-height: 50px;
+
 /**
  * @prop --px-app-nav-item-text-color: Color of the nav item text
  * @prop --px-app-nav-item-text-color--hover: Color of the nav item text when hovered
@@ -28,32 +28,28 @@ $header-max-height: 50px;
   box-sizing: border-box;
   min-block-size: fit-content;
   display: block;
-  
 }
 
 :host > * {
   box-sizing: border-box;
-  
 }
-
-
 
 .#{$prefix}__header {
   height: $header-max-height;
   background-color: var(--apm-theme-navbar-background-color, $header-background-color);
   border-bottom: var(--apm-theme-navbar-border, $header-border-bottom);
- 
+
   //color: var(--theme-navbar-color, $header-color);
 
   //box-shadow: var(--px-app-nav-box-shadow, 0 2px 4px var(--px-shadow-navigation, rgba(0, 0, 0, 0.2)));
 
- box-sizing: border-box;
+  box-sizing: border-box;
   width: 100%;
   display: inline-grid;
   grid-auto-flow: column;
   //grid-template-columns: 3rem 3rem 1fr 3rem;
   grid-template-columns: 50px 0fr minmax(0px, 1fr);
-  
+
   justify-content: center;
   align-items: center;
   user-select: none;
@@ -179,8 +175,6 @@ $header-max-height: 50px;
     color: var(--px-app-nav-item-text-color, rgba(0, 0, 0, 0.5));
     align-self: stretch;
   }
-
-  
 
   /* Style the close button (span) */
   .close {
