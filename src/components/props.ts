@@ -5,6 +5,10 @@ export interface NavItemProps extends NavItem {
   //selected?: boolean;
 }
 
+export interface TabsMap {
+  [key: string]: TabItem;
+};
+
 export interface TabItem {
   id: string;
   selected?: boolean;
@@ -13,10 +17,11 @@ export interface TabItem {
   title?: string;
   panelId?: string;
   index?: number;
+  home?: boolean;
 }
 
 export interface TabProps extends TabItem {
-  onClick?: () => void;
+  onClick?: (e:MouseEvent) => void;
   onRemove?: () => void;
 }
 

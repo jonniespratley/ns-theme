@@ -18,30 +18,36 @@ export class NsThemePanels {
     this.selectedPanel = newValue
     let p = this.panels[newValue];
     if(p){
-      this.togglePanel(p.index);
+      this.togglePanel(p.tab);
     }
   }
 
   @Method()
-  async closePanel(index) {
-    let p = this.el.querySelector(`[data-index="${index}"]`);
+  async closePanel(tab:TabItem) {
+
+    let p = null;
+    if(tab.id){
+      p = this.el.querySelector(`[data-tab="${tab.id}"]`)
+    } else if(tab.panelId){
+      p = this.el.querySelector(`[data-panel="${tab.panelId}"]`)
+    }
     if(p){
       p.remove();
     } else {
-      console.error('ns-theme-panel - Could not find tab id ===', index)
+      console.error('ns-theme-panel - Could not find panel with id ===', tab)
     }
   }
 
   @Method()
   async addPanel(tab:TabItem, element:any) {
     
-  
     let pane = document.createElement('article');
     
     pane.dataset.tab = tab.id;
     pane.dataset.href = tab.href;
     pane.dataset.panel = tab.panelId;
-    pane.dataset.index = `${tab.index}`;
+    //pane.dataset.index = `${tab.index}`;
+
     pane.appendChild(element);
     this.panels.push(pane.dataset);
     if(element){
@@ -60,13 +66,13 @@ export class NsThemePanels {
   }
   
   @Method()
-  async togglePanel(index) {
-    let p = this.el.querySelector(`[data-index="${index}"]`);
+  async togglePanel(tab:TabItem) {
+    let p = this.el.querySelector(`[data-tab="${tab.id}"]`);
     if(p){
       this.clearActive()
       return p.classList.add('active');
     } else {
-      console.error('ns-theme-panel - Could not find tab id ===', index)
+      console.error('ns-theme-panel - Could not find tab id ===', tab.id)
     }
   }
 
@@ -83,10 +89,11 @@ export class NsThemePanels {
 
   render() {
     return (
-      <Host class="ns-theme-panels">
-        <section>
+      <Host>
+        <section class="ns-theme-panels">
           <slot></slot>
         </section>
+
       </Host>
     );
   }

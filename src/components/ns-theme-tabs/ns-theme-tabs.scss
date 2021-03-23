@@ -1,18 +1,28 @@
 $prefix: 'ns-theme';
 
+$tab-min-width: 150px;
+$tabs-min-height: 50px;
 $tabs-font-color: #777;
 $tabs-font-color--active: #777;
 $tabs-border-color--active: #09809c;
-$tabs-background-color--active: transparent;
+$tabs-background-color--active: white;
 $tabs-link-color: #222;
 
 $tabs-border--active: 2px solid #09809c;
 $tabs-border: 1px solid #b9b9b9;
 
 :host {
+  //variables
+  --ns-theme-tabs-link-color: $tabs-link-color;
+}
+
+
+:host {
   display: block;
   box-sizing: border-box;
   overflow: hidden;
+  font-family: GE Inspira Sans, sans-serif;
+
 
   ul {
     margin: 0;
@@ -28,6 +38,8 @@ $tabs-border: 1px solid #b9b9b9;
     justify-content: center;
   }
 
+  
+
   // .ns-theme-tabs__list
   .ns-theme__tabs {
     display: flex;
@@ -40,15 +52,15 @@ $tabs-border: 1px solid #b9b9b9;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
     background:
-      /* Shadow covers */ linear-gradient(90deg, white 30%, rgba(255, 255, 255, 0)), linear-gradient(90deg, rgba(255, 255, 255, 0), white 70%) 100% 0,
+      /* Shadow covers */ linear-gradient(90deg, transparent 30%, rgba(255, 255, 255, 0)), linear-gradient(90deg, rgba(255, 255, 255, 0), white 70%) 100% 0,
       /* Shadows */ radial-gradient(0 50%, farthest-side, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)),
       radial-gradient(100% 50%, farthest-side, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 100% 0;
     background:
-      /* Shadow covers */ linear-gradient(90deg, white 30%, rgba(255, 255, 255, 0)), linear-gradient(90deg, rgba(255, 255, 255, 0), white 70%) 100% 0,
+      /* Shadow covers */ linear-gradient(90deg, transparent 30%, rgba(255, 255, 255, 0)), linear-gradient(90deg, rgba(255, 255, 255, 0), white 70%) 100% 0,
       /* Shadows */ radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)),
       radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 100% 0;
     background-repeat: no-repeat;
-    background-color: white;
+    background-color: transparent;
     background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
 
     /* Opera doesn't support this in the shorthand */
@@ -65,7 +77,8 @@ $tabs-border: 1px solid #b9b9b9;
   }
 
   // .ns-theme-tabs__list-item
-  .ns-theme__tabs li {
+  .ns-theme__tab-item {
+    
     &:first-child {
       //width: 55px;
       border-left: $tabs-border;
@@ -78,23 +91,41 @@ $tabs-border: 1px solid #b9b9b9;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    align-self: stretch;
+    
+    &.home {
+
+      .px-icon {
+        height: 32px;
+      }
+
+      //Home Tab Link
+      .ns-theme__tab-link {
+        width: $tabs-min-height;
+        min-width: auto;
+        padding: 0;
+        .close {
+          display: none;
+        }
+      }
+    }
 
     &.active {
       background: $tabs-background-color--active;
+      
+      // This is the white border on active tab to bleed over onto canvas
       &:after {
         content: '';
         background: $tabs-background-color--active;
         height: 1px;
         display: block;
         position: absolute;
-        left: -2px;
+        left: 0px;
         right: 0px;
-        bottom: -1px;
+        bottom: 0px;
       }
-
-      a {
-        color: $tabs-link-color;
-        font-weight: 500;
+      // This is the blue border on top of active tab
+      a{
         &:before {
           content: '';
           height: 3px;
@@ -109,26 +140,32 @@ $tabs-border: 1px solid #b9b9b9;
     }
   }
 
+
+
   // .ns-theme-tabs__list-link
-  > ul > li > a {
-    color: $tabs-font-color;
-    min-width: 150px;
+  .ns-theme__tab-link {
+    
+    color: $tabs-link-color;
+    font-weight: 500;
+    min-width: $tab-min-width;
     padding-left: 0.5rem;
     flex: 1;
     //height: 51px;
     cursor: pointer;
-    min-height: 50px;
+    min-height: $tabs-min-height;
     margin-right: 0;
     border: none !important;
+
     display: flex;
     justify-content: center;
     flex-direction: column;
-
     text-decoration: none;
     &:hover {
       cursor: pointer;
       //	border-top: $tabs-border--active;
     }
+    
+    
   }
 
   // Title
@@ -159,8 +196,7 @@ $tabs-border: 1px solid #b9b9b9;
     }
   }
 
-  .fa,
-  .icon {
+  .fa, .icon {
     margin: 0 1rem;
   }
   .px-icon svg {

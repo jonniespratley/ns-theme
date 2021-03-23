@@ -5,8 +5,12 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { NavItem, TabItem } from "./components/props";
+import { NavItem, TabItem, TabsMap } from "./components/props";
 export namespace Components {
+    interface NsSpinner {
+        "height": number;
+        "width": number;
+    }
     interface NsTheme {
         "addTab": (tab: any) => Promise<void>;
         "closeTab": (index: any) => Promise<void>;
@@ -81,11 +85,11 @@ export namespace Components {
     }
     interface NsThemePanels {
         "addPanel": (tab: TabItem, element: any) => Promise<HTMLElement>;
-        "closePanel": (index: any) => Promise<void>;
+        "closePanel": (tab: TabItem) => Promise<void>;
         "getPanelNodes": () => Promise<NodeListOf<HTMLElement>>;
         "getPanels": () => Promise<any[]>;
         "selectedIndex": number;
-        "togglePanel": (index: any) => Promise<void>;
+        "togglePanel": (tab: TabItem) => Promise<void>;
     }
     interface NsThemeTabs {
         /**
@@ -93,29 +97,41 @@ export namespace Components {
           * @param tab TabItem to add
           * @returns Updated array of tabs
          */
-        "addTab": (tab: TabItem) => Promise<{ index: number; id: string; selected?: boolean; href: string; label: string; title?: string; panelId?: string; }>;
+        "addTab": (tab: TabItem) => Promise<{ id: string; selected?: boolean; href: string; label: string; title?: string; panelId?: string; index?: number; home?: boolean; }>;
         /**
           * Close a tab from the tab set.
           * @param index number The index of the tab to close.
           * @returns
          */
-        "closeTab": (index: any) => Promise<TabItem>;
+        "closeTab": (tab: TabItem) => Promise<TabItem>;
         /**
           * Get the current tabs rendered
           * @returns Array of tabs
          */
-        "getTabs": () => Promise<TabItem[]>;
+        "getTabs": () => Promise<TabsMap>;
         /**
           * The default tabs to render
          */
         "items": TabItem[];
+        "selectHomeTab": () => Promise<any>;
         /**
           * The default selected index
          */
         "selectedIndex": number;
+        /**
+          * Handles toggling a tab's selected property.
+          * @param tab The tab item to toggle
+         */
+        "toggleTab": (tab: TabItem) => Promise<void>;
     }
 }
 declare global {
+    interface HTMLNsSpinnerElement extends Components.NsSpinner, HTMLStencilElement {
+    }
+    var HTMLNsSpinnerElement: {
+        prototype: HTMLNsSpinnerElement;
+        new (): HTMLNsSpinnerElement;
+    };
     interface HTMLNsThemeElement extends Components.NsTheme, HTMLStencilElement {
     }
     var HTMLNsThemeElement: {
@@ -159,6 +175,7 @@ declare global {
         new (): HTMLNsThemeTabsElement;
     };
     interface HTMLElementTagNameMap {
+        "ns-spinner": HTMLNsSpinnerElement;
         "ns-theme": HTMLNsThemeElement;
         "ns-theme-branding-bar": HTMLNsThemeBrandingBarElement;
         "ns-theme-drawer": HTMLNsThemeDrawerElement;
@@ -169,6 +186,10 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface NsSpinner {
+        "height"?: number;
+        "width"?: number;
+    }
     interface NsTheme {
         "tabs"?: NavItem[];
     }
@@ -213,7 +234,10 @@ declare namespace LocalJSX {
           * Main navigation items
          */
         "items"?: NavItem[];
-        "onNavItemClick"?: (event: CustomEvent<NavItem>) => void;
+        /**
+          * menuToggleClick dispatches when menu button is pressed
+         */
+        "onMenuToggleClick"?: (event: CustomEvent<any>) => void;
         /**
           * Profile navigation items
          */
@@ -256,6 +280,7 @@ declare namespace LocalJSX {
         "selectedIndex"?: number;
     }
     interface IntrinsicElements {
+        "ns-spinner": NsSpinner;
         "ns-theme": NsTheme;
         "ns-theme-branding-bar": NsThemeBrandingBar;
         "ns-theme-drawer": NsThemeDrawer;
@@ -269,6 +294,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "ns-spinner": LocalJSX.NsSpinner & JSXBase.HTMLAttributes<HTMLNsSpinnerElement>;
             "ns-theme": LocalJSX.NsTheme & JSXBase.HTMLAttributes<HTMLNsThemeElement>;
             "ns-theme-branding-bar": LocalJSX.NsThemeBrandingBar & JSXBase.HTMLAttributes<HTMLNsThemeBrandingBarElement>;
             "ns-theme-drawer": LocalJSX.NsThemeDrawer & JSXBase.HTMLAttributes<HTMLNsThemeDrawerElement>;

@@ -10,6 +10,12 @@
 $drawer-width: 320px;
 
 $prefix: 'theme';
+
+
+$drawer-background-color: white;
+$drawer-border-color: black;
+$drawer-transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+
 .#{$prefix}__drawer {
   font-family: 'GE Inspira Sans', sans-serif;
   z-index: 10;
@@ -18,11 +24,11 @@ $prefix: 'theme';
   //left: 0;
   width: var(--ns-theme-drawer-width, 320px);
   height: 100%;
-  background-color: var(--ns-theme-drawer-background-color, #23343f);
-  border-right-color: var(--ns-theme-drawer-border-color, #000);
+  background-color: var(--ns-theme-drawer-background-color, $drawer-background-color);
+  border-right-color: var(--ns-theme-drawer-border-color, $drawer-border-color);
   box-shadow: none;
   will-change: transform;
-  transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+  transition: $drawer-transition;
 
   button {
     outline: none;
@@ -67,6 +73,7 @@ $prefix: 'theme';
   // Right Anchor
   &.right {
     right: 0;
+    position: fixed;
      &.close {
       transform: translate3d($drawer-width, 0px, 0px);
     }

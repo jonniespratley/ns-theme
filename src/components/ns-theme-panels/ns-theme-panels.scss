@@ -1,5 +1,6 @@
 :host {
- 
+  
+
   background: white;
  
     display: flex;
@@ -14,10 +15,27 @@
     /* be pushy about consuming all space */
     block-size: 100%;
   }
+}
 
+.ns-theme-panels section {
+  block-size: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+}
+
+.ns-theme-panels {
+  &__overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 ns-theme-panels {
+  --px-spinner-fill-color: #007acc;
+  --px-spinner-background-color: #b5e5fd;
+
   background: white;
  
   display: flex;
@@ -34,12 +52,35 @@ ns-theme-panels {
     display: none;
   }
 
-  section {
-    block-size: 100%;
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 100%;
+  .px-icon svg {
+    fill: var(--iron-icon-fill-color, none);
+    stroke: var(--iron-icon-stroke-color, currentColor);
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    position: relative;
+    vertical-align: middle;
+    width: var(--iron-icon-width);
+    height: var(--iron-icon-height);
+    color: inherit !important;
   }
+
+  .circle1 {
+    fill: none;
+    stroke: var(--px-spinner-background-color,#d3d3d3);
+    stroke-width: 5px;
+}
+  .circle2 {
+    fill: none;
+    stroke: var(--px-spinner-fill-color,#09809c);
+    stroke-width: 5px;
+    stroke-dasharray: 283;
+    stroke-dashoffset: 566;
+    animation: rotate 1.5s infinite cubic-bezier(.78,.13,.16,.87);
+  }
+  
 }
 
 

@@ -141,18 +141,7 @@ function SearchNavItem() {
   </li>);
 }
 */
-const NavbarToggler = () => (
-  <button class="btn theme__toggler collapsed" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation"
-  onClick={() => {
-    //document.dispatchEvent(new CustomEvent('toggleDrawer'))
-  }}>
-    <span class="theme__toggler-icon">
-      <svg viewBox="0 0 22 22" preserveAspectRatio="xMidYMid meet" focusable="false" style={iconStyles}>
-        <g><path stroke-miterlimit="10" d="M0 4.5h22m-22 6h22m-22 6h22"></path></g>
-      </svg>
-    </span>
-  </button>
-)
+
 
 /**
  * @example
@@ -201,17 +190,32 @@ export class NsThemeHeader {
    */
   @Prop() showHome: boolean;
 
-  @Event() navItemClick: EventEmitter<NavItem>;
+  /**
+   * menuToggleClick dispatches when menu button is pressed
+   */
+  @Event() menuToggleClick: EventEmitter<any>;
 
-  navItemClickHandler(item: NavItem) {
-    this.navItemClick.emit(item);
+  menuToggleClickHandler() {
+    this.menuToggleClick.emit();
   }
+
   render() {
     return (
       <Host>
         {this.headerText && <a class="theme__navbar-brand" href="#">{this.headerText}</a>}        
         <header class={`theme__header ${this.isFixed ? 'theme__header--fixed' : ''}`}>
-            {this.showMenu && <NavbarToggler/>}
+            {this.showMenu && (
+              <button class="btn theme__toggler collapsed" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation"
+              onClick={() => {
+                this.menuToggleClickHandler()
+              }}>
+                <span class="theme__toggler-icon">
+                  <svg viewBox="0 0 22 22" preserveAspectRatio="xMidYMid meet" focusable="false" style={iconStyles}>
+                    <g><path stroke-miterlimit="10" d="M0 4.5h22m-22 6h22m-22 6h22"></path></g>
+                  </svg>
+                </span>
+              </button>
+            )}
             <slot name="menu"></slot>
             <div>
               <slot name="home"></slot>
