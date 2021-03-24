@@ -105,6 +105,19 @@ button {
   overflow-y: auto;
 }
 
+.btn {
+  color: var(--px-btn-tertiary-color, #007acc);
+  cursor: pointer;
+  padding: 0.5rem;
+  background-color: var(--px-btn-tertiary-color, white);
+  border: 0;
+  font-weight: 500;
+  text-shadow: 0 1px 0 #fff;
+  &:hover {
+    background-color: var(--px-btn-tertiary-background--hover, whitesmoke);
+  }
+}
+
 .#{$prefix}__drawer {
   &--fixed {
     position: fixed;
@@ -130,19 +143,6 @@ button {
   &-toggle__link:link,
   &-toggle__link:visited {
     color: var(--iron-icon-stroke-color, #5d707d);
-  }
-
-  .close {
-    cursor: pointer;
-    padding: 0;
-    background-color: transparent;
-    border: 0;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    font-weight: 700;
-    text-shadow: 0 1px 0 #fff;
-    color: inherit;
   }
 
   &-nav {

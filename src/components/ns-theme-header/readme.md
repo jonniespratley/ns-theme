@@ -21,9 +21,9 @@
 
 ## Events
 
-| Event          | Description | Type                   |
-| -------------- | ----------- | ---------------------- |
-| `navItemClick` |             | `CustomEvent<NavItem>` |
+| Event             | Description                                            | Type               |
+| ----------------- | ------------------------------------------------------ | ------------------ |
+| `menuToggleClick` | menuToggleClick dispatches when menu button is pressed | `CustomEvent<any>` |
 
 
 ## CSS Custom Properties
@@ -36,6 +36,19 @@
 | `--px-app-nav-item-text-color`              | Color of the nav item text                    |
 | `--px-app-nav-item-text-color--hover`       | Color of the nav item text when hovered       |
 
+
+## Dependencies
+
+### Used by
+
+ - [ns-theme](../ns-theme)
+
+### Graph
+```mermaid
+graph TD;
+  ns-theme --> ns-theme-header
+  style ns-theme-header fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

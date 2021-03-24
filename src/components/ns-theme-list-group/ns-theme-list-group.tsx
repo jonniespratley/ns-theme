@@ -27,7 +27,9 @@ export class NsThemeListGroup {
                 <span class="list-item__title">{item.label}</span>
               </div>
               <div class="list-item__actions">
-                <button title={`Open in ${item.label} New Window`}>
+                <button title={`Open in ${item.label} New Window`} onClick={() => {
+                  document.open(`${item.href}?chromeless=true`, `${item.title} Window`, null, true);
+                }}>
                   <i class="gedi-new-window"></i>
                 </button>
                 <button title={`Close ${item.label} Tab`} onClick={() => {

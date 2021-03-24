@@ -9,20 +9,18 @@ $tabs-background-color--active: white;
 $tabs-link-color: #222;
 
 $tabs-border--active: 2px solid #09809c;
-$tabs-border: 1px solid #b9b9b9;
+$tabs-border: 1px solid #ccc;
 
 :host {
   //variables
   --ns-theme-tabs-link-color: $tabs-link-color;
 }
 
-
 :host {
   display: block;
   box-sizing: border-box;
   overflow: hidden;
   font-family: GE Inspira Sans, sans-serif;
-
 
   ul {
     margin: 0;
@@ -37,8 +35,6 @@ $tabs-border: 1px solid #b9b9b9;
     display: flex;
     justify-content: center;
   }
-
-  
 
   // .ns-theme-tabs__list
   .ns-theme__tabs {
@@ -67,8 +63,6 @@ $tabs-border: 1px solid #b9b9b9;
     background-attachment: local, local, scroll, scroll;
   }
 
-
-
   .ns-theme__tab-item__label {
     margin: 0;
     overflow: hidden;
@@ -78,10 +72,11 @@ $tabs-border: 1px solid #b9b9b9;
 
   // .ns-theme-tabs__list-item
   .ns-theme__tab-item {
-    
+    //Home Tab
     &:first-child {
       //width: 55px;
       border-left: $tabs-border;
+      flex: 0 0 50px;
     }
 
     border-right: $tabs-border;
@@ -92,17 +87,17 @@ $tabs-border: 1px solid #b9b9b9;
     justify-content: space-between;
     align-items: center;
     align-self: stretch;
-    
+    flex: 0 1 $tab-min-width;
     &.home {
-
       .px-icon {
         height: 32px;
       }
 
       //Home Tab Link
       .ns-theme__tab-link {
-        width: $tabs-min-height;
+        //width: $tabs-min-height;
         min-width: auto;
+        flex: 1;
         padding: 0;
         .close {
           display: none;
@@ -112,7 +107,7 @@ $tabs-border: 1px solid #b9b9b9;
 
     &.active {
       background: $tabs-background-color--active;
-      
+
       // This is the white border on active tab to bleed over onto canvas
       &:after {
         content: '';
@@ -125,7 +120,7 @@ $tabs-border: 1px solid #b9b9b9;
         bottom: 0px;
       }
       // This is the blue border on top of active tab
-      a{
+      a {
         &:before {
           content: '';
           height: 3px;
@@ -140,14 +135,11 @@ $tabs-border: 1px solid #b9b9b9;
     }
   }
 
-
-
   // .ns-theme-tabs__list-link
   .ns-theme__tab-link {
-    
     color: $tabs-link-color;
     font-weight: 500;
-    min-width: $tab-min-width;
+    //min-width: $tab-min-width;
     padding-left: 0.5rem;
     flex: 1;
     //height: 51px;
@@ -164,8 +156,6 @@ $tabs-border: 1px solid #b9b9b9;
       cursor: pointer;
       //	border-top: $tabs-border--active;
     }
-    
-    
   }
 
   // Title
@@ -196,24 +186,6 @@ $tabs-border: 1px solid #b9b9b9;
     }
   }
 
-  .fa, .icon {
-    margin: 0 1rem;
-  }
-  .px-icon svg {
-    fill: var(--iron-icon-fill-color, none);
-    stroke: var(--iron-icon-stroke-color, currentColor);
-    display: inline-flex;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-    position: relative;
-    vertical-align: middle;
-    width: var(--iron-icon-width);
-    height: var(--iron-icon-height);
-    color: inherit !important;
-  }
-
   .close:not(:disabled):not(.disabled):hover,
   .close:not(:disabled):not(.disabled):focus {
     opacity: 0.75;
@@ -227,5 +199,20 @@ $tabs-border: 1px solid #b9b9b9;
 
   a.close.disabled {
     pointer-events: none;
+  }
+
+  .px-icon svg {
+    fill: var(--iron-icon-fill-color, none);
+    stroke: var(--iron-icon-stroke-color, currentColor);
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    position: relative;
+    vertical-align: middle;
+    width: var(--iron-icon-width);
+    height: var(--iron-icon-height);
+    color: inherit !important;
   }
 }

@@ -18,20 +18,12 @@ FirstStory.args = {
 };
 */
 import { storiesOf } from '@storybook/html';
-import readme from './readme.md';
+import { withKnobs } from '@storybook/addon-knobs';
 
-storiesOf('ns-theme-header', module).add(
-  'Default', () =>
-    `
-    <ns-theme-header headerText="Drawer Title">
-    
-    </ns-theme-header>
-    `,
-  {
-    notes: {
-      markdown: readme,
-    }
-  }
-);
+const tabs = [{ id: 1, label: 'Tab 1' }];
+storiesOf('ns-theme-tabs', module)
+  .addDecorator(withKnobs)
 
-
+  .add('with Home tab', () => {
+    return `<ns-theme-tabs items=${tabs}></ns-theme-tabs>`;
+  });

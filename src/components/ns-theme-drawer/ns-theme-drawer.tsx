@@ -1,10 +1,6 @@
-import { Component, Host, Prop, h, Element, Listen, State, Watch, Method } from '@stencil/core';
+import { Component, Host, Prop, h, Element, Listen, State, Method } from '@stencil/core';
 
-const iconStyles = {
-  display: 'block',
-  width: '22px',
-  height: '22px'
-}
+
 
 @Component({
   tag: 'ns-theme-drawer',
@@ -19,6 +15,10 @@ export class NsThemeDrawer {
    * The header text for the drawer.
    */
   @Prop() headerText: string;
+  /**
+   * The header action text for the drawer.
+   */
+  @Prop() headerActionText: string = 'Close All';
 
   /**
    * The anchor position of the drawer.
@@ -114,21 +114,12 @@ export class NsThemeDrawer {
             {this.headerText && <h3>{this.headerText}</h3>}
           </div>
 
-          <button type="button" class="close" aria-label="Close" onClick={() => {
-            document.dispatchEvent(new CustomEvent('closeDrawer'))
+          <button type="button" class="btn" aria-label="Close" onClick={() => {
+            document.dispatchEvent(new CustomEvent('drawerHeaderAction'))
           }}>
-            <i class="px-icon px-nav-close" color="inherit" style={{ width: '22px', height: '22px' }}>
-              <svg
-                viewBox="0 0 22 22"
-                preserveAspectRatio="xMidYMid meet"
-                style={iconStyles}
-              >
-                <g id="px-nav-close">
-                  <path stroke-miterlimit="10" d="M3 19L19 3M3 3l16 16"></path>
-                </g>
-              </svg>
-            </i>
+            {this.headerActionText}
           </button>
+          <slot name="header"></slot>
         </header>
         <nav class="theme__drawer-content">
           <slot></slot>

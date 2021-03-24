@@ -24,7 +24,7 @@ Type: `Promise<HTMLElement>`
 
 
 
-### `closePanel(index: any) => Promise<void>`
+### `closePanel(tab: TabItem) => Promise<void>`
 
 
 
@@ -54,7 +54,7 @@ Type: `Promise<any[]>`
 
 
 
-### `togglePanel(index: any) => Promise<void>`
+### `togglePanel(tab: TabItem) => Promise<void>`
 
 
 

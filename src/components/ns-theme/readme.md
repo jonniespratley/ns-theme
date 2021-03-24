@@ -25,7 +25,7 @@ This is how you use this element.
 
 | Property | Attribute | Description | Type        | Default |
 | -------- | --------- | ----------- | ----------- | ------- |
-| `tabs`   | --        |             | `NavItem[]` | `[]`    |
+| `tabs`   | --        |             | `TabItem[]` | `[]`    |
 
 
 ## Methods
@@ -60,6 +60,21 @@ Type: `Promise<boolean>`
 
 
 
+
+## Dependencies
+
+### Depends on
+
+- [ns-theme-header](../ns-theme-header)
+- [ns-theme-tabs](../ns-theme-tabs)
+
+### Graph
+```mermaid
+graph TD;
+  ns-theme --> ns-theme-header
+  ns-theme --> ns-theme-tabs
+  style ns-theme fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

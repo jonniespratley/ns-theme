@@ -29,6 +29,10 @@ export namespace Components {
          */
         "anchor": string;
         /**
+          * The header action text for the drawer.
+         */
+        "headerActionText": string;
+        /**
           * The header text for the drawer.
          */
         "headerText": string;
@@ -216,6 +220,10 @@ declare namespace LocalJSX {
           * The anchor position of the drawer.
          */
         "anchor"?: string;
+        /**
+          * The header action text for the drawer.
+         */
+        "headerActionText"?: string;
         /**
           * The header text for the drawer.
          */

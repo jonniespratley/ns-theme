@@ -10,7 +10,6 @@ export default {
   title: 'YourComponent',
   component: YourComponent,
 };
-
 //👇 We create a “template” of how args map to rendering
 const Template: Story<ComponentProps<typeof YourComponent>> = (args) => <YourComponent {...args} />;
 export const FirstStory = Template.bind({});
@@ -21,28 +20,21 @@ FirstStory.args = {
 import { storiesOf } from '@storybook/html';
 import { withKnobs, text, boolean } from '@storybook/addon-knobs';
 
-
 import readme from './readme.md';
 
-storiesOf('ns-theme-drawer', module)
+storiesOf('ns-theme-header', module)
   .addDecorator(withKnobs)
   .add(
-    'Default', () =>
-    `
-    <ns-theme-drawer header-text="Drawer Title">
-    This is content.
-    </ns-theme-drawer>
-    `,
+    'Default',
+    () => {
+      return `<ns-theme-header header-text=${text('header-text', 'App Title')}></ns-theme-header>`;
+    },
     {
       notes: {
         markdown: readme,
-      }
-    }
+      },
+    },
   )
-  .add('with right anchor', () => {
-    return `<ns-theme-drawer 
-      header-text=${text('header-text', 'Drawer Header')}
-      anchor="right" 
-      is-opened=${boolean('is-open', true)}></ns-theme-header>`;
-  })
-  ;
+  .add('with Menu Button', () => {
+    return `<ns-theme-header show-menu=${boolean('show-menu', true)}></ns-theme-header>`;
+  });
