@@ -1,6 +1,6 @@
 {
   "name": "ns-theme",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Stencil Component Starter",
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
@@ -12,7 +12,8 @@
   "unpkg": "dist/ns-theme/ns-theme.esm.js",
   "files": [
     "dist/",
-    "loader/"
+    "loader/",
+    "hydrate/"
   ],
   "scripts": {
     "build": "stencil build --docs",
