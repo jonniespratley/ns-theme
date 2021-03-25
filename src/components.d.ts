@@ -116,7 +116,13 @@ export namespace Components {
           * @returns Array of tabs
          */
         "getTabs": () => Promise<TabsMap>;
+        /**
+          * The home tab that cannot be closed
+         */
         "homeTab": TabItem;
+        /**
+          * The list of tab items that get added to tab list
+         */
         "items": TabItem[];
         /**
           * Select home tab finds the home tab from the tabs.
@@ -290,7 +296,13 @@ declare namespace LocalJSX {
         "selectedIndex"?: number;
     }
     interface NsThemeTabs {
+        /**
+          * The home tab that cannot be closed
+         */
         "homeTab"?: TabItem;
+        /**
+          * The list of tab items that get added to tab list
+         */
         "items"?: TabItem[];
         "onTabAdded"?: (event: CustomEvent<TabItem>) => void;
         "onTabChange"?: (event: CustomEvent<TabItem[]>) => void;

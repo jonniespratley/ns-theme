@@ -18,7 +18,6 @@ $drawer-header-color: black;
   z-index: 10;
   position: fixed;
   top: 0;
-  //left: 0;
   width: var(--ns-theme-drawer-width, 320px);
   height: 100%;
   background-color: var(--ns-theme-drawer-background-color, $drawer-background-color);
@@ -28,6 +27,7 @@ $drawer-header-color: black;
   transition: $drawer-transition;
   display: block;
   contain: content;
+  user-select: none;
 }
 
 button {

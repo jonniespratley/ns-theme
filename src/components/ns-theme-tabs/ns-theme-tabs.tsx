@@ -66,6 +66,8 @@ const Tab: FunctionalComponent<TabProps> = ({
   </li>
 )
 
+let tabCount = 0;
+
 @Component({
   tag: 'ns-theme-tabs',
   styleUrl: 'ns-theme-tabs.scss',
@@ -86,7 +88,14 @@ export class NsThemeTabs {
    */
   @Prop({ reflect: true }) selectedIndex: number = 0;
 
+  /**
+   * The home tab that cannot be closed
+   */
   @Prop() homeTab: TabItem;
+
+  /**
+   * The list of tab items that get added to tab list
+   */
   @Prop() items: TabItem[] = [];
 
   @Event() tabChange: EventEmitter<TabItem[]>;
@@ -109,6 +118,7 @@ export class NsThemeTabs {
    */
   @Method()
   async addTab(tab: TabItem) {
+    tabCount++;
     let t = { ...tab };
     let oldTabs = { ...this.tabs }
     oldTabs[t.id] = tab;
@@ -187,8 +197,16 @@ export class NsThemeTabs {
 
   @Listen('closeTab', { target: 'document' })
   closeTabHandler(event: CustomEvent<TabItem>) {
-
     this.closeTab(event.detail);
+  }
+  @Listen('keydown', { target: 'document' })
+  handleKeyDown(ev: KeyboardEvent) {
+    if (ev.key === 'ArrowRight') {
+      console.log('ArrowRight pressed')
+    }
+    if (ev.key === 'ArrowLeft') {
+      console.log('ArrowLeft pressed')
+    }
   }
 
   render() {
