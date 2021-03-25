@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property        | Attribute        | Description                | Type        | Default     |
-| --------------- | ---------------- | -------------------------- | ----------- | ----------- |
-| `homeTab`       | --               |                            | `TabItem`   | `undefined` |
-| `items`         | --               |                            | `TabItem[]` | `[]`        |
-| `selectedIndex` | `selected-index` | The default selected index | `number`    | `0`         |
+| Property        | Attribute        | Description                                      | Type        | Default     |
+| --------------- | ---------------- | ------------------------------------------------ | ----------- | ----------- |
+| `homeTab`       | --               | The home tab that cannot be closed               | `TabItem`   | `undefined` |
+| `items`         | --               | The list of tab items that get added to tab list | `TabItem[]` | `[]`        |
+| `selectedIndex` | `selected-index` | The default selected index                       | `number`    | `0`         |
 
 
 ## Events

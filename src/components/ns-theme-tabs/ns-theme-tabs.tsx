@@ -66,7 +66,7 @@ const Tab: FunctionalComponent<TabProps> = ({
   </li>
 )
 
-let tabCount = 0;
+//let tabCount = 0;
 
 @Component({
   tag: 'ns-theme-tabs',
@@ -118,7 +118,7 @@ export class NsThemeTabs {
    */
   @Method()
   async addTab(tab: TabItem) {
-    tabCount++;
+    //tabCount++;
     let t = { ...tab };
     let oldTabs = { ...this.tabs }
     oldTabs[t.id] = tab;

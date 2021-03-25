@@ -7,13 +7,14 @@
 
 ## Properties
 
-| Property     | Attribute     | Description                           | Type      | Default     |
-| ------------ | ------------- | ------------------------------------- | --------- | ----------- |
-| `anchor`     | `anchor`      | The anchor position of the drawer.    | `string`  | `'left'`    |
-| `headerText` | `header-text` | The header text for the drawer.       | `string`  | `undefined` |
-| `isFixed`    | `is-fixed`    | Make the drawer be in fixed position. | `boolean` | `undefined` |
-| `isOpened`   | `is-opened`   | The open state of the drawer.         | `boolean` | `undefined` |
-| `items`      | --            | The navigation list items.            | `[]`      | `[]`        |
+| Property           | Attribute            | Description                            | Type      | Default       |
+| ------------------ | -------------------- | -------------------------------------- | --------- | ------------- |
+| `anchor`           | `anchor`             | The anchor position of the drawer.     | `string`  | `'left'`      |
+| `headerActionText` | `header-action-text` | The header action text for the drawer. | `string`  | `'Close All'` |
+| `headerText`       | `header-text`        | The header text for the drawer.        | `string`  | `undefined`   |
+| `isFixed`          | `is-fixed`           | Make the drawer be in fixed position.  | `boolean` | `undefined`   |
+| `isOpened`         | `is-opened`          | The open state of the drawer.          | `boolean` | `undefined`   |
+| `items`            | --                   | The navigation list items.             | `[]`      | `[]`          |
 
 
 ## Methods
