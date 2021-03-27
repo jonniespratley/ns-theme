@@ -6,7 +6,7 @@ export const config: Config = {
   buildEs5: 'prod',
   srcDir: 'src',
   enableCache: false,
-  globalStyle: 'src/global/app.css',
+  //globalStyle: 'src/global/app.css',
   globalScript: 'src/global/app.ts',
   hashFileNames: true,
   outputTargets: [

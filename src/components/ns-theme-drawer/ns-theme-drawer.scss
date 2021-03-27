@@ -12,7 +12,7 @@ $drawer-background-color: white;
 $drawer-border-color: black;
 $drawer-transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
 $drawer-header-color: black;
-
+$drawer-height-height: 50px;
 :host {
   font-family: 'GE Inspira Sans', sans-serif;
   z-index: 10;
@@ -81,7 +81,7 @@ button {
   overflow: hidden;
   border-bottom: 1px solid rgb(255 255 255 / 20%);
   box-shadow: 0 0 3px 2px rgb(0 0 0 / 12%);
-  height: 3rem;
+  height: $drawer-height-height;
   color: var(--px-app-nav-item-text-color, $drawer-header-color);
   justify-content: space-between;
   padding: 0 1rem;

@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { NavItem, TabItem, TabsMap } from "./components/props";
+import { IUser, NavItem, TabItem, TabsMap } from "./components/props";
 export namespace Components {
     interface NsSpinner {
         "height": number;
@@ -80,14 +80,19 @@ export namespace Components {
          */
         "showMenu": boolean;
         /**
+          * The tabCount for the tab manager
+         */
+        "tabCount": number;
+        /**
           * User properties for user menu
          */
-        "user": object;
+        "user": IUser;
     }
     interface NsThemeListGroup {
         "items": TabItem[];
     }
     interface NsThemePanel {
+        "loading": boolean;
         "selected": boolean;
     }
     interface NsThemePanels {
@@ -264,6 +269,7 @@ declare namespace LocalJSX {
           * menuToggleClick dispatches when menu button is pressed
          */
         "onMenuToggleClick"?: (event: CustomEvent<any>) => void;
+        "onTabManagerClick"?: (event: CustomEvent<any>) => void;
         /**
           * Profile navigation items
          */
@@ -281,15 +287,20 @@ declare namespace LocalJSX {
          */
         "showMenu"?: boolean;
         /**
+          * The tabCount for the tab manager
+         */
+        "tabCount"?: number;
+        /**
           * User properties for user menu
          */
-        "user"?: object;
+        "user"?: IUser;
     }
     interface NsThemeListGroup {
         "items"?: TabItem[];
         "onTabClick"?: (event: CustomEvent<TabItem>) => void;
     }
     interface NsThemePanel {
+        "loading"?: boolean;
         "selected"?: boolean;
     }
     interface NsThemePanels {

@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
     <title>Stencil Component Starter</title>
-    <link rel="stylesheet" href="https://assets.codepen.io/49212/font.css" />
+
     <style>
       html:not(.hydrated) body {
         opacity: 0;
@@ -28,12 +28,14 @@
     -->
     <script>
       window.nav = {
+        session: { title: 'Home', menus: ['workflow1'] },
         main: {
           items: [
             {
               label: 'Polling App',
               icon: 'fa-html5',
-              path: '/pollapp',
+              path: 'https://apphub-microapp-seed-next.run.aws-usw02-pr.ice.predix.io/#',
+
               items: [],
               order: 1,
               default: false,
@@ -42,7 +44,7 @@
             {
               label: 'Mocha App',
               icon: 'fa-code',
-              path: '/testapp',
+              path: 'https://cdpn.io/jonniespratley/debug/qBWZMpY',
               items: [],
               order: 0,
               default: true,
@@ -137,8 +139,13 @@
         appName: 'AppHub Dev',
         localeData: {
           logOut: 'Log Out',
-          toastTextDefault: 'You received a new notification.',
-          toastActionLabelDefault: 'Action',
+          toastTextDefault: 'You have a new message.',
+          toastActionLabelDefault: 'Open',
+          collapseAllLabel: 'Collapse All',
+          expandAllLabel: 'Expand All',
+          closeTooltip: 'Close',
+          showAlphaViewTooltip: 'Show Alphabetical View',
+          showFolderViewTooltip: 'Show Folder View',
         },
       };
     </script>
@@ -147,14 +154,11 @@
     <script nomodule src="/build/ns-theme.js"></script>
   </head>
   <body>
+
+
     <ns-theme-header id="headerExample" show-menu slot="header">
       <ns-theme-tabs id="exampleTabs" slot="tabs"></ns-theme-tabs>
-      <div slot="user">
-        <div class="btn btn-count">
-          <i class="gedi-square"></i>
-          <span>0</span>
-        </div>
-      </div>
+     
     </ns-theme-header>
 
     <ns-theme-panels id="examplePanels" slot="content"> </ns-theme-panels>
@@ -165,8 +169,8 @@
 
     <div id="js-menu"></div>
     <div id="js-user-menu"></div>
-
-    <!--
+    <button id="addTab">Add Tab</button>
+    
       <h2>ns-theme-header demo</h2>
 
       <ns-theme-header id="headerExample">
@@ -209,48 +213,24 @@
     <button id="d2btn">top drawer</button>
     <button id="d3btn">right drawer</button>
     <button id="d4btn">bottom drawer</button>
-    -->
 
-    <style>
-      .btn.btn-count {
-        position: relative;
 
-        width: 28px;
-        height: 28px;
-        align-items: center;
-        cursor: pointer;
-      }
+    <h2>ns-theme-panels</h2>
 
-      .btn.btn-count > i {
-        position: absolute;
-        left: 0%;
-        top: 0%;
-        font-size: 2rem;
-        transform: translate3d(-3px, -3px, 0px);
-      }
+    <button>Next</button>
+    <button>Prev</button>
+    
+    <ns-theme-panel id="p1">
+      <h2>This is panel content</h2>
+      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore, modi! Natus eveniet enim odit inventore ipsum expedita, repellat praesentium doloribus non totam facilis dignissimos magnam dolorum quas accusantium impedit nobis.</p>
+    </ns-theme-panel>
 
-      .btn-count span {
-        position: absolute;
-        transform: translate(0, 30%);
-        font-size: 0.7rem;
-        text-align: center;
-        left: 0;
-        top: 3px;
-        width: 25px;
-      }
-    </style>
-
-    <button id="addTab">Add Tab</button>
-
-    <style>
-      .content {
-        height: 99vh;
-        background: white;
-        color: black;
-        padding: 1rem;
-        padding-top: 3rem;
-      }
-    </style>
+    <ns-theme-panel id="p2" loading>
+      <h2>Loading Panel</h2>
+      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore, modi! Natus eveniet enim odit inventore ipsum expedita, repellat praesentium doloribus non totam facilis dignissimos magnam dolorum quas accusantium impedit nobis.</p>
+    </ns-theme-panel>
+       
+ 
 
     <script>
       (async () => {
@@ -258,6 +238,9 @@
 
         await customElements.whenDefined('ns-theme');
         const nsTheme = document.querySelector('ns-theme');
+        const nsThemeHeader = document.querySelector('ns-theme-header');
+        nsThemeHeader.user = window.nav.user;
+        nsThemeHeader.settings = window.nav.settings.items;
         // nsTheme.setAttribute('session', window.nav);
 
         await customElements.whenDefined('ns-theme-tabs');
@@ -298,15 +281,17 @@
           closeAllTabs();
         });
 
-        nsTabCount.addEventListener('click', () => {
+
+        document.addEventListener('tabManagerClick', () => {
           document.querySelector('#nsThemeTabsDrawer').toggle();
         });
+
 
         // TODO - Listen for change to tabs only
         nsThemeTabs.addEventListener('tabChange', e => {
           let tabs = Object.values(e.detail);
           nsThemeTabsList.items = tabs;
-          nsTabCount.innerHTML = tabs.length;
+          nsThemeHeader.tabCount = tabs.length;
         });
 
         // TODO - Listen for tabClick on entire document

@@ -1,27 +1,6 @@
-import { createStore } from "@stencil/store";
+import { createStore } from '@stencil/store';
 
-
-export const loadFromSession = (itemKeyToLoad: any = 'state') => {
-  try {
-      const serializedSessionItem = sessionStorage.getItem(itemKeyToLoad);
-      if (serializedSessionItem === null) {
-          return;
-      }
-      return JSON.parse(serializedSessionItem);
-  } catch (err) {
-      return {};
-  }
-};
-
-export const saveToSession = (item: any, key: any = 'state') => {
-  try {
-      const serializedSessionItem = JSON.stringify(item);
-      sessionStorage.setItem(key, serializedSessionItem);
-  } catch (err) {
-      // Ignore write errors
-  }
-};
-
+import { loadFromSession, saveToSession } from './utils';
 /**
  * store.state
 The state object is proxied, i. e. you can directly get and set properties and Store will automatically take care of component re-rendering when the state object is changed.
@@ -51,13 +30,10 @@ Resets the store and all the internal state of the store that should not survive
  */
 
 const baseState = {
-  clicks: 0,
-  seconds: 0,
-  squaredClicks: 0,
   selectedTab: 0,
   tabs: [],
   appLogo: '',
-  appName: '',
+  appName: 'APM AppHub',
   session: {},
   main: {},
   paths: {},
@@ -66,22 +42,18 @@ const baseState = {
   preferences: {},
   contextPath: '',
   localeData: {},
-  user: {}
+  user: {},
 };
 
-
-
 const persistedState = loadFromSession('apphub-session');
-const initialState = Object.assign(baseState, persistedState);
+const initialState = Object.assign(baseState, ...persistedState);
 export const store = createStore(initialState);
 
 const { state, onChange } = store;
 
-
-
 onChange('session', value => {
-    console.log('session changed', value);
-    saveToSession(value, 'apphub-session')
+  console.log('session changed', value);
+  saveToSession(value, 'apphub-session');
 });
 
 export default state;

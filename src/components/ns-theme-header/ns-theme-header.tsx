@@ -1,5 +1,5 @@
 import { Component, Host, Prop, h, Event, EventEmitter } from '@stencil/core';
-import { NavItem } from '../props';
+import { NavItem, IUser } from '../props';
 const iconStyles = {
   display: 'block',
   width: '22px',
@@ -16,6 +16,15 @@ const HomeNavItem = ({ selected = false }) => (
       </i>
     </button>
   </div>
+)
+
+const TabManagerButton = ({ onClick, title = 'Tab Manager', tabCount = 0 }) => (
+  <button class="theme__nav-link theme__tab-btn" role="button" title={title} onClick={onClick}>
+    <span class="px-icon square">
+      <span>{tabCount}</span>
+    </span>
+
+  </button>
 )
 /*
 
@@ -161,6 +170,10 @@ export class NsThemeHeader {
    */
   @Prop() headerText: string;
   /**
+   * The tabCount for the tab manager
+   */
+  @Prop() tabCount: number;
+  /**
    * Main navigation items
    */
   @Prop() items: NavItem[] = [];
@@ -175,7 +188,7 @@ export class NsThemeHeader {
   /**
    * User properties for user menu
    */
-  @Prop() user: object = { name: null, picture: null, email: null };
+  @Prop() user: IUser;
 
   /**
    * Header in fixed position or not
@@ -194,9 +207,12 @@ export class NsThemeHeader {
    * menuToggleClick dispatches when menu button is pressed
    */
   @Event() menuToggleClick: EventEmitter<any>;
-
   menuToggleClickHandler() {
     this.menuToggleClick.emit();
+  }
+  @Event() tabManagerClick: EventEmitter<any>;
+  tabManagerClickHandler() {
+    this.tabManagerClick.emit();
   }
 
   render() {
@@ -222,8 +238,40 @@ export class NsThemeHeader {
             {this.showHome && <HomeNavItem />}
           </div>
           <slot name="tabs"></slot>
-          <div class="theme__user"></div>
-          <slot name="user"></slot>
+          <div class="theme__user">
+            <slot name="user"></slot>
+          </div>
+          <ul class="theme__nav">
+            {this.tabCount &&
+              <li class="theme__nav-item">
+                <TabManagerButton tabCount={this.tabCount} onClick={() => {
+                  this.tabManagerClickHandler()
+                }} />
+              </li>}
+            {this.user &&
+              <li class="theme__nav-item theme__dropdown theme__dropdown--right theme__user">
+                <button class="theme__nav-link theme__dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {this.user.picture && <img class="theme__avatar" src={this.user.picture} alt={this.user.name} />}
+                  <i class="gedi-user"></i>
+
+                  {
+                    <i class="px-icon">
+                      <svg viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet" style={{ ...iconStyles, width: '16px' }}>
+                        <g id="px-utl-chevron"><path d="M2.4 6.2l5.5 5.5 5.5-5.5"></path></g>
+                      </svg>
+                    </i>
+                  }
+                </button>
+                <div class="theme__dropdown-menu ml-auto" aria-labelledby="userDropdown">
+                  {this.settings && this.settings.map((item: NavItem) => (
+                    <a class="theme__dropdown-item"
+                      href={item.path} title={item.label}>{item.label}</a>
+                  ))}
+                  <a class="theme__dropdown-item" href="/logout" title="Logout">Log Out</a>
+                </div>
+              </li>}
+          </ul>
+
           {/**
             <ul class="theme__nav">
               <SearchNavItem/>
