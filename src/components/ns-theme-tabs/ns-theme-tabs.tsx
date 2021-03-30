@@ -24,6 +24,7 @@ const Tab: FunctionalComponent<TabProps> = ({
   label,
   title = 'App',
   href,
+
   panelId,
   selected,
   home,
@@ -86,7 +87,7 @@ export class NsThemeTabs {
   /**
    * The default selected index
    */
-  @Prop({ reflect: true }) selectedIndex: number = 0;
+  @Prop({ reflect: true }) selectedIndex: number;
 
   /**
    * The home tab that cannot be closed
@@ -98,7 +99,8 @@ export class NsThemeTabs {
    */
   @Prop() items: TabItem[] = [];
 
-  @Event() tabChange: EventEmitter<TabItem[]>;
+  @Event() tabChange: EventEmitter<TabItem>;
+  @Event() tabsChange: EventEmitter<TabItem[]>;
   @Event() tabAdded: EventEmitter<TabItem>;
   @Event() tabClick: EventEmitter<TabItem>;
   @Event() tabClose: EventEmitter<TabItem>;
@@ -136,8 +138,8 @@ export class NsThemeTabs {
   async closeTab(tab: TabItem) {
     let oldTabs = { ...this.tabs };
     delete oldTabs[tab.id];
-    this.tabClose.emit(tab);
     this.tabs = oldTabs;
+    this.tabClose.emit(tab);
     return tab;
   }
 
@@ -150,6 +152,10 @@ export class NsThemeTabs {
     if (!tab) {
       return;
     }
+    if (tab === this.selectedTab) {
+      return;
+    }
+    this.selectedTab = tab;
     let oldTabs = { ...this.tabs }
     Object.values(oldTabs).forEach((t: TabItem) => {
       if (oldTabs[t.id].selected) {
@@ -161,6 +167,7 @@ export class NsThemeTabs {
     }
 
     this.tabs = oldTabs;
+    return tab;
   }
 
   /**
@@ -171,9 +178,9 @@ export class NsThemeTabs {
   async selectHomeTab() {
     let home = null;
     home = Object.values(this.tabs).find((item) => {
-      return item.home;
+      return item.home || item.default;
     });
-    return home;
+    return this.toggleTab(home);
   }
 
   componentWillLoad() {
@@ -187,7 +194,7 @@ export class NsThemeTabs {
 
   @Watch('tabs')
   watchTabsHandler(newValue: any) {
-    this.tabChange.emit(newValue);
+    this.tabsChange.emit(newValue);
   }
 
   tabClickHandler(item: TabItem) {
@@ -199,6 +206,7 @@ export class NsThemeTabs {
   closeTabHandler(event: CustomEvent<TabItem>) {
     this.closeTab(event.detail);
   }
+
   @Listen('keydown', { target: 'document' })
   handleKeyDown(ev: KeyboardEvent) {
     if (ev.key === 'ArrowRight') {

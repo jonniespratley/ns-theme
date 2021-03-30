@@ -5150,17 +5150,19 @@ const createElm = (e, t, o, n) => {
  }
 };
 
+let renderingRef = null;
+
 const callRender = (e, t, o) => {
  try {
-  if (t =  t.render(),  (e.$flags$ &= -17), 
+  if (renderingRef = t, t =  t.render(),  (e.$flags$ &= -17), 
    (e.$flags$ |= 2), BUILD.hasRenderFn ) {
    return Promise.resolve(t).then((t => renderVdom(e, t)));
   }
  } catch (t) {
   consoleError(t, e.$hostElement$);
  }
- return null;
-}, postUpdateComponent = e => {
+ return renderingRef = null, null;
+}, getRenderingRef = () => renderingRef, postUpdateComponent = e => {
  const t = e.$cmpMeta$.$tagName$, o = e.$hostElement$, n = createTime("postUpdate", t), s =  e.$lazyInstance$ , l = e.$ancestorComponent$;
   (safeCall(s, "componentDidRender"), 
  BUILD.isDev ), 64 & e.$flags$ ? ( (safeCall(s, "componentDidUpdate"), 
@@ -5169,6 +5171,11 @@ const callRender = (e, t, o) => {
  BUILD.isDev ), n(),  (e.$onReadyResolve$(o), l || appDidLoad())),  e.$onInstanceResolve$(o),  (e.$onRenderResolve$ && (e.$onRenderResolve$(), 
  e.$onRenderResolve$ = void 0), 512 & e.$flags$ && nextTick((() => scheduleUpdate(e, !1))), 
  e.$flags$ &= -517);
+}, forceUpdate = e => {
+ {
+  const t = getHostRef(e), o = t.$hostElement$.isConnected;
+  return o && 2 == (18 & t.$flags$) && scheduleUpdate(t, !1), o;
+ }
 }, appDidLoad = e => {
   addHydratedFlag(doc.documentElement), nextTick((() => emitEvent(win, "appload", {
   detail: {
@@ -5503,23 +5510,8 @@ class NsSpinner {
     this.width = 100;
     this.height = 100;
   }
-  componentWillLoad() {
-    /*
-     const appMenuContainer = this.el.querySelector('#menu');
-     const appMenu = shell.AppMenu.AppMenuDucklet.of({}, {
-       title: 'test',
-       //toggleTooltip: this.store.get("appName"),
-       collapseAllLabel: "Collapse All",
-       expandAllLabel: "Expand All",
-       closeTooltip: "Close",
-       showAlphaViewTooltip: "Show Alphabetical View",
-       showFolderViewTooltip: "Show Folder View"
-     });
-     appMenu.mount(appMenuContainer);
-     */
-  }
   render() {
-    return (hAsync(Host, null, hAsync("div", { id: "menu" }), hAsync("div", { class: "ns-theme-spinner" }, hAsync("svg", { viewBox: "0 0 100 100", height: this.height, width: this.width }, hAsync("circle", { class: "circle1", cx: "50", cy: "50", r: "45" }), hAsync("circle", { class: "circle2", cx: "50", cy: "50", r: "45", transform: "rotate(-45,50,50)" })))));
+    return (hAsync(Host, null, hAsync("div", { class: "ns-theme-spinner" }, hAsync("svg", { viewBox: "0 0 100 100", height: this.height, width: this.width }, hAsync("circle", { class: "circle1", cx: "50", cy: "50", r: "45" }), hAsync("circle", { class: "circle2", cx: "50", cy: "50", r: "45", transform: "rotate(-45,50,50)" })))));
   }
   get el() { return getElement(this); }
   static get style() { return nsSpinnerCss; }
@@ -5536,14 +5528,282 @@ class NsSpinner {
   }; }
 }
 
-const nsThemeCss = "/*!@:host*/.sc-ns-theme-h{display:block}";
+const appendToMap = (map, propName, value) => {
+    const items = map.get(propName);
+    if (!items) {
+        map.set(propName, [value]);
+    }
+    else if (!items.includes(value)) {
+        items.push(value);
+    }
+};
+const debounce = (fn, ms) => {
+    let timeoutId;
+    return (...args) => {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(() => {
+            timeoutId = 0;
+            fn(...args);
+        }, ms);
+    };
+};
 
-//import { state } from '../../store';
+/**
+ * Check if a possible element isConnected.
+ * The property might not be there, so we check for it.
+ *
+ * We want it to return true if isConnected is not a property,
+ * otherwise we would remove these elements and would not update.
+ *
+ * Better leak in Edge than to be useless.
+ */
+const isConnected = (maybeElement) => !('isConnected' in maybeElement) || maybeElement.isConnected;
+const cleanupElements = debounce((map) => {
+    for (let key of map.keys()) {
+        map.set(key, map.get(key).filter(isConnected));
+    }
+}, 2000);
+const stencilSubscription = ({ on }) => {
+    const elmsToUpdate = new Map();
+    if (typeof getRenderingRef === 'function') {
+        // If we are not in a stencil project, we do nothing.
+        // This function is not really exported by @stencil/core.
+        on('dispose', () => {
+            elmsToUpdate.clear();
+        });
+        on('get', (propName) => {
+            const elm = getRenderingRef();
+            if (elm) {
+                appendToMap(elmsToUpdate, propName, elm);
+            }
+        });
+        on('set', (propName) => {
+            const elements = elmsToUpdate.get(propName);
+            if (elements) {
+                elmsToUpdate.set(propName, elements.filter(forceUpdate));
+            }
+            cleanupElements(elmsToUpdate);
+        });
+        on('reset', () => {
+            elmsToUpdate.forEach((elms) => elms.forEach(forceUpdate));
+            cleanupElements(elmsToUpdate);
+        });
+    }
+};
+
+const createObservableMap = (defaultState, shouldUpdate = (a, b) => a !== b) => {
+    let states = new Map(Object.entries(defaultState !== null && defaultState !== void 0 ? defaultState : {}));
+    const handlers = {
+        dispose: [],
+        get: [],
+        set: [],
+        reset: [],
+    };
+    const reset = () => {
+        states = new Map(Object.entries(defaultState !== null && defaultState !== void 0 ? defaultState : {}));
+        handlers.reset.forEach((cb) => cb());
+    };
+    const dispose = () => {
+        // Call first dispose as resetting the state would
+        // cause less updates ;)
+        handlers.dispose.forEach((cb) => cb());
+        reset();
+    };
+    const get = (propName) => {
+        handlers.get.forEach((cb) => cb(propName));
+        return states.get(propName);
+    };
+    const set = (propName, value) => {
+        const oldValue = states.get(propName);
+        if (shouldUpdate(value, oldValue, propName)) {
+            states.set(propName, value);
+            handlers.set.forEach((cb) => cb(propName, value, oldValue));
+        }
+    };
+    const state = (typeof Proxy === 'undefined'
+        ? {}
+        : new Proxy(defaultState, {
+            get(_, propName) {
+                return get(propName);
+            },
+            ownKeys(_) {
+                return Array.from(states.keys());
+            },
+            getOwnPropertyDescriptor() {
+                return {
+                    enumerable: true,
+                    configurable: true,
+                };
+            },
+            has(_, propName) {
+                return states.has(propName);
+            },
+            set(_, propName, value) {
+                set(propName, value);
+                return true;
+            },
+        }));
+    const on = (eventName, callback) => {
+        handlers[eventName].push(callback);
+        return () => {
+            removeFromArray(handlers[eventName], callback);
+        };
+    };
+    const onChange = (propName, cb) => {
+        const unSet = on('set', (key, newValue) => {
+            if (key === propName) {
+                cb(newValue);
+            }
+        });
+        const unReset = on('reset', () => cb(defaultState[propName]));
+        return () => {
+            unSet();
+            unReset();
+        };
+    };
+    const use = (...subscriptions) => subscriptions.forEach((subscription) => {
+        if (subscription.set) {
+            on('set', subscription.set);
+        }
+        if (subscription.get) {
+            on('get', subscription.get);
+        }
+        if (subscription.reset) {
+            on('reset', subscription.reset);
+        }
+    });
+    const forceUpdate = (key) => {
+        const oldValue = states.get(key);
+        handlers.set.forEach((cb) => cb(key, oldValue, oldValue));
+    };
+    return {
+        state,
+        get,
+        set,
+        on,
+        onChange,
+        use,
+        dispose,
+        reset,
+        forceUpdate,
+    };
+};
+const removeFromArray = (array, item) => {
+    const index = array.indexOf(item);
+    if (index >= 0) {
+        array[index] = array[array.length - 1];
+        array.length--;
+    }
+};
+
+const createStore = (defaultState, shouldUpdate) => {
+    const map = createObservableMap(defaultState, shouldUpdate);
+    stencilSubscription(map);
+    return map;
+};
+
+const loadFromSession = (itemKeyToLoad = 'state') => {
+  try {
+    const serializedSessionItem = sessionStorage.getItem(itemKeyToLoad);
+    if (serializedSessionItem === null) {
+      return {};
+    }
+    return JSON.parse(serializedSessionItem);
+  }
+  catch (err) {
+    return {};
+  }
+};
+const saveToSession = (item, key = 'state') => {
+  try {
+    const serializedSessionItem = JSON.stringify(item);
+    sessionStorage.setItem(key, serializedSessionItem);
+  }
+  catch (err) {
+    // Ignore write errors
+  }
+};
+
+/**
+ * store.state
+The state object is proxied, i. e. you can directly get and set properties and Store will automatically take care of component re-rendering when the state object is changed.
+
+Note: Proxy objects are not supported by IE11 (not even with a polyfill), so you need to use the store.get and store.set methods of the API if you wish to support IE11.
+
+store.on(event, listener)
+Add a listener to the store for a certain action.
+
+store.onChange(propName, listener)
+Add a listener that is called when a specific property changes (either from a set or reset).
+
+store.get(propName)
+Get a property's value from the store.
+
+store.set(propName, value)
+Set a property's value in the store.
+
+store.reset()
+Reset the store to its initial state.
+
+store.use(...subscriptions)
+Use the given subscriptions in the store. A subscription is an object that defines one or more of the properties get, set or reset.
+
+store.dispose()
+Resets the store and all the internal state of the store that should not survive between tests.
+ */
+const baseState = {
+  tabs: null,
+  appLogo: '',
+  appName: 'APM AppHub',
+  session: {},
+  main: {},
+  paths: {},
+  profile: {},
+  settings: {},
+  preferences: {},
+  contextPath: '',
+  localeData: {},
+  user: {
+    name: 'Demo',
+  },
+};
+const persistedState = loadFromSession('apphub-session');
+const initialState = Object.assign(baseState, persistedState, { tabs: loadFromSession('ns-theme-tabs') });
+const store = createStore(initialState);
+const { state, onChange } = store;
+onChange('session', value => {
+  console.log('save to session-store', value);
+  saveToSession(value, 'apphub-session');
+});
+onChange('tabs', value => {
+  saveToSession(value, 'ns-theme-tabs');
+  console.log('save to session-store tabs', value);
+});
+
+const nsThemeCss = "/*!@:host*/.sc-ns-theme-h{display:block;min-height:80vh}";
+
+var __asyncValues = (undefined && undefined.__asyncValues) || function (o) {
+  if (!Symbol.asyncIterator)
+    throw new TypeError("Symbol.asyncIterator is not defined.");
+  var m = o[Symbol.asyncIterator], i;
+  return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+  function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+  function settle(resolve, reject, d, v) { Promise.resolve(v).then(function (v) { resolve({ value: v, done: d }); }, reject); }
+};
 class NsTheme {
   constructor(hostRef) {
     registerInstance(this, hostRef);
-    this.session = {};
+    // If `cacheData` changes we don't want to rerender the component,
+    // so we DON'T decorate it with @State
+    this.cacheData = state.session;
+    this.cacheTabs = state.tabs;
     this.tabs = [];
+  }
+  tabManagerClickHandler(event) {
+    console.log('Received the custom todoCompleted event: ', event.detail);
+    this.nsThemeTabsDrawer.toggle();
   }
   todoCompletedHandler(event) {
     console.log('Received the custom todoCompleted event: ', event.detail);
@@ -5551,8 +5811,21 @@ class NsTheme {
   tabChangeHandler(event) {
     console.log('Received the custom tabChange event: ', event.detail);
   }
-  tabClickHandler(event) {
+  tabsChangeHandler(event) {
+    console.log('Received the custom tabChange event: ', event.detail);
+    let tabs = Object.values(event.detail);
+    this.nsThemeHeader.tabCount = tabs.length;
+    this.nsThemeTabsList.items = tabs;
+    //store.set('tabs', tabs);
+    //this.cacheTabs = tabs;
+    store.set('tabs', tabs);
+  }
+  async tabClickHandler(event) {
     console.log('Received the custom tabClick event: ', event.detail);
+    let tab = event.detail;
+    await this.nsThemeTabs.toggleTab(tab);
+    await this.nsThemePanels.togglePanel(tab);
+    return tab;
   }
   tabCloseHandler(event) {
     console.log('Received the custom tabClose event: ', event.detail);
@@ -5563,6 +5836,7 @@ class NsTheme {
   disconnectedCallback() { }
   componentWillLoad() {
     console.log('componentWillLoad');
+    console.log('This session', this.session);
   }
   componentDidLoad() {
     console.log('componentDidLoad');
@@ -5573,27 +5847,83 @@ class NsTheme {
   }
   componentWillRender() {
     console.log('componentWillRender');
+    //this.tabs = this.cacheTabs;
   }
-  componentDidRender() {
+  async componentDidRender() {
+    var e_1, _a;
+    //this.sortMenuItems();
     console.log('componentDidRender');
+    if (this.cacheTabs) {
+      try {
+        for (var _b = __asyncValues(this.cacheTabs), _c; _c = await _b.next(), !_c.done;) {
+          const tab = _c.value;
+          await this.addTab(tab);
+        }
+      }
+      catch (e_1_1) {
+        e_1 = { error: e_1_1 };
+      }
+      finally {
+        try {
+          if (_c && !_c.done && (_a = _b.return))
+            await _a.call(_b);
+        }
+        finally {
+          if (e_1)
+            throw e_1.error;
+        }
+      }
+    }
+  }
+  sortMenuItems() {
+    var _a;
+    if (this.session && ((_a = this.session.main) === null || _a === void 0 ? void 0 : _a.items)) {
+      let sortedItems = this.session.main.items.sort((a, b) => {
+        return a.order - b.order;
+      });
+      // TODO - SET THE DEFAULT TAB
+      let defaultTab = sortedItems.find(item => item.default === true);
+      if (defaultTab) {
+        console.log('found default', defaultTab);
+        //this.tabs.push(defaultTab);
+      }
+    }
   }
   async closeTab(index) {
     //this.themeTabs
     console.log('close', index);
   }
+  async createPane(t) {
+    let pane = document.createElement('div');
+    pane.id = t.panelId;
+    pane.innerHTML = `
+        <h4>${t.id}</h4>
+        <p>This is the tab content</p>
+        `;
+    return pane;
+  }
   async addTab(tab) {
-    //this.themeTabs
-    console.log('add', tab);
-    let { tabs = [] } = this.session;
-    tabs.push(tab);
-    this.session.tabs = tabs;
+    let newTab = await this.nsThemeTabs.addTab(tab);
+    let newPanel = await this.nsThemePanels.addPanel(newTab, document.createElement('div'));
+    //return await toggleTab(newTab);
+    //return this.nsThemeTabs.addTab(tab);
+    let { tabs = [] } = this;
+    tabs.push(newTab);
+    this.tabs = tabs;
+    return newPanel;
+  }
+  async selectHomeTab() {
+    let tab = await this.nsThemeTabs.selectHomeTab();
+    await this.nsThemeTabs.toggleTab(tab);
+    await this.nsThemePanels.togglePanel(tab);
+    return tab;
   }
   async open() {
     // ...
     return true;
   }
   render() {
-    return (hAsync(Host, null, hAsync("ns-theme-header", { id: "nsThemeHeader", "show-menu": true }, hAsync("ns-theme-tabs", { id: "nsThemeTabs", slot: "tabs" })), hAsync("slot", { name: "content" }), hAsync("footer", null, hAsync("slot", { name: "footer" }))));
+    return (hAsync(Host, null, hAsync("ns-theme-header", { id: "nsThemeHeader", "show-menu": true, ref: el => this.nsThemeHeader = el, settings: this.session ? this.session.settings.items : [], user: this.session ? this.session.user : null }, hAsync("ns-theme-tabs", { id: "nsThemeTabs", ref: el => this.nsThemeTabs = el, slot: "tabs" })), hAsync("ns-theme-panels", { id: "nsThemePanels", ref: el => this.nsThemePanels = el }), hAsync("slot", { name: "content" }), hAsync("ns-theme-drawer", { id: "nsThemeTabsDrawer", ref: el => this.nsThemeTabsDrawer = el, "header-text": "Tab Management", anchor: "right" }, hAsync("ns-theme-list-group", { id: "nsThemeTabsList", items: this.tabs, ref: el => this.nsThemeTabsList = el })), hAsync("footer", null, hAsync("slot", { name: "footer" }))));
   }
   static get assetsDirs() { return ["assets"]; }
   get el() { return getElement(this); }
@@ -5602,13 +5932,15 @@ class NsTheme {
     "$flags$": 9,
     "$tagName$": "ns-theme",
     "$members$": {
-      "tabs": [16],
-      "session": [32],
+      "session": [1040],
+      "tabs": [1040],
       "closeTab": [64],
+      "createPane": [64],
       "addTab": [64],
+      "selectHomeTab": [64],
       "open": [64]
     },
-    "$listeners$": [[0, "todoCompleted", "todoCompletedHandler"], [0, "tabChange", "tabChangeHandler"], [0, "tabClick", "tabClickHandler"], [0, "tabClose", "tabCloseHandler"]],
+    "$listeners$": [[0, "tabManagerClick", "tabManagerClickHandler"], [0, "todoCompleted", "todoCompletedHandler"], [0, "tabChange", "tabChangeHandler"], [0, "tabsChange", "tabsChangeHandler"], [0, "tabClick", "tabClickHandler"], [0, "tabClose", "tabCloseHandler"]],
     "$lazyBundleId$": "-",
     "$attrsToReflect$": []
   }; }
@@ -5709,7 +6041,7 @@ class NsThemeDrawer {
         'theme__drawer': true,
         'theme__drawer--open': this.isOpened,
         [`theme__drawer--${this.anchor}`]: true
-      } }, hAsync("header", { class: "theme__drawer-header" }, hAsync("div", null, this.headerText && hAsync("h3", null, this.headerText)), hAsync("button", { type: "button", class: "btn", "aria-label": "Close", onClick: () => {
+      } }, hAsync("header", { class: "theme__drawer-header" }, hAsync("div", { class: "theme__drawer-header-text" }, this.headerText && hAsync("h3", null, this.headerText)), hAsync("button", { type: "button", class: "btn", "aria-label": "Close", onClick: () => {
         document.dispatchEvent(new CustomEvent('drawerHeaderAction'));
       } }, this.headerActionText), hAsync("slot", { name: "header" })), hAsync("nav", { class: "theme__drawer-content" }, hAsync("slot", null))));
   }
@@ -5719,10 +6051,10 @@ class NsThemeDrawer {
     "$flags$": 9,
     "$tagName$": "ns-theme-drawer",
     "$members$": {
-      "headerText": [1, "header-text"],
-      "headerActionText": [1, "header-action-text"],
-      "anchor": [1],
-      "items": [16],
+      "headerText": [1537, "header-text"],
+      "headerActionText": [1537, "header-action-text"],
+      "anchor": [1537],
+      "items": [1040],
       "isFixed": [4, "is-fixed"],
       "isOpened": [1028, "is-opened"],
       "open": [32],
@@ -5730,7 +6062,7 @@ class NsThemeDrawer {
     },
     "$listeners$": [[4, "toggleDrawer", "toggleDrawerHandler"], [4, "closeDrawer", "closeDrawerHandler"], [4, "openDrawer", "openDrawer"], [2, "click", "handleClick"]],
     "$lazyBundleId$": "-",
-    "$attrsToReflect$": []
+    "$attrsToReflect$": [["headerText", "header-text"], ["headerActionText", "header-action-text"], ["anchor", "anchor"]]
   }; }
 }
 
@@ -5879,18 +6211,6 @@ class NsThemeHeader {
     registerInstance(this, hostRef);
     this.menuToggleClick = createEvent(this, "menuToggleClick", 7);
     this.tabManagerClick = createEvent(this, "tabManagerClick", 7);
-    /**
-     * Main navigation items
-     */
-    this.items = [];
-    /**
-     * Profile navigation items
-     */
-    this.profile = [];
-    /**
-     * Settings navigation items
-     */
-    this.settings = [];
   }
   menuToggleClickHandler() {
     this.menuToggleClick.emit();
@@ -5913,7 +6233,7 @@ class NsThemeHeader {
     "$tagName$": "ns-theme-header",
     "$members$": {
       "headerText": [1, "header-text"],
-      "tabCount": [2, "tab-count"],
+      "tabCount": [1538, "tab-count"],
       "items": [16],
       "profile": [16],
       "settings": [16],
@@ -5924,7 +6244,7 @@ class NsThemeHeader {
     },
     "$listeners$": undefined,
     "$lazyBundleId$": "-",
-    "$attrsToReflect$": []
+    "$attrsToReflect$": [["tabCount", "tab-count"]]
   }; }
 }
 
@@ -5961,7 +6281,7 @@ class NsThemeListGroup {
   }; }
 }
 
-const nsThemePanelCss = "/*!@.ns-theme__panel*/.ns-theme__panel.sc-ns-theme-panel{display:none}/*!@.active*/.active.sc-ns-theme-panel{display:block}/*!@.ui.segment*/.ui.segment.sc-ns-theme-panel{min-height:200px;position:relative;transition:all 0s linear}/*!@.ui.segment.loading*/.ui.segment.loading.sc-ns-theme-panel{text-shadow:none !important;color:transparent !important}/*!@.ui.loading.segment:before*/.ui.loading.segment.sc-ns-theme-panel:before{position:absolute;content:\"\";top:0;left:0;background:rgba(255, 255, 255, 0.8);width:100%;height:100%;border-radius:0.28571429rem;z-index:100}/*!@.ui.loading.segment:after*/.ui.loading.segment.sc-ns-theme-panel:after{position:absolute;content:\"\";top:50%;left:50%;margin:-1.5em 0 0 -1.5em;width:3em;height:3em;-webkit-animation:segment-spin 0.6s linear;animation:segment-spin 0.6s linear;-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite;border-radius:500rem;border-color:#767676 rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1);border-style:solid;border-width:0.2em;-webkit-box-shadow:0 0 0 1px transparent;box-shadow:0 0 0 1px transparent;visibility:visible;z-index:101}@-webkit-keyframes segment-spin{from{-webkit-transform:rotate(0);transform:rotate(0)}to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes segment-spin{from{-webkit-transform:rotate(0);transform:rotate(0)}to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}/*!@.ui.basic.segment*/.ui.basic.segment.sc-ns-theme-panel{background:none transparent;-webkit-box-shadow:none;box-shadow:none;border:none;border-radius:0}";
+const nsThemePanelCss = "/*!@:host*/.sc-ns-theme-panel-h{display:none}/*!@:host(.active)*/.active.sc-ns-theme-panel-h{display:block}/*!@.ui.segment*/.ui.segment.sc-ns-theme-panel{position:relative;transition:all 0s linear}/*!@.ui.segment.loading*/.ui.segment.loading.sc-ns-theme-panel{min-height:200px;text-shadow:none !important;color:transparent !important}/*!@.ui.loading.segment:before*/.ui.loading.segment.sc-ns-theme-panel:before{position:absolute;content:\"\";top:0;left:0;background:rgba(255, 255, 255, 0.8);width:100%;height:100%;border-radius:0.28571429rem;z-index:100}/*!@.ui.loading.segment:after*/.ui.loading.segment.sc-ns-theme-panel:after{position:absolute;content:\"\";top:50%;left:50%;margin:-1.5em 0 0 -1.5em;width:3em;height:3em;animation:segment-spin 0.6s linear;animation-iteration-count:infinite;border-radius:500rem;border-color:#09809c rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1);border-style:solid;border-width:0.2em;box-shadow:0 0 0 1px transparent;visibility:visible;z-index:101}@-webkit-keyframes segment-spin{from{-webkit-transform:rotate(0);transform:rotate(0)}to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes segment-spin{from{-webkit-transform:rotate(0);transform:rotate(0)}to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}/*!@.ui.basic.segment*/.ui.basic.segment.sc-ns-theme-panel{background:none transparent;-webkit-box-shadow:none;box-shadow:none;border:none;border-radius:0}";
 
 class NsThemePanel {
   constructor(hostRef) {
@@ -5973,6 +6293,7 @@ class NsThemePanel {
     return (hAsync(Host, { "aria-hidden": this.selected ? 'false' : 'true' }, hAsync("div", { class: {
         'ns-theme__panel': true,
         'loading': this.loading,
+        'active': this.selected,
         'ui': true,
         'segment': true
       } }, hAsync("slot", null))));
@@ -5982,17 +6303,18 @@ class NsThemePanel {
     "$flags$": 9,
     "$tagName$": "ns-theme-panel",
     "$members$": {
-      "selected": [4],
-      "loading": [4]
+      "selected": [516],
+      "loading": [516]
     },
     "$listeners$": undefined,
     "$lazyBundleId$": "-",
-    "$attrsToReflect$": []
+    "$attrsToReflect$": [["selected", "selected"], ["loading", "loading"]]
   }; }
 }
 
 const nsThemePanelsCss = ":host{background:white;display:flex;flex-direction:column;overflow:hidden;position:relative}:host>section{block-size:100%}.ns-theme-panels section{block-size:100%;display:grid;grid-auto-flow:column;grid-auto-columns:100%}.ns-theme-panels__overlay{display:flex;align-items:center;justify-content:center}ns-theme-panels{--px-spinner-fill-color:#007acc;--px-spinner-background-color:#b5e5fd;background:white;display:flex;flex-direction:column;overflow:hidden;position:relative}ns-theme-panels article{scroll-snap-align:start;overflow-y:auto;overscroll-behavior-y:contain;display:none}ns-theme-panels .px-icon svg{fill:var(--iron-icon-fill-color, none);stroke:var(--iron-icon-stroke-color, currentColor);display:inline-flex;-webkit-box-align:center;align-items:center;-webkit-box-pack:center;justify-content:center;position:relative;vertical-align:middle;width:var(--iron-icon-width);height:var(--iron-icon-height);color:inherit !important}ns-theme-panels .circle1{fill:none;stroke:var(--px-spinner-background-color, #d3d3d3);stroke-width:5px}ns-theme-panels .circle2{fill:none;stroke:var(--px-spinner-fill-color, #09809c);stroke-width:5px;stroke-dasharray:283;stroke-dashoffset:566;animation:rotate 1.5s infinite cubic-bezier(0.78, 0.13, 0.16, 0.87)}.active{display:block}";
 
+let panelCount = 0;
 class NsThemePanels {
   constructor(hostRef) {
     registerInstance(this, hostRef);
@@ -6021,15 +6343,17 @@ class NsThemePanels {
     }
   }
   async addPanel(tab, element) {
-    let pane = document.createElement('article');
+    panelCount++;
+    let pane = document.createElement('ns-theme-panel');
     pane.dataset.tab = tab.id;
     pane.dataset.href = tab.href;
-    pane.dataset.panel = tab.panelId;
+    pane.dataset.panel = tab.panelId || `panel-${panelCount}`;
+    pane.dataset.test = 'panel';
     //pane.dataset.index = `${tab.index}`;
     pane.appendChild(element);
     this.panels.push(pane.dataset);
     if (element) {
-      this.el.querySelector('section').appendChild(pane);
+      this.el.appendChild(pane);
     }
     else {
       console.error('ns-theme-panel - Must provide an element!');
@@ -6047,20 +6371,21 @@ class NsThemePanels {
     if (p) {
       this.clearActive();
       return p.classList.add('active');
+      //p.setAttribute('selected', 'true');
     }
     else {
-      console.error('ns-theme-panel - Could not find tab id ===', tab.id);
+      console.error('ns-theme-panel - Could not find data-panel ===', tab.id);
     }
   }
   async getPanels() {
     return this.panels;
   }
   async getPanelNodes() {
-    let t = this.el.querySelectorAll('article');
+    let t = this.el.querySelectorAll('ns-theme-panel');
     return t;
   }
   render() {
-    return (hAsync(Host, null, hAsync("section", { class: "ns-theme-panels" }, hAsync("slot", null))));
+    return (hAsync(Host, { class: "ns-theme-panels" }, hAsync("slot", null)));
   }
   get el() { return getElement(this); }
   static get watchers() { return {
@@ -6071,7 +6396,7 @@ class NsThemePanels {
     "$flags$": 4,
     "$tagName$": "ns-theme-panels",
     "$members$": {
-      "selectedIndex": [2, "selected-index"],
+      "selectedIndex": [1538, "selected-index"],
       "selectedPanel": [32],
       "panels": [32],
       "closePanel": [64],
@@ -6082,7 +6407,7 @@ class NsThemePanels {
     },
     "$listeners$": undefined,
     "$lazyBundleId$": "-",
-    "$attrsToReflect$": []
+    "$attrsToReflect$": [["selectedIndex", "selected-index"]]
   }; }
 }
 
@@ -6111,6 +6436,7 @@ class NsThemeTabs {
   constructor(hostRef) {
     registerInstance(this, hostRef);
     this.tabChange = createEvent(this, "tabChange", 7);
+    this.tabsChange = createEvent(this, "tabsChange", 7);
     this.tabAdded = createEvent(this, "tabAdded", 7);
     this.tabClick = createEvent(this, "tabClick", 7);
     this.tabClose = createEvent(this, "tabClose", 7);
@@ -6118,10 +6444,6 @@ class NsThemeTabs {
      * The array of tab items
      */
     this.tabs = {};
-    /**
-     * The default selected index
-     */
-    this.selectedIndex = 0;
     /**
      * The list of tab items that get added to tab list
      */
@@ -6156,8 +6478,8 @@ class NsThemeTabs {
   async closeTab(tab) {
     let oldTabs = Object.assign({}, this.tabs);
     delete oldTabs[tab.id];
-    this.tabClose.emit(tab);
     this.tabs = oldTabs;
+    this.tabClose.emit(tab);
     return tab;
   }
   /**
@@ -6168,6 +6490,10 @@ class NsThemeTabs {
     if (!tab) {
       return;
     }
+    if (tab === this.selectedTab) {
+      return;
+    }
+    this.selectedTab = tab;
     let oldTabs = Object.assign({}, this.tabs);
     Object.values(oldTabs).forEach((t) => {
       if (oldTabs[t.id].selected) {
@@ -6178,6 +6504,7 @@ class NsThemeTabs {
       oldTabs[tab.id].selected = !tab.selected;
     }
     this.tabs = oldTabs;
+    return tab;
   }
   /**
    * Select home tab finds the home tab from the tabs.
@@ -6186,9 +6513,9 @@ class NsThemeTabs {
   async selectHomeTab() {
     let home = null;
     home = Object.values(this.tabs).find((item) => {
-      return item.home;
+      return item.home || item.default;
     });
-    return home;
+    return this.toggleTab(home);
   }
   componentWillLoad() {
     [...this.items].forEach(t => {
@@ -6199,7 +6526,7 @@ class NsThemeTabs {
     });
   }
   watchTabsHandler(newValue) {
-    this.tabChange.emit(newValue);
+    this.tabsChange.emit(newValue);
   }
   tabClickHandler(item) {
     item.selected = true;

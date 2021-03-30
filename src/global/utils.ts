@@ -2,7 +2,7 @@ export const loadFromSession = (itemKeyToLoad: any = 'state') => {
   try {
     const serializedSessionItem = sessionStorage.getItem(itemKeyToLoad);
     if (serializedSessionItem === null) {
-      return;
+      return {};
     }
     return JSON.parse(serializedSessionItem);
   } catch (err) {

@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property   | Attribute  | Description | Type      | Default     |
-| ---------- | ---------- | ----------- | --------- | ----------- |
-| `selected` | `selected` |             | `boolean` | `undefined` |
+| Property   | Attribute  | Description | Type      | Default |
+| ---------- | ---------- | ----------- | --------- | ------- |
+| `loading`  | `loading`  |             | `boolean` | `false` |
+| `selected` | `selected` |             | `boolean` | `false` |
 
 
 ----------------------------------------------

@@ -172,19 +172,19 @@ export class NsThemeHeader {
   /**
    * The tabCount for the tab manager
    */
-  @Prop() tabCount: number;
+  @Prop({ reflect: true, mutable: true }) tabCount: number;
   /**
    * Main navigation items
    */
-  @Prop() items: NavItem[] = [];
+  @Prop() items: NavItem[];
   /**
    * Profile navigation items
    */
-  @Prop() profile: NavItem[] = [];
+  @Prop() profile: NavItem[];
   /**
    * Settings navigation items
    */
-  @Prop() settings: NavItem[] = [];
+  @Prop() settings: NavItem[];
   /**
    * User properties for user menu
    */

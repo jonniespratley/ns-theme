@@ -6,8 +6,8 @@ import { Component, Host, h, Prop } from '@stencil/core';
   shadow: true,
 })
 export class NsThemePanel {
-  @Prop() selected = false;
-  @Prop() loading = false;
+  @Prop({ reflect: true }) selected = false;
+  @Prop({ reflect: true }) loading = false;
 
   render() {
     return (
@@ -15,6 +15,7 @@ export class NsThemePanel {
         <div class={{
           'ns-theme__panel': true,
           'loading': this.loading,
+          'active': this.selected,
           'ui': true,
           'segment': true
         }}>

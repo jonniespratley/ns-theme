@@ -14,21 +14,21 @@ export class NsThemeDrawer {
   /**
    * The header text for the drawer.
    */
-  @Prop() headerText: string;
+  @Prop({ reflect: true, mutable: true }) headerText: string;
   /**
    * The header action text for the drawer.
    */
-  @Prop() headerActionText: string = 'Close All';
+  @Prop({ reflect: true, mutable: true }) headerActionText: string = 'Close All';
 
   /**
    * The anchor position of the drawer.
    */
-  @Prop() anchor: string = 'left';
+  @Prop({ reflect: true, mutable: true }) anchor: string = 'left';
 
   /**
    * The navigation list items.
    */
-  @Prop() items: [] = [];
+  @Prop({ reflect: true, mutable: true }) items: [] = [];
 
   /**
    * Make the drawer be in fixed position.
@@ -110,7 +110,7 @@ export class NsThemeDrawer {
       }}>
 
         <header class="theme__drawer-header">
-          <div>
+          <div class="theme__drawer-header-text">
             {this.headerText && <h3>{this.headerText}</h3>}
           </div>
 

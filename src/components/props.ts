@@ -14,6 +14,7 @@ export interface TabsMap {
 
 export interface TabItem {
   id: string;
+  default?: boolean;
   selected?: boolean;
   href: string;
   label: string;
@@ -81,7 +82,8 @@ export interface Session {
   profile?: NavItems;
   localeData?: object;
   preferences?: object;
-  tabs?: any;
+  session?: object;
+  tabs?: TabItem[];
 }
 
 export interface Config {

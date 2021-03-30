@@ -154,8 +154,11 @@
     <script nomodule src="/build/ns-theme.js"></script>
   </head>
   <body>
+    <ns-theme id="theme"></ns-theme>
 
-
+    <br>
+    <br>
+    <hr>
     <ns-theme-header id="headerExample" show-menu slot="header">
       <ns-theme-tabs id="exampleTabs" slot="tabs"></ns-theme-tabs>
      
@@ -282,31 +285,39 @@
         });
 
 
-        document.addEventListener('tabManagerClick', () => {
+        document.addEventListener('_tabManagerClick', () => {
           document.querySelector('#nsThemeTabsDrawer').toggle();
+        });
+        
+        document.addEventListener('_tabsChange', (e) => {
+          console.log('tabsChange', e.detail);
+          let tabs = Object.values(e.detail);
+          nsThemeTabsList.items = tabs;
+          nsThemeHeader.tabCount = tabs.length;
+          console.count('tabsChange');
         });
 
 
         // TODO - Listen for change to tabs only
-        nsThemeTabs.addEventListener('tabChange', e => {
-          let tabs = Object.values(e.detail);
-          nsThemeTabsList.items = tabs;
-          nsThemeHeader.tabCount = tabs.length;
+        nsThemeTabs.addEventListener('_tabChange', e => {
+          
+          console.log('tabChange', e.detail);
         });
 
         // TODO - Listen for tabClick on entire document
-        document.addEventListener('tabClick', e => {
+        document.addEventListener('_tabClick', e => {
           e.preventDefault();
           toggleTab(e.detail);
         });
 
         // TODO - Close panel when tab is closed.
-        document.addEventListener('tabClose', async e => {
+        document.addEventListener('_tabClose', async e => {
           await closeTab(e.detail);
           await selectHomeTab();
         });
 
         function createTab(obj) {
+          count++;
           let t = {
             id: count === 0 ? 'home' : `app-${count}`,
             label: `Tab ${count}`,
@@ -316,6 +327,7 @@
           };
           return t;
         }
+        window.createTab = createTab;
 
         function createPane(t) {
           let pane = document.createElement('div');
@@ -328,14 +340,14 @@
         }
 
         async function addTab(obj) {
-          count++;
+          
           let t = createTab(obj);
           let pane = createPane(t);
           let newTab = await nsThemeTabs.addTab(t);
           let newPanel = await nsThemePanels.addPanel(newTab, pane);
           return await toggleTab(newTab);
         }
-
+        document.querySelector('ns-theme').session = window.nav;
         document.addEventListener('DOMContentLoaded', () => {
           let sortedItems = window.nav.main.items.sort((a, b) => {
             return a.order - b.order;

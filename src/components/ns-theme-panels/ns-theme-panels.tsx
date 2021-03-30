@@ -1,6 +1,7 @@
 import { Component, Host, h, Element, Method, Prop, State, Watch } from '@stencil/core';
 import { TabItem } from '../props';
 
+let panelCount = 0;
 @Component({
   tag: 'ns-theme-panels',
   styleUrl: 'ns-theme-panels.scss',
@@ -8,30 +9,29 @@ import { TabItem } from '../props';
 })
 export class NsThemePanels {
   @State() selectedPanel: string;
-  @State() panels:any[] = [];
+  @State() panels: any[] = [];
   @Element() el: HTMLElement;
-  
-  @Prop() selectedIndex: number;
+
+  @Prop({ reflect: true, mutable: true }) selectedIndex: number;
 
   @Watch('selectedIndex')
   watchHandler(newValue) {
     this.selectedPanel = newValue
     let p = this.panels[newValue];
-    if(p){
+    if (p) {
       this.togglePanel(p.tab);
     }
   }
 
   @Method()
-  async closePanel(tab:TabItem) {
-
+  async closePanel(tab: TabItem) {
     let p = null;
-    if(tab.id){
+    if (tab.id) {
       p = this.el.querySelector(`[data-tab="${tab.id}"]`)
-    } else if(tab.panelId){
+    } else if (tab.panelId) {
       p = this.el.querySelector(`[data-panel="${tab.panelId}"]`)
     }
-    if(p){
+    if (p) {
       p.remove();
     } else {
       console.error('ns-theme-panel - Could not find panel with id ===', tab)
@@ -39,61 +39,60 @@ export class NsThemePanels {
   }
 
   @Method()
-  async addPanel(tab:TabItem, element:any) {
-    
-    let pane = document.createElement('article');
-    
+  async addPanel(tab: TabItem, element: any) {
+    panelCount++;
+    let pane = document.createElement('ns-theme-panel');
     pane.dataset.tab = tab.id;
     pane.dataset.href = tab.href;
-    pane.dataset.panel = tab.panelId;
+    pane.dataset.panel = tab.panelId || `panel-${panelCount}`;
+    pane.dataset.test = 'panel';
     //pane.dataset.index = `${tab.index}`;
 
     pane.appendChild(element);
     this.panels.push(pane.dataset);
-    if(element){
-      this.el.querySelector('section').appendChild(pane);
+    if (element) {
+      this.el.appendChild(pane);
     } else {
       console.error('ns-theme-panel - Must provide an element!')
     }
     return pane;
   }
 
-  clearActive(){
+  clearActive() {
     let t = this.el.querySelector('.active');
-    if(t){
+    if (t) {
       t.classList.remove('active');
-    }
-  }
-  
-  @Method()
-  async togglePanel(tab:TabItem) {
-    let p = this.el.querySelector(`[data-tab="${tab.id}"]`);
-    if(p){
-      this.clearActive()
-      return p.classList.add('active');
-    } else {
-      console.error('ns-theme-panel - Could not find tab id ===', tab.id)
     }
   }
 
   @Method()
-  async getPanels(){
+  async togglePanel(tab: TabItem) {
+    let p = this.el.querySelector(`[data-tab="${tab.id}"]`);
+    if (p) {
+      this.clearActive()
+      return p.classList.add('active');
+      //p.setAttribute('selected', 'true');
+    } else {
+      console.error('ns-theme-panel - Could not find data-panel ===', tab.id)
+    }
+  }
+
+  @Method()
+  async getPanels() {
     return this.panels;
   }
-  
+
+
   @Method()
-  async getPanelNodes(){
-    let t = this.el.querySelectorAll('article');
+  async getPanelNodes() {
+    let t = this.el.querySelectorAll('ns-theme-panel');
     return t;
   }
 
   render() {
     return (
-      <Host>
-        <section class="ns-theme-panels">
-          <slot></slot>
-        </section>
-
+      <Host class="ns-theme-panels">
+        <slot></slot>
       </Host>
     );
   }

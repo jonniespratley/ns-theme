@@ -5,16 +5,19 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IUser, NavItem, TabItem, TabsMap } from "./components/props";
+import { IUser, NavItem, Session, TabItem, TabsMap } from "./components/props";
 export namespace Components {
     interface NsSpinner {
         "height": number;
         "width": number;
     }
     interface NsTheme {
-        "addTab": (tab: any) => Promise<void>;
+        "addTab": (tab: any) => Promise<HTMLNsThemePanelElement>;
         "closeTab": (index: any) => Promise<void>;
+        "createPane": (t: any) => Promise<HTMLDivElement>;
         "open": () => Promise<boolean>;
+        "selectHomeTab": () => Promise<TabItem>;
+        "session": Session;
         "tabs": TabItem[];
     }
     interface NsThemeBrandingBar {
@@ -96,9 +99,9 @@ export namespace Components {
         "selected": boolean;
     }
     interface NsThemePanels {
-        "addPanel": (tab: TabItem, element: any) => Promise<HTMLElement>;
+        "addPanel": (tab: TabItem, element: any) => Promise<HTMLNsThemePanelElement>;
         "closePanel": (tab: TabItem) => Promise<void>;
-        "getPanelNodes": () => Promise<NodeListOf<HTMLElement>>;
+        "getPanelNodes": () => Promise<NodeListOf<HTMLNsThemePanelElement>>;
         "getPanels": () => Promise<any[]>;
         "selectedIndex": number;
         "togglePanel": (tab: TabItem) => Promise<void>;
@@ -109,7 +112,7 @@ export namespace Components {
           * @param tab TabItem to add
           * @returns Updated array of tabs
          */
-        "addTab": (tab: TabItem) => Promise<{ id: string; selected?: boolean; href: string; label: string; title?: string; panelId?: string; index?: number; home?: boolean; }>;
+        "addTab": (tab: TabItem) => Promise<{ id: string; default?: boolean; selected?: boolean; href: string; label: string; title?: string; panelId?: string; index?: number; home?: boolean; }>;
         /**
           * Close a tab from the tab set.
           * @param index number The index of the tab to close.
@@ -133,7 +136,7 @@ export namespace Components {
           * Select home tab finds the home tab from the tabs.
           * @returns Home tab
          */
-        "selectHomeTab": () => Promise<any>;
+        "selectHomeTab": () => Promise<TabItem>;
         /**
           * The default selected index
          */
@@ -142,7 +145,7 @@ export namespace Components {
           * Handles toggling a tab's selected property.
           * @param tab The tab item to toggle
          */
-        "toggleTab": (tab: TabItem) => Promise<void>;
+        "toggleTab": (tab: TabItem) => Promise<TabItem>;
     }
 }
 declare global {
@@ -218,6 +221,7 @@ declare namespace LocalJSX {
         "width"?: number;
     }
     interface NsTheme {
+        "session"?: Session;
         "tabs"?: TabItem[];
     }
     interface NsThemeBrandingBar {
@@ -316,9 +320,10 @@ declare namespace LocalJSX {
          */
         "items"?: TabItem[];
         "onTabAdded"?: (event: CustomEvent<TabItem>) => void;
-        "onTabChange"?: (event: CustomEvent<TabItem[]>) => void;
+        "onTabChange"?: (event: CustomEvent<TabItem>) => void;
         "onTabClick"?: (event: CustomEvent<TabItem>) => void;
         "onTabClose"?: (event: CustomEvent<TabItem>) => void;
+        "onTabsChange"?: (event: CustomEvent<TabItem[]>) => void;
         /**
           * The default selected index
          */

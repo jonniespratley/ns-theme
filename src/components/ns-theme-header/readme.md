@@ -7,16 +7,17 @@
 
 ## Properties
 
-| Property     | Attribute     | Description                     | Type        | Default                                      |
-| ------------ | ------------- | ------------------------------- | ----------- | -------------------------------------------- |
-| `headerText` | `header-text` | The title for the header        | `string`    | `undefined`                                  |
-| `isFixed`    | `is-fixed`    | Header in fixed position or not | `boolean`   | `undefined`                                  |
-| `items`      | --            | Main navigation items           | `NavItem[]` | `[]`                                         |
-| `profile`    | --            | Profile navigation items        | `NavItem[]` | `[]`                                         |
-| `settings`   | --            | Settings navigation items       | `NavItem[]` | `[]`                                         |
-| `showHome`   | `show-home`   | Show Home menu button           | `boolean`   | `undefined`                                  |
-| `showMenu`   | `show-menu`   | Show Toggle menu button         | `boolean`   | `undefined`                                  |
-| `user`       | --            | User properties for user menu   | `object`    | `{ name: null, picture: null, email: null }` |
+| Property     | Attribute     | Description                      | Type        | Default     |
+| ------------ | ------------- | -------------------------------- | ----------- | ----------- |
+| `headerText` | `header-text` | The title for the header         | `string`    | `undefined` |
+| `isFixed`    | `is-fixed`    | Header in fixed position or not  | `boolean`   | `undefined` |
+| `items`      | --            | Main navigation items            | `NavItem[]` | `[]`        |
+| `profile`    | --            | Profile navigation items         | `NavItem[]` | `[]`        |
+| `settings`   | --            | Settings navigation items        | `NavItem[]` | `[]`        |
+| `showHome`   | `show-home`   | Show Home menu button            | `boolean`   | `undefined` |
+| `showMenu`   | `show-menu`   | Show Toggle menu button          | `boolean`   | `undefined` |
+| `tabCount`   | `tab-count`   | The tabCount for the tab manager | `number`    | `undefined` |
+| `user`       | --            | User properties for user menu    | `IUser`     | `undefined` |
 
 
 ## Events
@@ -24,6 +25,7 @@
 | Event             | Description                                            | Type               |
 | ----------------- | ------------------------------------------------------ | ------------------ |
 | `menuToggleClick` | menuToggleClick dispatches when menu button is pressed | `CustomEvent<any>` |
+| `tabManagerClick` |                                                        | `CustomEvent<any>` |
 
 
 ## CSS Custom Properties
