@@ -2,3 +2,18 @@
   display: block;
   min-height: 80vh;
 }
+
+.px-icon svg {
+  fill: var(--iron-icon-fill-color, none);
+  stroke: var(--iron-icon-stroke-color, currentColor);
+  display: inline-flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  position: relative;
+  vertical-align: middle;
+  width: var(--iron-icon-width);
+  height: var(--iron-icon-height);
+  color: inherit !important;
+}

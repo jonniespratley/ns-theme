@@ -12,9 +12,13 @@ export namespace Components {
         "width": number;
     }
     interface NsTheme {
-        "addTab": (tab: any) => Promise<HTMLNsThemePanelElement>;
-        "closeTab": (index: any) => Promise<void>;
+        "addPanel": (tab: any, element: any) => Promise<HTMLNsThemePanelElement>;
+        "addTab": (tab: any) => Promise<TabItem>;
+        "addTabAndPanel": (tab: any, el?: any) => Promise<{ newTab: TabItem; newPanel: HTMLNsThemePanelElement; }>;
+        "addTabs": (tabs: TabItem[]) => Promise<void>;
         "createPane": (t: any) => Promise<HTMLDivElement>;
+        "getNsPanels": () => Promise<HTMLNsThemePanelsElement>;
+        "getNsTabs": () => Promise<HTMLNsThemeTabsElement>;
         "open": () => Promise<boolean>;
         "selectHomeTab": () => Promise<TabItem>;
         "session": Session;
@@ -95,12 +99,12 @@ export namespace Components {
         "items": TabItem[];
     }
     interface NsThemePanel {
-        "loading": boolean;
         "selected": boolean;
     }
     interface NsThemePanels {
         "addPanel": (tab: TabItem, element: any) => Promise<HTMLNsThemePanelElement>;
         "closePanel": (tab: TabItem) => Promise<void>;
+        "getActivePanel": () => Promise<void>;
         "getPanelNodes": () => Promise<NodeListOf<HTMLNsThemePanelElement>>;
         "getPanels": () => Promise<any[]>;
         "selectedIndex": number;
@@ -112,18 +116,25 @@ export namespace Components {
           * @param tab TabItem to add
           * @returns Updated array of tabs
          */
-        "addTab": (tab: TabItem) => Promise<{ id: string; default?: boolean; selected?: boolean; href: string; label: string; title?: string; panelId?: string; index?: number; home?: boolean; }>;
+        "addTab": (tab: TabItem) => Promise<TabItem>;
         /**
           * Close a tab from the tab set.
           * @param index number The index of the tab to close.
           * @returns
          */
         "closeTab": (tab: TabItem) => Promise<TabItem>;
+        "getHomeTab": () => Promise<TabItem>;
         /**
           * Get the current tabs rendered
           * @returns Array of tabs
          */
         "getTabs": () => Promise<TabsMap>;
+        /**
+          * Get the current tabs rendered
+          * @returns Array of tabs
+         */
+        "getTabsArray": () => Promise<TabItem[]>;
+        "getTabsArraySorted": () => Promise<any>;
         /**
           * The home tab that cannot be closed
          */
@@ -304,7 +315,6 @@ declare namespace LocalJSX {
         "onTabClick"?: (event: CustomEvent<TabItem>) => void;
     }
     interface NsThemePanel {
-        "loading"?: boolean;
         "selected"?: boolean;
     }
     interface NsThemePanels {

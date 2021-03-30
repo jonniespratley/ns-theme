@@ -4682,7 +4682,7 @@ function hydrateFactory($stencilWindow, $stencilHydrateOpts, $stencilHydrateResu
 
 
 const NAMESPACE = 'ns-theme';
-const BUILD = /* ns-theme */ { allRenderFn: true, appendChildSlotFix: false, asyncLoading: true, attachStyles: true, cloneNodeFix: false, cmpDidLoad: true, cmpDidRender: true, cmpDidUnload: false, cmpDidUpdate: true, cmpShouldUpdate: false, cmpWillLoad: true, cmpWillRender: true, cmpWillUpdate: true, connectedCallback: true, constructableCSS: false, cssAnnotations: true, cssVarShim: false, devTools: false, disconnectedCallback: true, dynamicImportShim: false, element: false, event: true, hasRenderFn: true, hostListener: true, hostListenerTarget: true, hostListenerTargetBody: false, hostListenerTargetDocument: true, hostListenerTargetParent: false, hostListenerTargetWindow: false, hotModuleReplacement: false, hydrateClientSide: true, hydrateServerSide: true, hydratedAttribute: false, hydratedClass: true, isDebug: false, isDev: false, isTesting: false, lazyLoad: true, lifecycle: true, lifecycleDOMEvents: false, member: true, method: true, mode: false, observeAttribute: true, profile: false, prop: true, propBoolean: true, propMutable: true, propNumber: true, propString: true, reflect: true, safari10: false, scoped: false, scriptDataOpts: false, shadowDelegatesFocus: false, shadowDom: true, shadowDomShim: true, slot: true, slotChildNodesFix: false, slotRelocation: true, state: true, style: true, svg: true, taskQueue: true, updatable: true, vdomAttribute: true, vdomClass: true, vdomFunctional: true, vdomKey: true, vdomListener: true, vdomPropOrAttr: true, vdomRef: true, vdomRender: true, vdomStyle: true, vdomText: true, vdomXlink: true, watchCallback: true };
+const BUILD = /* ns-theme */ { allRenderFn: true, appendChildSlotFix: false, asyncLoading: true, attachStyles: true, cloneNodeFix: false, cmpDidLoad: false, cmpDidRender: true, cmpDidUnload: false, cmpDidUpdate: false, cmpShouldUpdate: false, cmpWillLoad: true, cmpWillRender: false, cmpWillUpdate: true, connectedCallback: false, constructableCSS: false, cssAnnotations: true, cssVarShim: false, devTools: false, disconnectedCallback: false, dynamicImportShim: false, element: false, event: true, hasRenderFn: true, hostListener: true, hostListenerTarget: true, hostListenerTargetBody: false, hostListenerTargetDocument: true, hostListenerTargetParent: false, hostListenerTargetWindow: false, hotModuleReplacement: false, hydrateClientSide: true, hydrateServerSide: true, hydratedAttribute: false, hydratedClass: true, isDebug: false, isDev: false, isTesting: false, lazyLoad: true, lifecycle: true, lifecycleDOMEvents: false, member: true, method: true, mode: false, observeAttribute: true, profile: false, prop: true, propBoolean: true, propMutable: true, propNumber: true, propString: true, reflect: true, safari10: false, scoped: false, scriptDataOpts: false, shadowDelegatesFocus: false, shadowDom: true, shadowDomShim: true, slot: true, slotChildNodesFix: false, slotRelocation: true, state: true, style: true, svg: true, taskQueue: true, updatable: true, vdomAttribute: true, vdomClass: true, vdomFunctional: true, vdomKey: true, vdomListener: true, vdomPropOrAttr: true, vdomRef: true, vdomRender: true, vdomStyle: true, vdomText: true, vdomXlink: true, watchCallback: true };
 
 var appGlobalScript = async () => {
   console.log('global/app.ts');
@@ -5131,8 +5131,7 @@ const createElm = (e, t, o, n) => {
  const n = createTime("scheduleUpdate", e.$cmpMeta$.$tagName$), s =  e.$lazyInstance$ ;
  let l;
  return t ? ( (e.$flags$ |= 256, e.$queuedListeners$ && (e.$queuedListeners$.map((([e, t]) => safeCall(s, e, t))), 
- e.$queuedListeners$ = null)),  (l = safeCall(s, "componentWillLoad"))) : ( (l = safeCall(s, "componentWillUpdate"))),  (l = then(l, (() => safeCall(s, "componentWillRender")))), 
- n(), then(l, (() => updateComponent(e, s, t)));
+ e.$queuedListeners$ = null)),  (l = safeCall(s, "componentWillLoad"))) : ( (l = safeCall(s, "componentWillUpdate"))), n(), then(l, (() => updateComponent(e, s, t)));
 }, updateComponent = async (e, t, o) => {
  const n = e.$hostElement$, s = createTime("update", e.$cmpMeta$.$tagName$), l = n["s-rc"];
   o && attachStyles(e);
@@ -5165,10 +5164,8 @@ const callRender = (e, t, o) => {
 }, getRenderingRef = () => renderingRef, postUpdateComponent = e => {
  const t = e.$cmpMeta$.$tagName$, o = e.$hostElement$, n = createTime("postUpdate", t), s =  e.$lazyInstance$ , l = e.$ancestorComponent$;
   (safeCall(s, "componentDidRender"), 
- BUILD.isDev ), 64 & e.$flags$ ? ( (safeCall(s, "componentDidUpdate"), 
- BUILD.isDev ), n()) : (e.$flags$ |= 64,  addHydratedFlag(o), 
-  (safeCall(s, "componentDidLoad"), 
- BUILD.isDev ), n(),  (e.$onReadyResolve$(o), l || appDidLoad())),  e.$onInstanceResolve$(o),  (e.$onRenderResolve$ && (e.$onRenderResolve$(), 
+ BUILD.isDev ), 64 & e.$flags$ ? (n()) : (e.$flags$ |= 64,  addHydratedFlag(o), 
+ n(),  (e.$onReadyResolve$(o), l || appDidLoad())),  e.$onInstanceResolve$(o),  (e.$onRenderResolve$ && (e.$onRenderResolve$(), 
  e.$onRenderResolve$ = void 0), 512 & e.$flags$ && nextTick((() => scheduleUpdate(e, !1))), 
  e.$flags$ &= -517);
 }, forceUpdate = e => {
@@ -5317,7 +5314,7 @@ const callRender = (e, t, o) => {
     consoleError(e);
    }
     (t.$flags$ &= -9),  (t.$flags$ |= 128), e(), 
-   fireConnectedCallback(t.$lazyInstance$);
+   fireConnectedCallback();
   }
   if ( s.style) {
    let n = s.style;
@@ -5331,11 +5328,10 @@ const callRender = (e, t, o) => {
  const r = t.$ancestorComponent$, i = () => scheduleUpdate(t, !0);
   r && r["s-rc"] ? r["s-rc"].push(i) : i();
 }, fireConnectedCallback = e => {
-  safeCall(e, "connectedCallback");
 }, connectedCallback = e => {
  if (0 == (1 & plt.$flags$)) {
   const t = getHostRef(e), o = t.$cmpMeta$, n = createTime("connectedCallback", o.$tagName$);
-  if (1 & t.$flags$) addHostEventListeners(e, t, o.$listeners$), fireConnectedCallback(t.$lazyInstance$); else {
+  if (1 & t.$flags$) addHostEventListeners(e, t, o.$listeners$), fireConnectedCallback(); else {
    let n;
    if (t.$flags$ |= 1,  (n = e.getAttribute("s-id"), n)) {
     ((e, t, o, n) => {
@@ -5704,28 +5700,735 @@ const createStore = (defaultState, shouldUpdate) => {
     return map;
 };
 
-const loadFromSession = (itemKeyToLoad = 'state') => {
+const loadFromSession = (itemKeyToLoad = 'state', returns = {}) => {
   try {
     const serializedSessionItem = sessionStorage.getItem(itemKeyToLoad);
     if (serializedSessionItem === null) {
-      return {};
+      return returns;
     }
     return JSON.parse(serializedSessionItem);
   }
   catch (err) {
-    return {};
-  }
-};
-const saveToSession = (item, key = 'state') => {
-  try {
-    const serializedSessionItem = JSON.stringify(item);
-    sessionStorage.setItem(key, serializedSessionItem);
-  }
-  catch (err) {
-    // Ignore write errors
+    return returns;
   }
 };
 
+function createCommonjsModule(fn, basedir, module) {
+	return module = {
+		path: basedir,
+		exports: {},
+		require: function (path, base) {
+			return commonjsRequire();
+		}
+	}, fn(module, module.exports), module.exports;
+}
+
+function commonjsRequire () {
+	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
+}
+
+/**
+ * Helpers.
+ */
+
+var s = 1000;
+var m = s * 60;
+var h$1 = m * 60;
+var d = h$1 * 24;
+var w = d * 7;
+var y = d * 365.25;
+
+/**
+ * Parse or format the given `val`.
+ *
+ * Options:
+ *
+ *  - `long` verbose formatting [false]
+ *
+ * @param {String|Number} val
+ * @param {Object} [options]
+ * @throws {Error} throw an error if val is not a non-empty string or a number
+ * @return {String|Number}
+ * @api public
+ */
+
+var ms = function(val, options) {
+  options = options || {};
+  var type = typeof val;
+  if (type === 'string' && val.length > 0) {
+    return parse(val);
+  } else if (type === 'number' && isFinite(val)) {
+    return options.long ? fmtLong(val) : fmtShort(val);
+  }
+  throw new Error(
+    'val is not a non-empty string or a valid number. val=' +
+      JSON.stringify(val)
+  );
+};
+
+/**
+ * Parse the given `str` and return milliseconds.
+ *
+ * @param {String} str
+ * @return {Number}
+ * @api private
+ */
+
+function parse(str) {
+  str = String(str);
+  if (str.length > 100) {
+    return;
+  }
+  var match = /^(-?(?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(
+    str
+  );
+  if (!match) {
+    return;
+  }
+  var n = parseFloat(match[1]);
+  var type = (match[2] || 'ms').toLowerCase();
+  switch (type) {
+    case 'years':
+    case 'year':
+    case 'yrs':
+    case 'yr':
+    case 'y':
+      return n * y;
+    case 'weeks':
+    case 'week':
+    case 'w':
+      return n * w;
+    case 'days':
+    case 'day':
+    case 'd':
+      return n * d;
+    case 'hours':
+    case 'hour':
+    case 'hrs':
+    case 'hr':
+    case 'h':
+      return n * h$1;
+    case 'minutes':
+    case 'minute':
+    case 'mins':
+    case 'min':
+    case 'm':
+      return n * m;
+    case 'seconds':
+    case 'second':
+    case 'secs':
+    case 'sec':
+    case 's':
+      return n * s;
+    case 'milliseconds':
+    case 'millisecond':
+    case 'msecs':
+    case 'msec':
+    case 'ms':
+      return n;
+    default:
+      return undefined;
+  }
+}
+
+/**
+ * Short format for `ms`.
+ *
+ * @param {Number} ms
+ * @return {String}
+ * @api private
+ */
+
+function fmtShort(ms) {
+  var msAbs = Math.abs(ms);
+  if (msAbs >= d) {
+    return Math.round(ms / d) + 'd';
+  }
+  if (msAbs >= h$1) {
+    return Math.round(ms / h$1) + 'h';
+  }
+  if (msAbs >= m) {
+    return Math.round(ms / m) + 'm';
+  }
+  if (msAbs >= s) {
+    return Math.round(ms / s) + 's';
+  }
+  return ms + 'ms';
+}
+
+/**
+ * Long format for `ms`.
+ *
+ * @param {Number} ms
+ * @return {String}
+ * @api private
+ */
+
+function fmtLong(ms) {
+  var msAbs = Math.abs(ms);
+  if (msAbs >= d) {
+    return plural(ms, msAbs, d, 'day');
+  }
+  if (msAbs >= h$1) {
+    return plural(ms, msAbs, h$1, 'hour');
+  }
+  if (msAbs >= m) {
+    return plural(ms, msAbs, m, 'minute');
+  }
+  if (msAbs >= s) {
+    return plural(ms, msAbs, s, 'second');
+  }
+  return ms + ' ms';
+}
+
+/**
+ * Pluralization helper.
+ */
+
+function plural(ms, msAbs, n, name) {
+  var isPlural = msAbs >= n * 1.5;
+  return Math.round(ms / n) + ' ' + name + (isPlural ? 's' : '');
+}
+
+/**
+ * This is the common logic for both the Node.js and web browser
+ * implementations of `debug()`.
+ */
+
+function setup(env) {
+	createDebug.debug = createDebug;
+	createDebug.default = createDebug;
+	createDebug.coerce = coerce;
+	createDebug.disable = disable;
+	createDebug.enable = enable;
+	createDebug.enabled = enabled;
+	createDebug.humanize = ms;
+	createDebug.destroy = destroy;
+
+	Object.keys(env).forEach(key => {
+		createDebug[key] = env[key];
+	});
+
+	/**
+	* The currently active debug mode names, and names to skip.
+	*/
+
+	createDebug.names = [];
+	createDebug.skips = [];
+
+	/**
+	* Map of special "%n" handling functions, for the debug "format" argument.
+	*
+	* Valid key names are a single, lower or upper-case letter, i.e. "n" and "N".
+	*/
+	createDebug.formatters = {};
+
+	/**
+	* Selects a color for a debug namespace
+	* @param {String} namespace The namespace string for the for the debug instance to be colored
+	* @return {Number|String} An ANSI color code for the given namespace
+	* @api private
+	*/
+	function selectColor(namespace) {
+		let hash = 0;
+
+		for (let i = 0; i < namespace.length; i++) {
+			hash = ((hash << 5) - hash) + namespace.charCodeAt(i);
+			hash |= 0; // Convert to 32bit integer
+		}
+
+		return createDebug.colors[Math.abs(hash) % createDebug.colors.length];
+	}
+	createDebug.selectColor = selectColor;
+
+	/**
+	* Create a debugger with the given `namespace`.
+	*
+	* @param {String} namespace
+	* @return {Function}
+	* @api public
+	*/
+	function createDebug(namespace) {
+		let prevTime;
+		let enableOverride = null;
+
+		function debug(...args) {
+			// Disabled?
+			if (!debug.enabled) {
+				return;
+			}
+
+			const self = debug;
+
+			// Set `diff` timestamp
+			const curr = Number(new Date());
+			const ms = curr - (prevTime || curr);
+			self.diff = ms;
+			self.prev = prevTime;
+			self.curr = curr;
+			prevTime = curr;
+
+			args[0] = createDebug.coerce(args[0]);
+
+			if (typeof args[0] !== 'string') {
+				// Anything else let's inspect with %O
+				args.unshift('%O');
+			}
+
+			// Apply any `formatters` transformations
+			let index = 0;
+			args[0] = args[0].replace(/%([a-zA-Z%])/g, (match, format) => {
+				// If we encounter an escaped % then don't increase the array index
+				if (match === '%%') {
+					return '%';
+				}
+				index++;
+				const formatter = createDebug.formatters[format];
+				if (typeof formatter === 'function') {
+					const val = args[index];
+					match = formatter.call(self, val);
+
+					// Now we need to remove `args[index]` since it's inlined in the `format`
+					args.splice(index, 1);
+					index--;
+				}
+				return match;
+			});
+
+			// Apply env-specific formatting (colors, etc.)
+			createDebug.formatArgs.call(self, args);
+
+			const logFn = self.log || createDebug.log;
+			logFn.apply(self, args);
+		}
+
+		debug.namespace = namespace;
+		debug.useColors = createDebug.useColors();
+		debug.color = createDebug.selectColor(namespace);
+		debug.extend = extend;
+		debug.destroy = createDebug.destroy; // XXX Temporary. Will be removed in the next major release.
+
+		Object.defineProperty(debug, 'enabled', {
+			enumerable: true,
+			configurable: false,
+			get: () => enableOverride === null ? createDebug.enabled(namespace) : enableOverride,
+			set: v => {
+				enableOverride = v;
+			}
+		});
+
+		// Env-specific initialization logic for debug instances
+		if (typeof createDebug.init === 'function') {
+			createDebug.init(debug);
+		}
+
+		return debug;
+	}
+
+	function extend(namespace, delimiter) {
+		const newDebug = createDebug(this.namespace + (typeof delimiter === 'undefined' ? ':' : delimiter) + namespace);
+		newDebug.log = this.log;
+		return newDebug;
+	}
+
+	/**
+	* Enables a debug mode by namespaces. This can include modes
+	* separated by a colon and wildcards.
+	*
+	* @param {String} namespaces
+	* @api public
+	*/
+	function enable(namespaces) {
+		createDebug.save(namespaces);
+
+		createDebug.names = [];
+		createDebug.skips = [];
+
+		let i;
+		const split = (typeof namespaces === 'string' ? namespaces : '').split(/[\s,]+/);
+		const len = split.length;
+
+		for (i = 0; i < len; i++) {
+			if (!split[i]) {
+				// ignore empty strings
+				continue;
+			}
+
+			namespaces = split[i].replace(/\*/g, '.*?');
+
+			if (namespaces[0] === '-') {
+				createDebug.skips.push(new RegExp('^' + namespaces.substr(1) + '$'));
+			} else {
+				createDebug.names.push(new RegExp('^' + namespaces + '$'));
+			}
+		}
+	}
+
+	/**
+	* Disable debug output.
+	*
+	* @return {String} namespaces
+	* @api public
+	*/
+	function disable() {
+		const namespaces = [
+			...createDebug.names.map(toNamespace),
+			...createDebug.skips.map(toNamespace).map(namespace => '-' + namespace)
+		].join(',');
+		createDebug.enable('');
+		return namespaces;
+	}
+
+	/**
+	* Returns true if the given mode name is enabled, false otherwise.
+	*
+	* @param {String} name
+	* @return {Boolean}
+	* @api public
+	*/
+	function enabled(name) {
+		if (name[name.length - 1] === '*') {
+			return true;
+		}
+
+		let i;
+		let len;
+
+		for (i = 0, len = createDebug.skips.length; i < len; i++) {
+			if (createDebug.skips[i].test(name)) {
+				return false;
+			}
+		}
+
+		for (i = 0, len = createDebug.names.length; i < len; i++) {
+			if (createDebug.names[i].test(name)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	* Convert regexp to namespace
+	*
+	* @param {RegExp} regxep
+	* @return {String} namespace
+	* @api private
+	*/
+	function toNamespace(regexp) {
+		return regexp.toString()
+			.substring(2, regexp.toString().length - 2)
+			.replace(/\.\*\?$/, '*');
+	}
+
+	/**
+	* Coerce `val`.
+	*
+	* @param {Mixed} val
+	* @return {Mixed}
+	* @api private
+	*/
+	function coerce(val) {
+		if (val instanceof Error) {
+			return val.stack || val.message;
+		}
+		return val;
+	}
+
+	/**
+	* XXX DO NOT USE. This is a temporary stub function.
+	* XXX It WILL be removed in the next major release.
+	*/
+	function destroy() {
+		console.warn('Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.');
+	}
+
+	createDebug.enable(createDebug.load());
+
+	return createDebug;
+}
+
+var common = setup;
+
+var browser = createCommonjsModule(function (module, exports) {
+/* eslint-env browser */
+
+/**
+ * This is the web browser implementation of `debug()`.
+ */
+
+exports.formatArgs = formatArgs;
+exports.save = save;
+exports.load = load;
+exports.useColors = useColors;
+exports.storage = localstorage();
+exports.destroy = (() => {
+	let warned = false;
+
+	return () => {
+		if (!warned) {
+			warned = true;
+			console.warn('Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.');
+		}
+	};
+})();
+
+/**
+ * Colors.
+ */
+
+exports.colors = [
+	'#0000CC',
+	'#0000FF',
+	'#0033CC',
+	'#0033FF',
+	'#0066CC',
+	'#0066FF',
+	'#0099CC',
+	'#0099FF',
+	'#00CC00',
+	'#00CC33',
+	'#00CC66',
+	'#00CC99',
+	'#00CCCC',
+	'#00CCFF',
+	'#3300CC',
+	'#3300FF',
+	'#3333CC',
+	'#3333FF',
+	'#3366CC',
+	'#3366FF',
+	'#3399CC',
+	'#3399FF',
+	'#33CC00',
+	'#33CC33',
+	'#33CC66',
+	'#33CC99',
+	'#33CCCC',
+	'#33CCFF',
+	'#6600CC',
+	'#6600FF',
+	'#6633CC',
+	'#6633FF',
+	'#66CC00',
+	'#66CC33',
+	'#9900CC',
+	'#9900FF',
+	'#9933CC',
+	'#9933FF',
+	'#99CC00',
+	'#99CC33',
+	'#CC0000',
+	'#CC0033',
+	'#CC0066',
+	'#CC0099',
+	'#CC00CC',
+	'#CC00FF',
+	'#CC3300',
+	'#CC3333',
+	'#CC3366',
+	'#CC3399',
+	'#CC33CC',
+	'#CC33FF',
+	'#CC6600',
+	'#CC6633',
+	'#CC9900',
+	'#CC9933',
+	'#CCCC00',
+	'#CCCC33',
+	'#FF0000',
+	'#FF0033',
+	'#FF0066',
+	'#FF0099',
+	'#FF00CC',
+	'#FF00FF',
+	'#FF3300',
+	'#FF3333',
+	'#FF3366',
+	'#FF3399',
+	'#FF33CC',
+	'#FF33FF',
+	'#FF6600',
+	'#FF6633',
+	'#FF9900',
+	'#FF9933',
+	'#FFCC00',
+	'#FFCC33'
+];
+
+/**
+ * Currently only WebKit-based Web Inspectors, Firefox >= v31,
+ * and the Firebug extension (any Firefox version) are known
+ * to support "%c" CSS customizations.
+ *
+ * TODO: add a `localStorage` variable to explicitly enable/disable colors
+ */
+
+// eslint-disable-next-line complexity
+function useColors() {
+	// NB: In an Electron preload script, document will be defined but not fully
+	// initialized. Since we know we're in Chrome, we'll just detect this case
+	// explicitly
+	if (typeof window !== 'undefined' && window.process && (window.process.type === 'renderer' || window.process.__nwjs)) {
+		return true;
+	}
+
+	// Internet Explorer and Edge do not support colors.
+	if (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/(edge|trident)\/(\d+)/)) {
+		return false;
+	}
+
+	// Is webkit? http://stackoverflow.com/a/16459606/376773
+	// document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
+	return (typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance) ||
+		// Is firebug? http://stackoverflow.com/a/398120/376773
+		(typeof window !== 'undefined' && window.console && (window.console.firebug || (window.console.exception && window.console.table))) ||
+		// Is firefox >= v31?
+		// https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
+		(typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31) ||
+		// Double check webkit in userAgent just in case we are in a worker
+		(typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/));
+}
+
+/**
+ * Colorize log arguments if enabled.
+ *
+ * @api public
+ */
+
+function formatArgs(args) {
+	args[0] = (this.useColors ? '%c' : '') +
+		this.namespace +
+		(this.useColors ? ' %c' : ' ') +
+		args[0] +
+		(this.useColors ? '%c ' : ' ') +
+		'+' + module.exports.humanize(this.diff);
+
+	if (!this.useColors) {
+		return;
+	}
+
+	const c = 'color: ' + this.color;
+	args.splice(1, 0, c, 'color: inherit');
+
+	// The final "%c" is somewhat tricky, because there could be other
+	// arguments passed either before or after the %c, so we need to
+	// figure out the correct index to insert the CSS into
+	let index = 0;
+	let lastC = 0;
+	args[0].replace(/%[a-zA-Z%]/g, match => {
+		if (match === '%%') {
+			return;
+		}
+		index++;
+		if (match === '%c') {
+			// We only are interested in the *last* %c
+			// (the user may have provided their own)
+			lastC = index;
+		}
+	});
+
+	args.splice(lastC, 0, c);
+}
+
+/**
+ * Invokes `console.debug()` when available.
+ * No-op when `console.debug` is not a "function".
+ * If `console.debug` is not available, falls back
+ * to `console.log`.
+ *
+ * @api public
+ */
+exports.log = console.debug || console.log || (() => {});
+
+/**
+ * Save `namespaces`.
+ *
+ * @param {String} namespaces
+ * @api private
+ */
+function save(namespaces) {
+	try {
+		if (namespaces) {
+			exports.storage.setItem('debug', namespaces);
+		} else {
+			exports.storage.removeItem('debug');
+		}
+	} catch (error) {
+		// Swallow
+		// XXX (@Qix-) should we be logging these?
+	}
+}
+
+/**
+ * Load `namespaces`.
+ *
+ * @return {String} returns the previously persisted debug modes
+ * @api private
+ */
+function load() {
+	let r;
+	try {
+		r = exports.storage.getItem('debug');
+	} catch (error) {
+		// Swallow
+		// XXX (@Qix-) should we be logging these?
+	}
+
+	// If debug isn't set in LS, and we're in Electron, try to load $DEBUG
+	if (!r && typeof process !== 'undefined' && 'env' in process) {
+		r = process.env.DEBUG;
+	}
+
+	return r;
+}
+
+/**
+ * Localstorage attempts to return the localstorage.
+ *
+ * This is necessary because safari throws
+ * when a user disables cookies/localstorage
+ * and you attempt to access it.
+ *
+ * @return {LocalStorage}
+ * @api private
+ */
+
+function localstorage() {
+	try {
+		// TVMLKit (Apple TV JS Runtime) does not have a window object, just localStorage in the global context
+		// The Browser also has localStorage in the global context.
+		return localStorage;
+	} catch (error) {
+		// Swallow
+		// XXX (@Qix-) should we be logging these?
+	}
+}
+
+module.exports = common(exports);
+
+const {formatters} = module.exports;
+
+/**
+ * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
+ */
+
+formatters.j = function (v) {
+	try {
+		return JSON.stringify(v);
+	} catch (error) {
+		return '[UnexpectedJSONParseError]: ' + error.message;
+	}
+};
+});
+
+function getLogger(name) {
+  const log = browser(`ns-theme:${name}`);
+  return log;
+}
+
+const log = getLogger('tabs');
 /**
  * store.state
 The state object is proxied, i. e. you can directly get and set properties and Store will automatically take care of component re-rendering when the state object is changed.
@@ -5770,19 +6473,16 @@ const baseState = {
   },
 };
 const persistedState = loadFromSession('apphub-session');
-const initialState = Object.assign(baseState, persistedState, { tabs: loadFromSession('ns-theme-tabs') });
+const initialState = Object.assign(baseState, persistedState, { tabs: loadFromSession('ns-theme-tabs', []) });
 const store = createStore(initialState);
 const { state, onChange } = store;
 onChange('session', value => {
-  console.log('save to session-store', value);
-  saveToSession(value, 'apphub-session');
+  console.count('session');
 });
 onChange('tabs', value => {
-  saveToSession(value, 'ns-theme-tabs');
-  console.log('save to session-store tabs', value);
 });
 
-const nsThemeCss = "/*!@:host*/.sc-ns-theme-h{display:block;min-height:80vh}";
+const nsThemeCss = "/*!@:host*/.sc-ns-theme-h{display:block;min-height:80vh}/*!@.px-icon svg*/.px-icon.sc-ns-theme svg.sc-ns-theme{fill:var(--iron-icon-fill-color, none);stroke:var(--iron-icon-stroke-color, currentColor);display:inline-flex;-webkit-box-align:center;align-items:center;-webkit-box-pack:center;justify-content:center;position:relative;vertical-align:middle;width:var(--iron-icon-width);height:var(--iron-icon-height);color:inherit !important}";
 
 var __asyncValues = (undefined && undefined.__asyncValues) || function (o) {
   if (!Symbol.asyncIterator)
@@ -5797,22 +6497,19 @@ class NsTheme {
     registerInstance(this, hostRef);
     // If `cacheData` changes we don't want to rerender the component,
     // so we DON'T decorate it with @State
-    this.cacheData = state.session;
+    this.cacheData = state;
     this.cacheTabs = state.tabs;
     this.tabs = [];
   }
-  tabManagerClickHandler(event) {
-    console.log('Received the custom todoCompleted event: ', event.detail);
+  tabManagerClickHandler() {
+    //console.log('Received the custom todoCompleted event: ', event.detail);
     this.nsThemeTabsDrawer.toggle();
-  }
-  todoCompletedHandler(event) {
-    console.log('Received the custom todoCompleted event: ', event.detail);
   }
   tabChangeHandler(event) {
     console.log('Received the custom tabChange event: ', event.detail);
   }
   tabsChangeHandler(event) {
-    console.log('Received the custom tabChange event: ', event.detail);
+    //console.log('Received the custom tabChange event: ', event.detail);
     let tabs = Object.values(event.detail);
     this.nsThemeHeader.tabCount = tabs.length;
     this.nsThemeTabsList.items = tabs;
@@ -5821,7 +6518,7 @@ class NsTheme {
     store.set('tabs', tabs);
   }
   async tabClickHandler(event) {
-    console.log('Received the custom tabClick event: ', event.detail);
+    //console.log('Received the custom tabClick event: ', event.detail);
     let tab = event.detail;
     await this.nsThemeTabs.toggleTab(tab);
     await this.nsThemePanels.togglePanel(tab);
@@ -5830,34 +6527,22 @@ class NsTheme {
   tabCloseHandler(event) {
     console.log('Received the custom tabClose event: ', event.detail);
   }
-  connectedCallback() {
-    console.log('connectedCallback');
-  }
-  disconnectedCallback() { }
-  componentWillLoad() {
-    console.log('componentWillLoad');
-    console.log('This session', this.session);
-  }
-  componentDidLoad() {
-    console.log('componentDidLoad');
-  }
-  componentWillUpdate() { }
-  componentDidUpdate() {
-    console.log('componentDidUpdate');
-  }
-  componentWillRender() {
-    console.log('componentWillRender');
-    //this.tabs = this.cacheTabs;
-  }
   async componentDidRender() {
     var e_1, _a;
-    //this.sortMenuItems();
-    console.log('componentDidRender');
-    if (this.cacheTabs) {
+    let { cacheTabs = [] } = this;
+    if (this.cacheData && this.cacheData.main) {
+      let { items = [] } = this.cacheData.main;
+      let defaultApp = items.find(i => i.default);
+      let defaultAppIndex = [...cacheTabs].indexOf(defaultApp);
+      if (defaultApp && defaultAppIndex <= 0) {
+        cacheTabs.unshift(defaultApp);
+      }
+    }
+    if (cacheTabs) {
       try {
-        for (var _b = __asyncValues(this.cacheTabs), _c; _c = await _b.next(), !_c.done;) {
-          const tab = _c.value;
-          await this.addTab(tab);
+        for (var cacheTabs_1 = __asyncValues(cacheTabs), cacheTabs_1_1; cacheTabs_1_1 = await cacheTabs_1.next(), !cacheTabs_1_1.done;) {
+          const tab = cacheTabs_1_1.value;
+          await this.addTabAndPanel(tab);
         }
       }
       catch (e_1_1) {
@@ -5865,8 +6550,8 @@ class NsTheme {
       }
       finally {
         try {
-          if (_c && !_c.done && (_a = _b.return))
-            await _a.call(_b);
+          if (cacheTabs_1_1 && !cacheTabs_1_1.done && (_a = cacheTabs_1.return))
+            await _a.call(cacheTabs_1);
         }
         finally {
           if (e_1)
@@ -5881,36 +6566,30 @@ class NsTheme {
       let sortedItems = this.session.main.items.sort((a, b) => {
         return a.order - b.order;
       });
-      // TODO - SET THE DEFAULT TAB
-      let defaultTab = sortedItems.find(item => item.default === true);
-      if (defaultTab) {
-        console.log('found default', defaultTab);
-        //this.tabs.push(defaultTab);
-      }
+      return sortedItems;
     }
-  }
-  async closeTab(index) {
-    //this.themeTabs
-    console.log('close', index);
   }
   async createPane(t) {
     let pane = document.createElement('div');
     pane.id = t.panelId;
-    pane.innerHTML = `
-        <h4>${t.id}</h4>
-        <p>This is the tab content</p>
-        `;
+    // pane.src = t.href;
+    pane.style.width = '100%';
+    pane.style.height = '99vh';
+    pane.style.border = 'none';
     return pane;
   }
-  async addTab(tab) {
-    let newTab = await this.nsThemeTabs.addTab(tab);
-    let newPanel = await this.nsThemePanels.addPanel(newTab, document.createElement('div'));
+  async addTabAndPanel(tab, el) {
+    if (!el) {
+      el = await this.createPane(tab);
+    }
+    let newTab = await this.addTab(tab);
+    let newPanel = await this.addPanel(newTab, el);
     //return await toggleTab(newTab);
     //return this.nsThemeTabs.addTab(tab);
     let { tabs = [] } = this;
     tabs.push(newTab);
     this.tabs = tabs;
-    return newPanel;
+    return { newTab, newPanel };
   }
   async selectHomeTab() {
     let tab = await this.nsThemeTabs.selectHomeTab();
@@ -5918,12 +6597,47 @@ class NsTheme {
     await this.nsThemePanels.togglePanel(tab);
     return tab;
   }
+  async addTabs(tabs) {
+    var e_2, _a;
+    try {
+      //return await this.nsThemeTabs.addTab(tab);
+      for (var tabs_1 = __asyncValues(tabs), tabs_1_1; tabs_1_1 = await tabs_1.next(), !tabs_1_1.done;) {
+        const tab = tabs_1_1.value;
+        await this.addTabAndPanel(tab);
+      }
+    }
+    catch (e_2_1) {
+      e_2 = { error: e_2_1 };
+    }
+    finally {
+      try {
+        if (tabs_1_1 && !tabs_1_1.done && (_a = tabs_1.return))
+          await _a.call(tabs_1);
+      }
+      finally {
+        if (e_2)
+          throw e_2.error;
+      }
+    }
+  }
+  async addTab(tab) {
+    return await this.nsThemeTabs.addTab(tab);
+  }
+  async addPanel(tab, element) {
+    return await this.nsThemePanels.addPanel(tab, element);
+  }
   async open() {
     // ...
     return true;
   }
+  async getNsTabs() {
+    return this.nsThemeTabs;
+  }
+  async getNsPanels() {
+    return this.nsThemePanels;
+  }
   render() {
-    return (hAsync(Host, null, hAsync("ns-theme-header", { id: "nsThemeHeader", "show-menu": true, ref: el => this.nsThemeHeader = el, settings: this.session ? this.session.settings.items : [], user: this.session ? this.session.user : null }, hAsync("ns-theme-tabs", { id: "nsThemeTabs", ref: el => this.nsThemeTabs = el, slot: "tabs" })), hAsync("ns-theme-panels", { id: "nsThemePanels", ref: el => this.nsThemePanels = el }), hAsync("slot", { name: "content" }), hAsync("ns-theme-drawer", { id: "nsThemeTabsDrawer", ref: el => this.nsThemeTabsDrawer = el, "header-text": "Tab Management", anchor: "right" }, hAsync("ns-theme-list-group", { id: "nsThemeTabsList", items: this.tabs, ref: el => this.nsThemeTabsList = el })), hAsync("footer", null, hAsync("slot", { name: "footer" }))));
+    return (hAsync(Host, null, hAsync("ns-theme-header", { id: "nsThemeHeader", ref: el => this.nsThemeHeader = el, settings: this.session ? this.session.settings.items : [], user: this.session ? this.session.user : null }, hAsync("div", { slot: "menu" }, hAsync("slot", { name: "menu" })), hAsync("ns-theme-tabs", { id: "nsThemeTabs", ref: el => this.nsThemeTabs = el, slot: "tabs" })), hAsync("ns-theme-panels", { id: "nsThemePanels", ref: el => this.nsThemePanels = el }), hAsync("slot", { name: "content" }), hAsync("ns-theme-drawer", { id: "nsThemeTabsDrawer", ref: el => this.nsThemeTabsDrawer = el, "header-text": "Tab Management", anchor: "right" }, hAsync("ns-theme-list-group", { id: "nsThemeTabsList", items: this.tabs, ref: el => this.nsThemeTabsList = el })), hAsync("footer", null, hAsync("slot", { name: "footer" }))));
   }
   static get assetsDirs() { return ["assets"]; }
   get el() { return getElement(this); }
@@ -5934,13 +6648,17 @@ class NsTheme {
     "$members$": {
       "session": [1040],
       "tabs": [1040],
-      "closeTab": [64],
       "createPane": [64],
-      "addTab": [64],
+      "addTabAndPanel": [64],
       "selectHomeTab": [64],
-      "open": [64]
+      "addTabs": [64],
+      "addTab": [64],
+      "addPanel": [64],
+      "open": [64],
+      "getNsTabs": [64],
+      "getNsPanels": [64]
     },
-    "$listeners$": [[0, "tabManagerClick", "tabManagerClickHandler"], [0, "todoCompleted", "todoCompletedHandler"], [0, "tabChange", "tabChangeHandler"], [0, "tabsChange", "tabsChangeHandler"], [0, "tabClick", "tabClickHandler"], [0, "tabClose", "tabCloseHandler"]],
+    "$listeners$": [[0, "tabManagerClick", "tabManagerClickHandler"], [0, "tabChange", "tabChangeHandler"], [0, "tabsChange", "tabsChangeHandler"], [0, "tabClick", "tabClickHandler"], [0, "tabClose", "tabCloseHandler"]],
     "$lazyBundleId$": "-",
     "$attrsToReflect$": []
   }; }
@@ -6248,8 +6966,18 @@ class NsThemeHeader {
   }; }
 }
 
-const nsThemeListGroupCss = ":host{display:block}:host *{box-sizing:border-box}ul,li{list-style:none;margin:0;padding:0}.list-group{display:grid;grid-auto-flow:row;grid-row-gap:0.2rem}.list-item{display:grid;text-decoration:none;background-color:#fff;color:#000;grid-auto-flow:column;grid-template-columns:1fr 90px}.list-item:hover{background-color:rgba(0, 0, 0, 0.1);color:#000}.list-item--active{background-color:#09809c;color:#fff}.list-item--active:hover{background-color:#09809c;color:#fff}.list-item--active button,.list-item--active span{color:#fff}.list-item button{background-color:transparent;outline:none;border:none;font-size:1rem;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center}.list-item button:hover{background-color:rgba(0, 0, 0, 0.2)}.list-item--button{cursor:pointer}.list-item__content{display:flex;flex-direction:column;padding:0.6rem;padding-left:1rem}.list-item__actions{display:flex;align-items:center;justify-content:space-around}.list-item__title{color:#333}.list-item__subtitle{color:#888;font-size:0.8rem}";
+const nsThemeListGroupCss = ":host{display:block}:host *{box-sizing:border-box}ul,li{list-style:none;margin:0;padding:0}.list-group{display:grid;grid-auto-flow:row;grid-row-gap:0.2rem}.list-item{display:grid;text-decoration:none;background-color:#fff;color:#000;grid-auto-flow:column;grid-template-columns:1fr 90px}.list-item:hover{background-color:rgba(0, 0, 0, 0.1);color:#000}.list-item--active{background-color:#09809c;color:#fff}.list-item--active:hover{background-color:#09809c;color:#fff}.list-item--active button,.list-item--active span{color:#fff}.list-item button{background-color:transparent;outline:none;border:none;font-size:1rem;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center}.list-item button:hover{background-color:rgba(0, 0, 0, 0.2)}.list-item--button{cursor:pointer}.list-item__content{display:flex;flex-direction:column;padding:0.6rem;padding-left:1rem}.list-item__actions{display:flex;align-items:center;justify-content:space-around}.list-item__title{color:#333}.list-item__subtitle{color:#888;font-size:0.8rem}.px-icon svg{fill:var(--iron-icon-fill-color, none);stroke:var(--iron-icon-stroke-color, currentColor);display:inline-flex;-webkit-box-align:center;align-items:center;-webkit-box-pack:center;justify-content:center;position:relative;vertical-align:middle;width:var(--iron-icon-width);height:var(--iron-icon-height);color:inherit !important}";
 
+const iconStyle = {
+  height: '16px',
+  width: '16px'
+};
+const svgStyle = {
+  pointerEvents: 'none',
+  display: 'block',
+  width: '16px',
+  height: '16px'
+};
 class NsThemeListGroup {
   constructor(hostRef) {
     registerInstance(this, hostRef);
@@ -6266,7 +6994,7 @@ class NsThemeListGroup {
         document.open(`${item.href}?chromeless=true`, `${item.title} Window`, null, true);
       } }, hAsync("i", { class: "gedi-new-window" })), hAsync("button", { title: `Close ${item.label} Tab`, onClick: () => {
         document.dispatchEvent(new CustomEvent('closeTab', { detail: item }));
-      } }, hAsync("i", { class: "gedi-close" })))))))));
+      } }, hAsync("i", { class: "gedi-close" }), hAsync("i", { class: "px-icon px-utl-close ", color: "inherit", style: iconStyle }, hAsync("svg", { viewBox: "0 0 16 16", preserveAspectRatio: "xMidYMid meet", style: svgStyle }, hAsync("g", { id: "px-utl-close" }, hAsync("path", { "stroke-miterlimit": "10", d: "M2.3 2.3l11.4 11.4m0-11.4L2.3 13.7" }))))))))))));
   }
   static get style() { return nsThemeListGroupCss; }
   static get cmpMeta() { return {
@@ -6283,32 +7011,52 @@ class NsThemeListGroup {
 
 const nsThemePanelCss = "/*!@:host*/.sc-ns-theme-panel-h{display:none}/*!@:host(.active)*/.active.sc-ns-theme-panel-h{display:block}/*!@.ui.segment*/.ui.segment.sc-ns-theme-panel{position:relative;transition:all 0s linear}/*!@.ui.segment.loading*/.ui.segment.loading.sc-ns-theme-panel{min-height:200px;text-shadow:none !important;color:transparent !important}/*!@.ui.loading.segment:before*/.ui.loading.segment.sc-ns-theme-panel:before{position:absolute;content:\"\";top:0;left:0;background:rgba(255, 255, 255, 0.8);width:100%;height:100%;border-radius:0.28571429rem;z-index:100}/*!@.ui.loading.segment:after*/.ui.loading.segment.sc-ns-theme-panel:after{position:absolute;content:\"\";top:50%;left:50%;margin:-1.5em 0 0 -1.5em;width:3em;height:3em;animation:segment-spin 0.6s linear;animation-iteration-count:infinite;border-radius:500rem;border-color:#09809c rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1);border-style:solid;border-width:0.2em;box-shadow:0 0 0 1px transparent;visibility:visible;z-index:101}@-webkit-keyframes segment-spin{from{-webkit-transform:rotate(0);transform:rotate(0)}to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes segment-spin{from{-webkit-transform:rotate(0);transform:rotate(0)}to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}/*!@.ui.basic.segment*/.ui.basic.segment.sc-ns-theme-panel{background:none transparent;-webkit-box-shadow:none;box-shadow:none;border:none;border-radius:0}";
 
+const iframeStyles = {
+  width: '100%',
+  height: '99vh'
+};
 class NsThemePanel {
   constructor(hostRef) {
     registerInstance(this, hostRef);
     this.selected = false;
-    this.loading = false;
+    this.loading = true;
+    this.loaded = false;
+  }
+  async componentWillUpdate() {
+    if (this.selected && !this.loaded) {
+      this.iframe.src = this.el.dataset.href;
+      this.iframe.onload = () => {
+        this.loading = false;
+        this.loaded = true;
+      };
+      this.iframe.onerror = () => {
+        this.loading = false;
+      };
+    }
   }
   render() {
-    return (hAsync(Host, { "aria-hidden": this.selected ? 'false' : 'true' }, hAsync("div", { class: {
+    return (hAsync(Host, { class: { 'active': this.selected }, "aria-hidden": this.selected ? 'false' : 'true' }, hAsync("div", { class: {
         'ns-theme__panel': true,
         'loading': this.loading,
         'active': this.selected,
         'ui': true,
         'segment': true
-      } }, hAsync("slot", null))));
+      } }, hAsync("iframe", { "data-src": this.href, ref: (el) => {
+        this.iframe = el;
+      }, class: "ns-theme__panel-frame", seamless: true, style: iframeStyles }, hAsync("p", null, "Your browser does not support iframes.")))));
   }
+  get el() { return getElement(this); }
   static get style() { return nsThemePanelCss; }
   static get cmpMeta() { return {
     "$flags$": 9,
     "$tagName$": "ns-theme-panel",
     "$members$": {
       "selected": [516],
-      "loading": [516]
+      "loading": [32]
     },
     "$listeners$": undefined,
     "$lazyBundleId$": "-",
-    "$attrsToReflect$": [["selected", "selected"], ["loading", "loading"]]
+    "$attrsToReflect$": [["selected", "selected"]]
   }; }
 }
 
@@ -6363,15 +7111,17 @@ class NsThemePanels {
   clearActive() {
     let t = this.el.querySelector('.active');
     if (t) {
-      t.classList.remove('active');
+      t.setAttribute('selected', 'false');
+      //t.classList.remove('active');
     }
   }
   async togglePanel(tab) {
     let p = this.el.querySelector(`[data-tab="${tab.id}"]`);
     if (p) {
       this.clearActive();
-      return p.classList.add('active');
-      //p.setAttribute('selected', 'true');
+      p.setAttribute('selected', 'true');
+      //return p.classList.add('active');
+      //
     }
     else {
       console.error('ns-theme-panel - Could not find data-panel ===', tab.id);
@@ -6383,6 +7133,9 @@ class NsThemePanels {
   async getPanelNodes() {
     let t = this.el.querySelectorAll('ns-theme-panel');
     return t;
+  }
+  async getActivePanel() {
+    return;
   }
   render() {
     return (hAsync(Host, { class: "ns-theme-panels" }, hAsync("slot", null)));
@@ -6403,7 +7156,8 @@ class NsThemePanels {
       "addPanel": [64],
       "togglePanel": [64],
       "getPanels": [64],
-      "getPanelNodes": [64]
+      "getPanelNodes": [64],
+      "getActivePanel": [64]
     },
     "$listeners$": undefined,
     "$lazyBundleId$": "-",
@@ -6413,6 +7167,7 @@ class NsThemePanels {
 
 const nsThemeTabsCss = "/*!@:host*/.sc-ns-theme-tabs-h{--ns-theme-tabs-link-color:$tabs-link-color}/*!@:host*/.sc-ns-theme-tabs-h{display:block;box-sizing:border-box;overflow:hidden;font-family:GE Inspira Sans, sans-serif}/*!@:host ul*/.sc-ns-theme-tabs-h ul.sc-ns-theme-tabs{margin:0;padding:0;list-style:none}/*!@:host a*/.sc-ns-theme-tabs-h a.sc-ns-theme-tabs{text-decoration:none;color:#777;align-self:stretch;display:flex;justify-content:center}/*!@:host .ns-theme__tabs*/.sc-ns-theme-tabs-h .ns-theme__tabs.sc-ns-theme-tabs{display:flex;max-width:calc(90vw - 50px);overflow-x:auto;overflow-y:hidden;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}/*!@:host .ns-theme__tab-item__label*/.sc-ns-theme-tabs-h .ns-theme__tab-item__label.sc-ns-theme-tabs{margin:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}/*!@:host .ns-theme__tab-item*/.sc-ns-theme-tabs-h .ns-theme__tab-item.sc-ns-theme-tabs{border-right:1px solid #ccc;border-left:1px solid transparent;position:relative;flex-direction:row;display:flex;justify-content:space-between;align-items:center;align-self:stretch;flex:0 1 150px}/*!@:host .ns-theme__tab-item:first-child*/.sc-ns-theme-tabs-h .ns-theme__tab-item.sc-ns-theme-tabs:first-child{border-left:1px solid #ccc;flex:0 0 50px}/*!@:host .ns-theme__tab-item.home .px-icon*/.sc-ns-theme-tabs-h .ns-theme__tab-item.home.sc-ns-theme-tabs .px-icon.sc-ns-theme-tabs{height:32px}/*!@:host .ns-theme__tab-item.home .ns-theme__tab-link*/.sc-ns-theme-tabs-h .ns-theme__tab-item.home.sc-ns-theme-tabs .ns-theme__tab-link.sc-ns-theme-tabs{min-width:auto;flex:1;padding:0}/*!@:host .ns-theme__tab-item.home .ns-theme__tab-link .close*/.sc-ns-theme-tabs-h .ns-theme__tab-item.home.sc-ns-theme-tabs .ns-theme__tab-link.sc-ns-theme-tabs .close.sc-ns-theme-tabs{display:none}/*!@:host .ns-theme__tab-item.active*/.sc-ns-theme-tabs-h .ns-theme__tab-item.active.sc-ns-theme-tabs{background:white}/*!@:host .ns-theme__tab-item.active:after*/.sc-ns-theme-tabs-h .ns-theme__tab-item.active.sc-ns-theme-tabs:after{content:\"\";background:white;height:1px;display:block;position:absolute;left:0px;right:0px;bottom:0px}/*!@:host .ns-theme__tab-item.active a:before*/.sc-ns-theme-tabs-h .ns-theme__tab-item.active.sc-ns-theme-tabs a.sc-ns-theme-tabs:before{content:\"\";height:3px;position:absolute;top:0;left:-1px;right:-1px;background-color:#09809c;color:#777}/*!@:host .ns-theme__tab-link*/.sc-ns-theme-tabs-h .ns-theme__tab-link.sc-ns-theme-tabs{color:#222;font-weight:500;padding-left:0.5rem;flex:1;cursor:pointer;min-height:50px;margin-right:0;border:none !important;display:flex;justify-content:center;flex-direction:column;text-decoration:none}/*!@:host .ns-theme__tab-link:hover*/.sc-ns-theme-tabs-h .ns-theme__tab-link.sc-ns-theme-tabs:hover{cursor:pointer}/*!@:host .title*/.sc-ns-theme-tabs-h .title.sc-ns-theme-tabs{font-size:1rem}/*!@:host .subtitle*/.sc-ns-theme-tabs-h .subtitle.sc-ns-theme-tabs{font-size:0.7rem;color:#999}/*!@:host .close*/.sc-ns-theme-tabs-h .close.sc-ns-theme-tabs{float:right;font-size:1rem;color:#000;text-shadow:0 1px 0 #fff;opacity:0.5;display:flex;cursor:pointer;width:20px;height:20px;align-items:center;justify-content:center}/*!@:host .close:hover, :host .close:active*/.sc-ns-theme-tabs-h .close.sc-ns-theme-tabs:hover,.sc-ns-theme-tabs-h .close.sc-ns-theme-tabs:active{background:rgba(0, 0, 0, 0.2)}/*!@:host .close:not(:disabled):not(.disabled):hover,\n:host .close:not(:disabled):not(.disabled):focus*/.sc-ns-theme-tabs-h .close.sc-ns-theme-tabs:not(:disabled):not(.disabled):hover,.sc-ns-theme-tabs-h .close.sc-ns-theme-tabs:not(:disabled):not(.disabled):focus{opacity:0.75}/*!@:host button.close*/.sc-ns-theme-tabs-h button.close.sc-ns-theme-tabs{padding:0;background-color:transparent;border:0}/*!@:host a.close.disabled*/.sc-ns-theme-tabs-h a.close.disabled.sc-ns-theme-tabs{pointer-events:none}/*!@:host .px-icon svg*/.sc-ns-theme-tabs-h .px-icon.sc-ns-theme-tabs svg.sc-ns-theme-tabs{fill:var(--iron-icon-fill-color, none);stroke:var(--iron-icon-stroke-color, currentColor);display:inline-flex;-webkit-box-align:center;align-items:center;-webkit-box-pack:center;justify-content:center;position:relative;vertical-align:middle;width:var(--iron-icon-width);height:var(--iron-icon-height);color:inherit !important}";
 
+const log$1 = getLogger('tabs');
 /**
  * pointer-events: none; display: block; width: 100%; height: 100%;
  */
@@ -6423,11 +7178,11 @@ const iconStyles$1 = {
   height: '100%'
 };
 const HomeIcon = () => (hAsync("i", { class: "px-icon px-nav-home m-0" }, hAsync("svg", { viewBox: "0 0 32 32", preserveAspectRatio: "xMidYMid meet", style: iconStyles$1 }, hAsync("g", { id: "px-fea-home" }, hAsync("path", { "stroke-linejoin": "round", d: "M5.5 16v14.5h21V16m-25-.79L16 2.1l14.5 13.11" }), hAsync("path", { "stroke-linejoin": "round", d: "M12.5 22.5h7v8h-7z" })))));
-const Tab = ({ id, label, title = 'App', href, panelId, selected, home, onClick, onRemove }) => (hAsync("li", { "aria-selected": selected ? 'true' : 'false', class: {
+const Tab = ({ id, label, title = 'App', href, order, panelId, selected, home, onClick, onRemove }) => (hAsync("li", { "aria-selected": selected ? 'true' : 'false', class: {
     'ns-theme__tab-item': true,
     home: home,
     active: selected
-  } }, hAsync("a", { href: `#${panelId}`, "aria-controls": `pane-${id}`, role: "tab", "data-ns-toggle": "tab", "data-ns-target": `${panelId}`, "data-ns-href": `${href}`, id: id, title: label, class: {
+  } }, hAsync("a", { href: `#${panelId}`, "aria-controls": `pane-${id}`, role: "tab", "data-ns-toggle": "tab", "data-ns-order": order, "data-ns-target": `${panelId}`, "data-ns-href": `${href}`, id: id, title: label, class: {
     'ns-theme__tab-link': true
   }, onClick: onClick }, !home && hAsync("span", { class: "subtitle" }, title), !home && hAsync("span", { class: "title" }, label), home && hAsync(HomeIcon, null)), !home &&
   hAsync("button", { class: "close", "data-action": "close", onClick: onRemove }, hAsync("i", { class: "px-icon px-utl-close", color: "inherit", style: { height: '16px', width: '16px' } }, hAsync("svg", { viewBox: "0 0 16 16", preserveAspectRatio: "xMidYMid meet" }, hAsync("g", { id: "px-utl-close" }, hAsync("path", { "stroke-miterlimit": "10", d: "M2.3 2.3l11.4 11.4m0-11.4L2.3 13.7" })))))));
@@ -6449,6 +7204,18 @@ class NsThemeTabs {
      */
     this.items = [];
   }
+  componentWillLoad() {
+    log$1('componentWillLoad', this);
+    [...this.items].sort(this.sortByOrder).forEach(t => {
+      if (t.selected) {
+        this.selectedTab = t;
+      }
+      if (t.default || t.home) {
+        this.homeTab = t;
+      }
+      this.tabs[t.id] = t;
+    });
+  }
   /**
    * Get the current tabs rendered
    * @returns Array of tabs
@@ -6457,13 +7224,31 @@ class NsThemeTabs {
     return this.tabs;
   }
   /**
+   * Get the current tabs rendered
+   * @returns Array of tabs
+   */
+  async getTabsArray() {
+    return Object.values(this.tabs);
+  }
+  async getTabsArraySorted() {
+    let arr = Object.values(this.tabs);
+    return this.sortByOrder(arr);
+  }
+  /**
    * Add a tab to the tabs
    * @param tab TabItem to add
    * @returns Updated array of tabs
    */
   async addTab(tab) {
-    //tabCount++;
     let t = Object.assign({}, tab);
+    if (!this.homeTab && t.home) {
+      this.homeTab = t;
+    }
+    else if (this.homeTab && t.home) {
+      console.warn('[ns-theme-tabs]', 'home tab already present!');
+      return tab;
+      //throw new Error('Only 1 home tab')
+    }
     let oldTabs = Object.assign({}, this.tabs);
     oldTabs[t.id] = tab;
     this.tabs = oldTabs;
@@ -6517,13 +7302,8 @@ class NsThemeTabs {
     });
     return this.toggleTab(home);
   }
-  componentWillLoad() {
-    [...this.items].forEach(t => {
-      if (t.selected) {
-        this.selectedTab = t;
-      }
-      this.tabs[t.id] = t;
-    });
+  async getHomeTab() {
+    return this.homeTab;
   }
   watchTabsHandler(newValue) {
     this.tabsChange.emit(newValue);
@@ -6543,12 +7323,20 @@ class NsThemeTabs {
       console.log('ArrowLeft pressed');
     }
   }
+  sortByOrder(arr) {
+    return arr.map((a, index) => {
+      let o = Object.assign({}, a);
+      o.order = a.order || index + 1;
+      if (o.home) {
+        o.order = 0;
+      }
+      return o;
+    }).sort((a, b) => {
+      return a.order - b.order;
+    });
+  }
   render() {
-    return (hAsync(Host, null, hAsync("ul", { class: "ns-theme__tabs" }, this.homeTab && hAsync(Tab, Object.assign({ home: true }, this.homeTab, { onClick: (e) => {
-        e.preventDefault();
-        this.homeTab.selected = !this.homeTab.selected;
-        //this.tabClickHandler(this.homeTab);
-      } })), this.tabs && Object.values(this.tabs).map((item) => (hAsync(Tab, Object.assign({}, item, { selected: item.selected, home: item.home, onRemove: () => {
+    return (hAsync(Host, null, hAsync("ul", { class: "ns-theme__tabs" }, this.tabs && Object.values(this.tabs).map((item) => (hAsync(Tab, Object.assign({}, item, { selected: item.selected, home: item.home, onRemove: () => {
         this.closeTab(item);
       }, onClick: (e) => {
         e.preventDefault();
@@ -6564,15 +7352,18 @@ class NsThemeTabs {
     "$tagName$": "ns-theme-tabs",
     "$members$": {
       "selectedIndex": [514, "selected-index"],
-      "homeTab": [16],
+      "homeTab": [1040],
       "items": [16],
       "selectedTab": [32],
       "tabs": [32],
       "getTabs": [64],
+      "getTabsArray": [64],
+      "getTabsArraySorted": [64],
       "addTab": [64],
       "closeTab": [64],
       "toggleTab": [64],
-      "selectHomeTab": [64]
+      "selectHomeTab": [64],
+      "getHomeTab": [64]
     },
     "$listeners$": [[4, "closeTab", "closeTabHandler"], [4, "keydown", "handleKeyDown"]],
     "$lazyBundleId$": "-",

@@ -156,6 +156,10 @@
   <body>
     <ns-theme id="theme"></ns-theme>
 
+    <!--
+
+
+    
     <br>
     <br>
     <hr>
@@ -233,87 +237,24 @@
       <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore, modi! Natus eveniet enim odit inventore ipsum expedita, repellat praesentium doloribus non totam facilis dignissimos magnam dolorum quas accusantium impedit nobis.</p>
     </ns-theme-panel>
        
- 
+ -->
 
     <script>
       (async () => {
+        window.onmessage = function (event) {
+          if (event.data == 'reply') {
+            console('Reply received!');
+          }
+        };
+
         let count = 0;
 
         await customElements.whenDefined('ns-theme');
         const nsTheme = document.querySelector('ns-theme');
-        const nsThemeHeader = document.querySelector('ns-theme-header');
-        nsThemeHeader.user = window.nav.user;
-        nsThemeHeader.settings = window.nav.settings.items;
-        // nsTheme.setAttribute('session', window.nav);
-
-        await customElements.whenDefined('ns-theme-tabs');
-        const nsThemeTabs = document.querySelector('ns-theme-tabs');
-
-        const nsThemeTabsList = document.querySelector('#nsThemeTabsList');
-        const nsThemePanels = document.querySelector('ns-theme-panels');
-        const nsTabCount = document.querySelector('.btn-count span');
-
-        async function toggleTab(tab) {
-          await nsThemeTabs.toggleTab(tab);
-          await nsThemePanels.togglePanel(tab);
-          return tab;
-        }
-
-        async function closeTab(tab) {
-          //await nsThemeTabs.closeTab(tab);
-          await nsThemePanels.closePanel(tab);
-          return tab;
-        }
-
-        async function closeAllTabs() {
-          let allTabsMap = await nsThemeTabs.getTabs();
-          let allTabs = Object.values(allTabsMap).filter(t => t.home !== true);
-
-          return Promise.all(allTabs.map(t => closeTab(t)));
-        }
-
-        async function selectHomeTab() {
-          let tab = await nsThemeTabs.selectHomeTab();
-          await nsThemeTabs.toggleTab(tab);
-          await nsThemePanels.togglePanel(tab);
-          return tab;
-        }
 
         document.addEventListener('drawerHeaderAction', e => {
           console.log('Action', e);
           closeAllTabs();
-        });
-
-
-        document.addEventListener('_tabManagerClick', () => {
-          document.querySelector('#nsThemeTabsDrawer').toggle();
-        });
-        
-        document.addEventListener('_tabsChange', (e) => {
-          console.log('tabsChange', e.detail);
-          let tabs = Object.values(e.detail);
-          nsThemeTabsList.items = tabs;
-          nsThemeHeader.tabCount = tabs.length;
-          console.count('tabsChange');
-        });
-
-
-        // TODO - Listen for change to tabs only
-        nsThemeTabs.addEventListener('_tabChange', e => {
-          
-          console.log('tabChange', e.detail);
-        });
-
-        // TODO - Listen for tabClick on entire document
-        document.addEventListener('_tabClick', e => {
-          e.preventDefault();
-          toggleTab(e.detail);
-        });
-
-        // TODO - Close panel when tab is closed.
-        document.addEventListener('_tabClose', async e => {
-          await closeTab(e.detail);
-          await selectHomeTab();
         });
 
         function createTab(obj) {
@@ -321,7 +262,7 @@
           let t = {
             id: count === 0 ? 'home' : `app-${count}`,
             label: `Tab ${count}`,
-            href: `/some-app/${count}`,
+            href: `demo.html?app=some-app-${count}`,
             panelId: `panel-${count}`,
             ...obj,
           };
@@ -340,31 +281,31 @@
         }
 
         async function addTab(obj) {
-          
           let t = createTab(obj);
-          let pane = createPane(t);
-          let newTab = await nsThemeTabs.addTab(t);
-          let newPanel = await nsThemePanels.addPanel(newTab, pane);
-          return await toggleTab(newTab);
+          let pane = await nsTheme.createPane(t);
+          let newTab = await nsTheme.addTabAndPanel(t, pane);
+          console.log(newTab);
+
+          //   let newPanel = await nsTheme.addPanel(newTab, pane);
+          // return await toggleTab(newTab);
         }
-        document.querySelector('ns-theme').session = window.nav;
+
         document.addEventListener('DOMContentLoaded', () => {
+          nsTheme.session = window.nav;
           let sortedItems = window.nav.main.items.sort((a, b) => {
             return a.order - b.order;
           });
+
           // TODO - SET THE DEFAULT TAB
           let defaultTab = sortedItems.find(item => item.default === true);
           defaultTab.home = true;
           defaultTab.title = 'Default';
-          addTab(defaultTab);
+          //addTab(defaultTab);
+          //nsTheme.selectHomeTab();
 
           document.addEventListener('menuToggleClick', () => {
             console.log('toggle js-menu menu');
             //document.querySelector('#js-menu [data-testid="app-menu__toggle"]').click();
-          });
-
-          document.querySelector('#addTab').addEventListener('click', () => {
-            addTab();
           });
         });
       })();

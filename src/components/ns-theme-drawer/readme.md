@@ -39,6 +39,19 @@ Type: `Promise<void>`
 | `--ns-theme-drawer-width`            | Width of the drawer            |
 
 
+## Dependencies
+
+### Used by
+
+ - [ns-theme](../ns-theme)
+
+### Graph
+```mermaid
+graph TD;
+  ns-theme --> ns-theme-drawer
+  style ns-theme-drawer fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Build with Love by JS!*

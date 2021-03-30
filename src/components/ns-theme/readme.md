@@ -23,30 +23,51 @@ This is how you use this element.
 
 ## Properties
 
-| Property | Attribute | Description | Type        | Default |
-| -------- | --------- | ----------- | ----------- | ------- |
-| `tabs`   | --        |             | `TabItem[]` | `[]`    |
+| Property  | Attribute | Description | Type        | Default     |
+| --------- | --------- | ----------- | ----------- | ----------- |
+| `session` | --        |             | `Session`   | `undefined` |
+| `tabs`    | --        |             | `TabItem[]` | `[]`        |
 
 
 ## Methods
 
-### `addTab(tab: any) => Promise<void>`
+### `addTab(tab: any, el: any) => Promise<{ newTab: TabItem; newPanel: HTMLNsThemePanelElement; }>`
 
 
 
 #### Returns
 
-Type: `Promise<void>`
+Type: `Promise<{ newTab: TabItem; newPanel: HTMLNsThemePanelElement; }>`
 
 
 
-### `closeTab(index: any) => Promise<void>`
+### `createPane(t: any) => Promise<HTMLDivElement>`
 
 
 
 #### Returns
 
-Type: `Promise<void>`
+Type: `Promise<HTMLDivElement>`
+
+
+
+### `getNsPanels() => Promise<HTMLNsThemePanelsElement>`
+
+
+
+#### Returns
+
+Type: `Promise<HTMLNsThemePanelsElement>`
+
+
+
+### `getNsTabs() => Promise<HTMLNsThemeTabsElement>`
+
+
+
+#### Returns
+
+Type: `Promise<HTMLNsThemeTabsElement>`
 
 
 
@@ -60,6 +81,16 @@ Type: `Promise<boolean>`
 
 
 
+### `selectHomeTab() => Promise<TabItem>`
+
+
+
+#### Returns
+
+Type: `Promise<TabItem>`
+
+
+
 
 ## Dependencies
 
@@ -67,12 +98,19 @@ Type: `Promise<boolean>`
 
 - [ns-theme-header](../ns-theme-header)
 - [ns-theme-tabs](../ns-theme-tabs)
+- [ns-theme-panels](../ns-theme-panels)
+- [ns-theme-drawer](../ns-theme-drawer)
+- [ns-theme-list-group](../ns-theme-list-group)
 
 ### Graph
 ```mermaid
 graph TD;
   ns-theme --> ns-theme-header
   ns-theme --> ns-theme-tabs
+  ns-theme --> ns-theme-panels
+  ns-theme --> ns-theme-drawer
+  ns-theme --> ns-theme-list-group
+  ns-theme-panels --> ns-theme-panel
   style ns-theme fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

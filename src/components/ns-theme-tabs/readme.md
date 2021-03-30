@@ -11,7 +11,7 @@
 | --------------- | ---------------- | ------------------------------------------------ | ----------- | ----------- |
 | `homeTab`       | --               | The home tab that cannot be closed               | `TabItem`   | `undefined` |
 | `items`         | --               | The list of tab items that get added to tab list | `TabItem[]` | `[]`        |
-| `selectedIndex` | `selected-index` | The default selected index                       | `number`    | `0`         |
+| `selectedIndex` | `selected-index` | The default selected index                       | `number`    | `undefined` |
 
 
 ## Events
@@ -27,19 +27,29 @@
 
 ## Methods
 
-### `addTab(tab: TabItem) => Promise<{ id: string; default?: boolean; selected?: boolean; href: string; label: string; title?: string; panelId?: string; index?: number; home?: boolean; }>`
+### `addTab(tab: TabItem) => Promise<TabItem>`
 
 Add a tab to the tabs
 
 #### Returns
 
-Type: `Promise<{ id: string; default?: boolean; selected?: boolean; href: string; label: string; title?: string; panelId?: string; index?: number; home?: boolean; }>`
+Type: `Promise<TabItem>`
 
 
 
 ### `closeTab(tab: TabItem) => Promise<TabItem>`
 
 Close a tab from the tab set.
+
+#### Returns
+
+Type: `Promise<TabItem>`
+
+
+
+### `getHomeTab() => Promise<TabItem>`
+
+
 
 #### Returns
 

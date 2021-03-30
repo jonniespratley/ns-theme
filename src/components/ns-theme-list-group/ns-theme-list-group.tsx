@@ -1,6 +1,15 @@
 import { Component, Host, h, Prop, Event, EventEmitter } from '@stencil/core';
 import { TabItem } from '../props';
-
+const iconStyle = {
+  height: '16px',
+  width: '16px'
+};
+const svgStyle = {
+  pointerEvents: 'none',
+  display: 'block',
+  width: '16px',
+  height: '16px'
+}
 @Component({
   tag: 'ns-theme-list-group',
   styleUrl: 'ns-theme-list-group.scss',
@@ -36,6 +45,9 @@ export class NsThemeListGroup {
                   document.dispatchEvent(new CustomEvent('closeTab', { detail: item }));
                 }}>
                   <i class="gedi-close"></i>
+                  <i class="px-icon px-utl-close " color="inherit" style={iconStyle}>
+                    <svg viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet" style={svgStyle}>
+                      <g id="px-utl-close"><path stroke-miterlimit="10" d="M2.3 2.3l11.4 11.4m0-11.4L2.3 13.7"></path></g></svg></i>
                 </button>
               </div>
             </li>

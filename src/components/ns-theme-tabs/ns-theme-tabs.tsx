@@ -1,6 +1,9 @@
 import { Component, Host, h, Prop, Event, EventEmitter, FunctionalComponent, State, Method, Watch, Listen } from '@stencil/core';
+import { getLogger } from '../../utils/utils';
 import { TabProps, TabItem, TabsMap } from '../props';
 
+
+const log = getLogger('tabs')
 /**
  * pointer-events: none; display: block; width: 100%; height: 100%;
  */
@@ -24,7 +27,7 @@ const Tab: FunctionalComponent<TabProps> = ({
   label,
   title = 'App',
   href,
-
+  order,
   panelId,
   selected,
   home,
@@ -43,6 +46,7 @@ const Tab: FunctionalComponent<TabProps> = ({
       aria-controls={`pane-${id}`}
       role="tab"
       data-ns-toggle="tab"
+      data-ns-order={order}
       data-ns-target={`${panelId}`}
       data-ns-href={`${href}`}
       id={id}
@@ -92,7 +96,7 @@ export class NsThemeTabs {
   /**
    * The home tab that cannot be closed
    */
-  @Prop() homeTab: TabItem;
+  @Prop({ mutable: true }) homeTab: TabItem;
 
   /**
    * The list of tab items that get added to tab list
@@ -105,6 +109,20 @@ export class NsThemeTabs {
   @Event() tabClick: EventEmitter<TabItem>;
   @Event() tabClose: EventEmitter<TabItem>;
 
+
+  componentWillLoad() {
+    log('componentWillLoad', this);
+    [...this.items].sort(this.sortByOrder).forEach(t => {
+      if (t.selected) {
+        this.selectedTab = t;
+      }
+      if (t.default || t.home) {
+        this.homeTab = t;
+      }
+      this.tabs[t.id] = t;
+    });
+  }
+
   /**
    * Get the current tabs rendered
    * @returns Array of tabs
@@ -114,16 +132,37 @@ export class NsThemeTabs {
     return this.tabs;
   }
   /**
+   * Get the current tabs rendered
+   * @returns Array of tabs
+   */
+  @Method()
+  async getTabsArray() {
+    return Object.values(this.tabs);
+  }
+  @Method()
+  async getTabsArraySorted() {
+    let arr = Object.values(this.tabs);
+    return this.sortByOrder(arr);
+  }
+  /**
    * Add a tab to the tabs
    * @param tab TabItem to add
    * @returns Updated array of tabs
    */
   @Method()
   async addTab(tab: TabItem) {
-    //tabCount++;
     let t = { ...tab };
+    if (!this.homeTab && t.home) {
+      this.homeTab = t;
+    } else if (this.homeTab && t.home) {
+      console.warn('[ns-theme-tabs]', 'home tab already present!');
+      return tab;
+      //throw new Error('Only 1 home tab')
+    }
+
     let oldTabs = { ...this.tabs }
     oldTabs[t.id] = tab;
+
     this.tabs = oldTabs;
     this.tabAdded.emit(t);
     return t;
@@ -158,6 +197,7 @@ export class NsThemeTabs {
     this.selectedTab = tab;
     let oldTabs = { ...this.tabs }
     Object.values(oldTabs).forEach((t: TabItem) => {
+
       if (oldTabs[t.id].selected) {
         oldTabs[t.id].selected = false;
       }
@@ -183,13 +223,9 @@ export class NsThemeTabs {
     return this.toggleTab(home);
   }
 
-  componentWillLoad() {
-    [...this.items].forEach(t => {
-      if (t.selected) {
-        this.selectedTab = t;
-      }
-      this.tabs[t.id] = t;
-    });
+  @Method()
+  async getHomeTab() {
+    return this.homeTab;
   }
 
   @Watch('tabs')
@@ -217,11 +253,24 @@ export class NsThemeTabs {
     }
   }
 
+  sortByOrder(arr) {
+    return arr.map((a, index) => {
+      let o = { ...a }
+      o.order = a.order || index + 1;
+      if (o.home) {
+        o.order = 0;
+      }
+      return o;
+    }).sort((a, b) => {
+      return a.order - b.order;
+    });
+  }
+
   render() {
     return (
       <Host>
         <ul class="ns-theme__tabs">
-          {  /** Home Tab */}
+          {  /** Home Tab 
           {this.homeTab && <Tab home={true}
             {...this.homeTab}
             onClick={(e) => {
@@ -229,7 +278,7 @@ export class NsThemeTabs {
               this.homeTab.selected = !this.homeTab.selected;
               //this.tabClickHandler(this.homeTab);
             }} />}
-
+*/}
           {this.tabs && Object.values(this.tabs).map((item: TabItem) => (
             <Tab
               {...item}

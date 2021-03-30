@@ -19,6 +19,19 @@
 | `tabClick` |             | `CustomEvent<TabItem>` |
 
 
+## Dependencies
+
+### Used by
+
+ - [ns-theme](../ns-theme)
+
+### Graph
+```mermaid
+graph TD;
+  ns-theme --> ns-theme-list-group
+  style ns-theme-list-group fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Build with Love by JS!*

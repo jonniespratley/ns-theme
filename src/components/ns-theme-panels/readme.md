@@ -14,13 +14,13 @@
 
 ## Methods
 
-### `addPanel(tab: TabItem, element: any) => Promise<HTMLElement>`
+### `addPanel(tab: TabItem, element: any) => Promise<HTMLNsThemePanelElement>`
 
 
 
 #### Returns
 
-Type: `Promise<HTMLElement>`
+Type: `Promise<HTMLNsThemePanelElement>`
 
 
 
@@ -34,13 +34,13 @@ Type: `Promise<void>`
 
 
 
-### `getPanelNodes() => Promise<NodeListOf<HTMLElement>>`
+### `getPanelNodes() => Promise<NodeListOf<HTMLNsThemePanelElement>>`
 
 
 
 #### Returns
 
-Type: `Promise<NodeListOf<HTMLElement>>`
+Type: `Promise<NodeListOf<HTMLNsThemePanelElement>>`
 
 
 
@@ -64,6 +64,24 @@ Type: `Promise<void>`
 
 
 
+
+## Dependencies
+
+### Used by
+
+ - [ns-theme](../ns-theme)
+
+### Depends on
+
+- [ns-theme-panel](../ns-theme-panel)
+
+### Graph
+```mermaid
+graph TD;
+  ns-theme-panels --> ns-theme-panel
+  ns-theme --> ns-theme-panels
+  style ns-theme-panels fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

@@ -11,9 +11,9 @@
 | ------------ | ------------- | -------------------------------- | ----------- | ----------- |
 | `headerText` | `header-text` | The title for the header         | `string`    | `undefined` |
 | `isFixed`    | `is-fixed`    | Header in fixed position or not  | `boolean`   | `undefined` |
-| `items`      | --            | Main navigation items            | `NavItem[]` | `[]`        |
-| `profile`    | --            | Profile navigation items         | `NavItem[]` | `[]`        |
-| `settings`   | --            | Settings navigation items        | `NavItem[]` | `[]`        |
+| `items`      | --            | Main navigation items            | `NavItem[]` | `undefined` |
+| `profile`    | --            | Profile navigation items         | `NavItem[]` | `undefined` |
+| `settings`   | --            | Settings navigation items        | `NavItem[]` | `undefined` |
 | `showHome`   | `show-home`   | Show Home menu button            | `boolean`   | `undefined` |
 | `showMenu`   | `show-menu`   | Show Toggle menu button          | `boolean`   | `undefined` |
 | `tabCount`   | `tab-count`   | The tabCount for the tab manager | `number`    | `undefined` |

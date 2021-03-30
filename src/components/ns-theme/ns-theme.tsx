@@ -1,4 +1,4 @@
-import { Component, Host, h, Listen, Method, Element, Prop, State } from '@stencil/core';
+import { Component, Host, h, Listen, Method, Element, Prop } from '@stencil/core';
 
 import { Session, TabItem } from '../props';
 
@@ -14,7 +14,7 @@ export class NsTheme {
   themeTabs: any;
   // If `cacheData` changes we don't want to rerender the component,
   // so we DON'T decorate it with @State
-  cacheData = state.session;
+  cacheData = state;
   cacheTabs = state.tabs;
 
   private nsThemePanels?: HTMLNsThemePanelsElement;
@@ -29,13 +29,9 @@ export class NsTheme {
   @Prop({ mutable: true }) tabs: TabItem[] = [];
 
   @Listen('tabManagerClick')
-  tabManagerClickHandler(event: CustomEvent<any>) {
-    console.log('Received the custom todoCompleted event: ', event.detail);
+  tabManagerClickHandler() {
+    //console.log('Received the custom todoCompleted event: ', event.detail);
     this.nsThemeTabsDrawer.toggle();
-  }
-  @Listen('todoCompleted')
-  todoCompletedHandler(event: CustomEvent<any>) {
-    console.log('Received the custom todoCompleted event: ', event.detail);
   }
   @Listen('tabChange')
   tabChangeHandler(event: CustomEvent<any>) {
@@ -44,7 +40,7 @@ export class NsTheme {
 
   @Listen('tabsChange')
   tabsChangeHandler(event: CustomEvent<any>) {
-    console.log('Received the custom tabChange event: ', event.detail);
+    //console.log('Received the custom tabChange event: ', event.detail);
     let tabs: TabItem[] = Object.values(event.detail);
     this.nsThemeHeader.tabCount = tabs.length;
     this.nsThemeTabsList.items = tabs;
@@ -56,7 +52,7 @@ export class NsTheme {
 
   @Listen('tabClick')
   async tabClickHandler(event: CustomEvent<any>) {
-    console.log('Received the custom tabClick event: ', event.detail);
+    //console.log('Received the custom tabClick event: ', event.detail);
     let tab = event.detail;
     await this.nsThemeTabs.toggleTab(tab);
     await this.nsThemePanels.togglePanel(tab);
@@ -68,43 +64,21 @@ export class NsTheme {
     console.log('Received the custom tabClose event: ', event.detail);
   }
 
-  connectedCallback() {
-    console.log('connectedCallback');
-  }
-
-  disconnectedCallback() { }
-
-  componentWillLoad() {
-    console.log('componentWillLoad');
-    console.log('This session', this.session);
-
-  }
-
-  componentDidLoad() {
-    console.log('componentDidLoad');
-
-  }
-
-  componentWillUpdate() { }
-  componentDidUpdate() {
-    console.log('componentDidUpdate');
-
-  }
-
-  componentWillRender() {
-    console.log('componentWillRender');
-
-    //this.tabs = this.cacheTabs;
-  }
-
   async componentDidRender() {
-    //this.sortMenuItems();
-    console.log('componentDidRender');
-    if (this.cacheTabs) {
-      for await (const tab of this.cacheTabs) {
-        await this.addTab(tab)
-      }
+    let { cacheTabs = [] } = this;
+    if (this.cacheData && this.cacheData.main) {
+      let { items = [] } = this.cacheData.main;
 
+      let defaultApp = items.find(i => i.default);
+      let defaultAppIndex = [...cacheTabs].indexOf(defaultApp);
+      if (defaultApp && defaultAppIndex <= 0) {
+        cacheTabs.unshift(defaultApp);
+      }
+    }
+    if (cacheTabs) {
+      for await (const tab of cacheTabs) {
+        await this.addTabAndPanel(tab);
+      }
     }
   }
 
@@ -113,42 +87,35 @@ export class NsTheme {
       let sortedItems = this.session.main.items.sort((a, b) => {
         return a.order - b.order;
       });
-      // TODO - SET THE DEFAULT TAB
-      let defaultTab = sortedItems.find(item => item.default === true);
-      if (defaultTab) {
-        console.log('found default', defaultTab);
-        //this.tabs.push(defaultTab);
-      }
+      return sortedItems;
     }
-  }
-
-  @Method()
-  async closeTab(index) {
-    //this.themeTabs
-    console.log('close', index);
   }
 
   @Method()
   async createPane(t) {
     let pane = document.createElement('div');
     pane.id = t.panelId;
-    pane.innerHTML = `
-        <h4>${t.id}</h4>
-        <p>This is the tab content</p>
-        `;
+    // pane.src = t.href;
+    pane.style.width = '100%';
+    pane.style.height = '99vh';
+    pane.style.border = 'none';
+
     return pane;
   }
 
   @Method()
-  async addTab(tab) {
-    let newTab = await this.nsThemeTabs.addTab(tab);
-    let newPanel = await this.nsThemePanels.addPanel(newTab, document.createElement('div'));
+  async addTabAndPanel(tab, el?) {
+    if (!el) {
+      el = await this.createPane(tab);
+    }
+    let newTab = await this.addTab(tab);
+    let newPanel = await this.addPanel(newTab, el);
     //return await toggleTab(newTab);
     //return this.nsThemeTabs.addTab(tab);
     let { tabs = [] } = this;
     tabs.push(newTab);
     this.tabs = tabs;
-    return newPanel;
+    return { newTab, newPanel };
   }
 
   @Method()
@@ -159,6 +126,24 @@ export class NsTheme {
     return tab;
   }
 
+  @Method()
+  async addTabs(tabs: TabItem[]) {
+    //return await this.nsThemeTabs.addTab(tab);
+    for await (const tab of tabs) {
+      await this.addTabAndPanel(tab);
+    }
+  }
+
+  @Method()
+  async addTab(tab) {
+    return await this.nsThemeTabs.addTab(tab);
+  }
+
+  @Method()
+  async addPanel(tab, element) {
+    return await this.nsThemePanels.addPanel(tab, element)
+  }
+
 
   @Method()
   async open(): Promise<boolean> {
@@ -166,14 +151,28 @@ export class NsTheme {
     return true;
   }
 
+  @Method()
+  async getNsTabs() {
+    return this.nsThemeTabs;
+  }
+
+  @Method()
+  async getNsPanels() {
+    return this.nsThemePanels
+  }
+
   render() {
     return (
       <Host>
+
         <ns-theme-header id="nsThemeHeader"
-          show-menu
           ref={el => this.nsThemeHeader = el as HTMLNsThemeHeaderElement}
           settings={this.session ? this.session.settings.items : []}
           user={this.session ? this.session.user : null}>
+          <div slot="menu">
+            <slot name="menu"></slot>
+          </div>
+
           <ns-theme-tabs id="nsThemeTabs"
             ref={el => this.nsThemeTabs = el as HTMLNsThemeTabsElement}
             slot="tabs"></ns-theme-tabs>
@@ -181,6 +180,7 @@ export class NsTheme {
 
         <ns-theme-panels id="nsThemePanels"
           ref={el => this.nsThemePanels = el as HTMLNsThemePanelsElement}></ns-theme-panels>
+
         <slot name="content"></slot>
 
 

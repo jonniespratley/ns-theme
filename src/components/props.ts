@@ -20,6 +20,7 @@ export interface TabItem {
   label: string;
   title?: string;
   panelId?: string;
+  order?: number;
   index?: number;
   home?: boolean;
 }

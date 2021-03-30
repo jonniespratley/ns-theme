@@ -1,0 +1,60 @@
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+  integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ=="
+  crossorigin="anonymous"
+/>
+
+<div id="demo-root"></div>
+<script>
+  window.top.postMessage('reply', '*');
+  window.onmessage = function (event) {
+    if (event.data == 'message') {
+      console.log('Message received!');
+    }
+  };
+
+  function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  }
+  console.warn('this is the demo.html page');
+
+  console.log('app=', getUrlParameter('app'));
+  console.log('name=', getUrlParameter('name'));
+
+  const app = getUrlParameter('app');
+  const label = getUrlParameter('label');
+
+  const html = `
+  
+  <h2>${app}</h2>
+  <div class="ui three cards">
+  <div class="ui card">
+    <div class="content">
+      <div class="ui placeholder">
+        <div class="rectangular image"></div>
+      </div>
+    </div>
+  </div>
+  <div class="ui card">
+    <div class="content">
+      <div class="ui placeholder">
+        <div class="rectangular image"></div>
+      </div>
+    </div>
+  </div>
+  <div class="ui card">
+    <div class="content">
+      <div class="ui placeholder">
+        <div class="rectangular image"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  `;
+
+  document.getElementById('demo-root').innerHTML = html;
+</script>

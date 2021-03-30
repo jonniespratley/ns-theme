@@ -59,19 +59,25 @@ export class NsThemePanels {
   }
 
   clearActive() {
-    let t = this.el.querySelector('.active');
+    let t: HTMLNsThemePanelElement = this.el.querySelector('.active');
     if (t) {
-      t.classList.remove('active');
+      t.setAttribute('selected', 'false');
+      //t.classList.remove('active');
     }
   }
 
   @Method()
   async togglePanel(tab: TabItem) {
-    let p = this.el.querySelector(`[data-tab="${tab.id}"]`);
+    let p: HTMLNsThemePanelElement = this.el.querySelector(`[data-tab="${tab.id}"]`);
+
     if (p) {
       this.clearActive()
-      return p.classList.add('active');
-      //p.setAttribute('selected', 'true');
+      p.setAttribute('selected', 'true');
+
+      //return p.classList.add('active');
+
+      //
+
     } else {
       console.error('ns-theme-panel - Could not find data-panel ===', tab.id)
     }
@@ -87,6 +93,11 @@ export class NsThemePanels {
   async getPanelNodes() {
     let t = this.el.querySelectorAll('ns-theme-panel');
     return t;
+  }
+
+  @Method()
+  async getActivePanel() {
+    return
   }
 
   render() {

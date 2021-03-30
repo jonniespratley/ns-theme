@@ -1,12 +1,12 @@
-export const loadFromSession = (itemKeyToLoad: any = 'state') => {
+export const loadFromSession = (itemKeyToLoad: any = 'state', returns = {}) => {
   try {
     const serializedSessionItem = sessionStorage.getItem(itemKeyToLoad);
     if (serializedSessionItem === null) {
-      return {};
+      return returns;
     }
     return JSON.parse(serializedSessionItem);
   } catch (err) {
-    return {};
+    return returns;
   }
 };
 

@@ -2,6 +2,8 @@ import { createStore } from '@stencil/store';
 import { Session } from './props';
 
 import { loadFromSession, saveToSession } from '../global/utils';
+import { debounce, getLogger } from '../utils/utils';
+const log = getLogger('tabs');
 /**
  * store.state
 The state object is proxied, i. e. you can directly get and set properties and Store will automatically take care of component re-rendering when the state object is changed.
@@ -47,20 +49,26 @@ const baseState: Session = {
 };
 
 const persistedState = loadFromSession('apphub-session');
-const initialState = Object.assign(baseState, persistedState, { tabs: loadFromSession('ns-theme-tabs') });
+const initialState = Object.assign(baseState, persistedState, { tabs: loadFromSession('ns-theme-tabs', []) });
 
 export const store = createStore(initialState);
 
 const { state, onChange } = store;
 
 onChange('session', value => {
-  console.log('save to session-store', value);
-  saveToSession(value, 'apphub-session');
+  console.count('session');
+
+  debounce(() => {
+    log('save to session-store', value);
+    saveToSession(value, 'apphub-session');
+  }, 250);
 });
 
 onChange('tabs', value => {
-  saveToSession(value, 'ns-theme-tabs');
-  console.log('save to session-store tabs', value);
+  debounce(() => {
+    log('save to session-store tabs', value);
+    saveToSession(value, 'ns-theme-tabs');
+  }, 5);
 });
 
 export default state;
