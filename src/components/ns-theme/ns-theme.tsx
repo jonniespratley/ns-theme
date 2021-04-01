@@ -33,6 +33,10 @@ export class NsTheme {
     //console.log('Received the custom todoCompleted event: ', event.detail);
     this.nsThemeTabsDrawer.toggle();
   }
+  @Listen('drawerHeaderAction')
+  drawerHeaderActionHandler(event: CustomEvent<any>) {
+    console.log('Received the custom drawerHeaderAction event: ', event.detail);
+  }
   @Listen('tabChange')
   tabChangeHandler(event: CustomEvent<any>) {
     console.log('Received the custom tabChange event: ', event.detail);

@@ -261,13 +261,13 @@ export class NsThemeTabs {
         o.order = 0;
       }
       return o;
-    }).sort((a, b) => {
-      return a.order - b.order;
-    });
+    }).sort((a, b) => a.order - b.order);
   }
 
   render() {
+
     return (
+
       <Host>
         <ul class="ns-theme__tabs">
           {  /** Home Tab 

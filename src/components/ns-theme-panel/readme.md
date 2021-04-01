@@ -9,7 +9,6 @@
 
 | Property   | Attribute  | Description | Type      | Default |
 | ---------- | ---------- | ----------- | --------- | ------- |
-| `loading`  | `loading`  |             | `boolean` | `false` |
 | `selected` | `selected` |             | `boolean` | `false` |
 
 

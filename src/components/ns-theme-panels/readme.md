@@ -34,6 +34,16 @@ Type: `Promise<void>`
 
 
 
+### `getActivePanel() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `getPanelNodes() => Promise<NodeListOf<HTMLNsThemePanelElement>>`
 
 

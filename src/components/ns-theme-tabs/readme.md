@@ -67,6 +67,26 @@ Type: `Promise<TabsMap>`
 
 
 
+### `getTabsArray() => Promise<TabItem[]>`
+
+Get the current tabs rendered
+
+#### Returns
+
+Type: `Promise<TabItem[]>`
+
+
+
+### `getTabsArraySorted() => Promise<any>`
+
+
+
+#### Returns
+
+Type: `Promise<any>`
+
+
+
 ### `selectHomeTab() => Promise<TabItem>`
 
 Select home tab finds the home tab from the tabs.

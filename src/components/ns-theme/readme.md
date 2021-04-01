@@ -31,13 +31,43 @@ This is how you use this element.
 
 ## Methods
 
-### `addTab(tab: any, el: any) => Promise<{ newTab: TabItem; newPanel: HTMLNsThemePanelElement; }>`
+### `addPanel(tab: any, element: any) => Promise<HTMLNsThemePanelElement>`
+
+
+
+#### Returns
+
+Type: `Promise<HTMLNsThemePanelElement>`
+
+
+
+### `addTab(tab: any) => Promise<TabItem>`
+
+
+
+#### Returns
+
+Type: `Promise<TabItem>`
+
+
+
+### `addTabAndPanel(tab: any, el?: any) => Promise<{ newTab: TabItem; newPanel: HTMLNsThemePanelElement; }>`
 
 
 
 #### Returns
 
 Type: `Promise<{ newTab: TabItem; newPanel: HTMLNsThemePanelElement; }>`
+
+
+
+### `addTabs(tabs: TabItem[]) => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
 
 
 

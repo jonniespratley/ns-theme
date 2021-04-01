@@ -2,7 +2,7 @@ import { createStore } from '@stencil/store';
 import { Session } from './props';
 
 import { loadFromSession, saveToSession } from '../global/utils';
-import { debounce, getLogger } from '../utils/utils';
+import { getLogger } from '../utils/utils';
 const log = getLogger('tabs');
 /**
  * store.state
@@ -58,17 +58,13 @@ const { state, onChange } = store;
 onChange('session', value => {
   console.count('session');
 
-  debounce(() => {
-    log('save to session-store', value);
-    saveToSession(value, 'apphub-session');
-  }, 250);
+  log('save to session-store', value);
+  saveToSession(value, 'apphub-session');
 });
 
 onChange('tabs', value => {
-  debounce(() => {
-    log('save to session-store tabs', value);
-    saveToSession(value, 'ns-theme-tabs');
-  }, 5);
+  log('save to session-store tabs', value);
+  saveToSession(value, 'ns-theme-tabs');
 });
 
 export default state;

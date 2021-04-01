@@ -150,11 +150,16 @@
       };
     </script>
 
+    <script src="http://localhost:1234/src.77de5100.js"></script>
+
     <script type="module" src="/build/ns-theme.esm.js"></script>
     <script nomodule src="/build/ns-theme.js"></script>
   </head>
   <body>
-    <ns-theme id="theme"></ns-theme>
+    <ns-theme id="theme">
+      <!-- AppShell Menu Button -->
+      <div id="js-menu" slot="menu"></div>
+    </ns-theme>
 
     <!--
 
@@ -251,11 +256,6 @@
 
         await customElements.whenDefined('ns-theme');
         const nsTheme = document.querySelector('ns-theme');
-
-        document.addEventListener('drawerHeaderAction', e => {
-          console.log('Action', e);
-          closeAllTabs();
-        });
 
         function createTab(obj) {
           count++;
